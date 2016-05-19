@@ -28,7 +28,7 @@ swig.setDefaults({ cache: false });
 
 
 // uncomment after placing your favicon in /static
-app.use(favicon(path.join(__dirname, 'static/img/', 'favicon.png')));
+// app.use(favicon(path.join(__dirname, 'static/img/', 'favicon.png')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
