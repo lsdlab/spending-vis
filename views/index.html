@@ -4,6 +4,10 @@
     spending-vis-Index
 {% endblock %}
 
+{% block script %}
+    <script src="js/Chart.bundle.js"></script>
+{% endblock %}
+
 {% block content %}
     <h1>{{ pagename|title }}</h1>
     <ul>
@@ -11,4 +15,11 @@
         <li{% if loop.first %} class="first"{% endif %}>{{ author }}</li>
     {% endfor %}
     </ul>
+
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+{% endblock %}
+
+{% block js %}
+    <script src="pages/index.js"></script>
 {% endblock %}
