@@ -1,4 +1,5 @@
 # spend-vis
+[![Dependency Status](https://david-dm.org/boennemann/badges.svg)](https://david-dm.org/boennemann/badges)    [![Dependency Status](https://david-dm.org/boennemann/badges.svg?theme=shields.io)](https://david-dm.org/boennemann/badges)    [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
 Visualize my daily spend data to some charts.(WIP)
 
