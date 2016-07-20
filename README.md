@@ -10,7 +10,8 @@ Visualize my daily spend data to some charts, the frontend.(WIP)
 - Visualization charts: [Chart.js](https://github.com/nnnick/Chart.js)
 
 ## Changelog：
-
+### 2016/07/16
+前后端分离
 
 ## LICENSE
 

@@ -3,9 +3,11 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+
+
     res.render('index', {
-        pagename: 'awesome people',
-        authors: ['Paul', 'Jim', 'Jane']
+        yearKey: ['er', 'qr'],
+        yearValue: [100, 100]
     });
 });
 
@@ -13,5 +15,7 @@ router.get('/', function(req, res, next) {
 router.get('/404', function(req, res, next) {
     res.render('404');
 });
+
+
 
 module.exports = router;
