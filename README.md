@@ -1,4 +1,4 @@
-# spending-vis-frontend
+# spending-vis
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
 
 Visualize my daily spend data to some charts, the frontend.(WIP)
@@ -11,7 +11,7 @@ Visualize my daily spend data to some charts, the frontend.(WIP)
 
 ## Changelog：
 ### 2016/07/16
-前后端分离
+前后端先都用 Node.js 做，webpack 还要研究下到底怎么搞。
 
 ## LICENSE
 
