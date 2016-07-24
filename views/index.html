@@ -4,14 +4,20 @@
     Dashboard
 {% endblock %}
 
-{% block script %}
+{% block js %}
     <script src="js/Chart.bundle.js"></script>
 {% endblock %}
 
 {% block content %}
+
+    {% include "partials/navbar.html" %}
+
+    <div class="container">
+        {% include "partials/flash.html" %}
+    </div>
+
     <div class="container">
         <h1 class="text-center">spending-vis</h1>
-
         <canvas id="myChart" width="400" height="400"></canvas>
         <script>
             var ctx = document.getElementById('myChart');

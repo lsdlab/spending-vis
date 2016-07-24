@@ -1,14 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
+var request = require('request');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    res.render('index');
+});
+
+/* GET home page. */
+router.get('/tables', function(req, res, next) {
 
 
-    res.render('index', {
-        yearKey: ['er', 'qr'],
-        yearValue: [100, 100]
-    });
+    res.render('tables');
 });
 
 /* GET 404 page. */

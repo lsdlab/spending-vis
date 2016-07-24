@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    表格
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="css/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="css/datatables/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block js %}
+    <script src="js/datatables/jquery.dataTables.min.js"></script>
+    <script src="js/datatables/dataTables.bootstrap4.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    {% include "partials/navbar.html" %}
+
+    <div class="container">
+        {% include "partials/flash.html" %}
+    </div>
+
+    <div class="container">
+    <table id="myTables" class="display" width="100%"></table>
+        <script>
+            $.getJSON('api/alldata', function(rsp) {
+                var yearamountData;
+                if (rsp.message === 'OK') {
+                    yearamountData = rsp.data;
+                }
+                dataSet = [];
+                dataSet.push(yearamountData);
+                $("#myTables").DataTable({
+                    "autoWidth": true,
+                    'paging': true,
+                    'ordering': false,
+                    'info': true,
+                    'searching': true,
+                    'lengthMenu': [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, '全部']
+                    ],
+                    'language': {
+                        'lengthMenu': '每页 _MENU_ 条记录',
+                        'zeroRecords': '没有找到',
+                        'info': '第 _PAGE_ 页，总 _PAGES_ 页',
+                        'infoEmpty': '没有记录',
+                        'infoFiltered': '(从 _MAX_ 条记录中过滤)',
+                        'search': '搜索：',
+                        'emptyTable': '这张表中没有数据',
+                        'loadingRecords': '加载中...',
+                        'processing': '处理中...',
+                        'paginate': {
+                            'first': '第一页',
+                            'last': '末页',
+                            'next': '下一页',
+                            'previous': '上一页'
+                        },
+                        'aria': {
+                            'sortAscending': '：升序排序',
+                            'sortDescending': '：降序排序'
+                        }
+                    },
+                    "data": yearamountData,
+                    "columns": [
+                        { "data": "categoryid", 'title': '分类 ID'},
+                        { "data": "timestring", 'title':  '时间'},
+                        { "data": "amount", 'title': '金额' },
+                        { "data": "note", 'title': '备注' }
+                    ]
+                });
+            });
+
+        </script>
+    </div>
+{% endblock %}

@@ -5,7 +5,7 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>
             {% block title %}
-                spending-vis
+                Spending Vis
             {% endblock %}
         </title>
         <meta name="description" content="">
@@ -14,28 +14,30 @@
         <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
         <link rel="apple-touch-icon" href="img/apple-touch-icon-precomposed.png">
 
-        {% block css %}
-            <link rel="stylesheet" href="css/bootstrap.min.css">
-            <link rel="stylesheet" href="css/flat-ui.min.css">
-            <link rel="stylesheet" href="css/font-awesome.min.css">
-            <link rel="stylesheet" href="css/normalize.css">
-        {% endblock %}
-
-        {% block script %}
-        {% endblock %}
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/flat-ui.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/normalize.css">
 
         <script src="js/jquery-2.2.min.js"></script>
         <script src="js/underscore-min.js"></script>
+
+        {% block css %}
+        {% endblock %}
+
+        {% block style %}
+        {% endblock %}
+
+        {% block js %}
+        {% endblock %}
     </head>
 
     <body>
         {% block content %}
         {% endblock %}
 
-        {% block js %}
-
-            <script src="js/bootstrap.min.js"></script>
-            <script src="js/flat-ui.min.js"></script>
-        {% endblock %}
+        <!-- <script src="js/bootstrap.min.js"></script> -->
+        <script src="js/flat-ui.min.js"></script>
     </body>
 </html>
