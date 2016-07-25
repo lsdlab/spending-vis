@@ -4,9 +4,26 @@
     表格
 {% endblock %}
 
+{% block style %}
+    #table-container .pagination-plain {
+        margin-bottom: 0px;
+        float: right!important
+    }
+    #table-container .col-md-5 {
+        margin-top: 10px;
+        margin-bottom: 10px
+    }
+    #table-container #myTables_filter {
+        float: right!important
+    }
+    #table-container .row {
+        margin-bottom: 10px
+    }
+{% endblock %}
+
 {% block js %}
     <script src="js/datatables/jquery.dataTables.min.js"></script>
-    <script src="js/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="js/datatables/dataTables.bootstrap.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -17,8 +34,8 @@
         {% include "partials/flash.html" %}
     </div>
 
-    <div class="container">
-    <table id="myTables" class="display table table-bordered" width="100%"></table>
+    <div class="container" id="table-container" style="margin-top: 20px">
+    <table id="myTables" class="table table-bordered" cellspacing="0" width="100%"></table>
         <script>
             $.getJSON('api/alldata', function(rsp) {
                 var yearamountData;

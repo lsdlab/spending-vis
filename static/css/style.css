@@ -4,7 +4,11 @@ html {
 }
 
 body {
-    padding-top: 60px;
+    padding-top: 53px;
+}
+
+.navbar {
+    margin-bottom: 0px
 }
 
 .footer {
