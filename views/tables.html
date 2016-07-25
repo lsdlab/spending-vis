@@ -4,11 +4,6 @@
     表格
 {% endblock %}
 
-{% block css %}
-    <link rel="stylesheet" href="css/datatables/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="css/datatables/dataTables.bootstrap4.min.css">
-{% endblock %}
-
 {% block js %}
     <script src="js/datatables/jquery.dataTables.min.js"></script>
     <script src="js/datatables/dataTables.bootstrap4.min.js"></script>
@@ -23,7 +18,7 @@
     </div>
 
     <div class="container">
-    <table id="myTables" class="display" width="100%"></table>
+    <table id="myTables" class="display table table-bordered" width="100%"></table>
         <script>
             $.getJSON('api/alldata', function(rsp) {
                 var yearamountData;
