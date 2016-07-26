@@ -1,17 +1,24 @@
 # spending-vis
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
 
-Visualize my daily spend data to some charts, the frontend.(WIP)
+Visualize my daily spend data to tables some charts.(WIP)
 
-可视化我的日常支出数据。
+可视化我的日常支出数据，尝试产品化，搭建具有数据分析功能的后端平台，以及 iOS App。
 
 ## Packages:
+
+- Tables: [DataTables Table plug-in for jQuery](https://www.datatables.net/)
 
 - Visualization charts: [Chart.js](https://github.com/nnnick/Chart.js)
 
 ## Changelog：
 ### 2016/07/16
-前后端先都用 Node.js 做，webpack 还要研究下到底怎么搞。
+前后端先都用 Node.js 做，webpack   还要研究下到底怎么搞。
+
+### 2016/07/26
+用 datatables 的表格完成了。
+
+![表格](http://o81quvr4u.bkt.clouddn.com/Screen%20Shot%202016-07-26%20at%2021.44.47.png)
 
 ## LICENSE
 

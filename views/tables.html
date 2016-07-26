@@ -42,9 +42,16 @@
                 if (rsp.message === 'OK') {
                     yearamountData = rsp.data;
                 }
-                dataSet = [];
-                dataSet.push(yearamountData);
+                dataSet = yearamountData.reverse();
                 $("#myTables").DataTable({
+                    "data": dataSet,
+                    "columns": [
+                        { "data": "_id", 'title': 'MonogoDB ID'},
+                        { "data": "categoryid", 'title': '分类 ID'},
+                        { "data": "timestring", 'title':  '时间'},
+                        { "data": "amount", 'title': '金额' },
+                        { "data": "note", 'title': '备注' }
+                    ],
                     "autoWidth": true,
                     'paging': true,
                     'ordering': false,
@@ -69,19 +76,8 @@
                             'last': '末页',
                             'next': '下一页',
                             'previous': '上一页'
-                        },
-                        'aria': {
-                            'sortAscending': '：升序排序',
-                            'sortDescending': '：降序排序'
                         }
-                    },
-                    "data": yearamountData,
-                    "columns": [
-                        { "data": "categoryid", 'title': '分类 ID'},
-                        { "data": "timestring", 'title':  '时间'},
-                        { "data": "amount", 'title': '金额' },
-                        { "data": "note", 'title': '备注' }
-                    ]
+                    }
                 });
             });
 
