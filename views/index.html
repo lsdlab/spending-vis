@@ -4,6 +4,9 @@
     Dashboard
 {% endblock %}
 
+{% block css %}
+{% endblock %}
+
 {% block js %}
     <script src="js/Chart.bundle.js"></script>
 {% endblock %}
@@ -16,61 +19,36 @@
         {% include "partials/flash.html" %}
     </div>
 
-    <div class="container">
-        <h1 class="text-center">spending-vis</h1>
-        <canvas id="myChart" width="400" height="400"></canvas>
-        <script>
-            var ctx = document.getElementById('myChart');
-            $.getJSON('api/yearamount', function(rsp) {
-                var yearamountData;
-                if (rsp.message === 'OK') {
-                    yearamountData = rsp.data;
-                }
+    <div class="jumbotron" style="background-color: #fff">
+        <div class="container">
+            <h1>Spending Vis</h1>
+            <p class="lead">个人资产管理<small>就是一个记账的……</small></p>
 
-                var yearKey = [];
-                var yearValue = [];
-
-                _.each(yearamountData, function(value, key){
-                    yearKey.push(key);
-                    yearValue.push(value);
-                });
-
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: yearKey,
-                        datasets: [{
-                            label: '支出',
-                            data: yearValue,
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: false,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
-                        title: {
-                            display: true,
-                            text: '年支出（元/年）'
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                        }
-                    }
-                });
-            });
-        </script>
+            <p><a class="btn btn-lg btn-success" href="#" role="button">开始使用</a></p>
+        </div>
     </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+              <h3>数据可视化</h3>
+              <p>表格、多种可视化图形</p>
+              <p><a class="btn btn-primary" href="#" role="button">查看详情 »</a></p>
+            </div>
+            <div class="col-lg-4">
+              <h2>数据分析</h2>
+              <p>自然语言处理、自动分类、财务报告</p>
+              <p><a class="btn btn-primary" href="#" role="button">查看详情 »</a></p>
+           </div>
+            <div class="col-lg-4">
+              <h2>iOS App</h2>
+              <p>iOS App 录入数据</p>
+              <p><a class="btn btn-primary" href="#" role="button">查看详情 »</a></p>
+            </div>
+        </div>
+    </div>
+
+    {% include "partials/footer.html" %}
+
 {% endblock %}
 

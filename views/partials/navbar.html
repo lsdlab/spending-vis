@@ -1,12 +1,12 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid" style="margin-left: 20px; margin-right: 30px">
+<nav class="navbar navbar-inverse navbar-embossed navbar-fixed-top">
+    <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
             <span class="sr-only">Toggle navigation</span>
         </button>
             <a class="navbar-brand" href="/">
-                <span style="margin-right: 6px"><i class="fa fa-heart" aria-hidden="true"></i></span> Spending Vis
+                <span><img src="img/apple-touch-icon-precomposed.png"></span> Spending Vis
             </a>
         </div>
 
@@ -19,35 +19,35 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">可视化<b class="caret"></b></a>
                     <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
-                        <li><a href="/charts/year">年</a></li>
-                        <li><a href="/charts/month">月</a></li>
-                        <li><a href="/charts/category">分类</a></li>
-                        <li><a href="/charts/consumption-index">消费指数雷达图</a></li>
+                        <li><a href="/charts-year">年</a></li>
+                        <li><a href="/charts-month">月</a></li>
+                        <li><a href="/charts-category">分类</a></li>
+                        <li><a href="/charts-consumption-index">消费指数雷达图</a></li>
                         <li class="divider"></li>
-                        <li><a href="/charts/wordcloud">消费关键词词云</a></li>
-                    </ul>
-                </li>
-                <li {% if title == 'function' %} class="active" {% endif %}>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">实用功能<b class="caret"></b></a>
-                    <span class="dropdown-arrow"></span>
-                    <ul class="dropdown-menu">
-                        <li><a href="/function/budget">预算</a></li>
-                        <li><a href="/function/instalments">分期还款</a></li>
-                        <li><a href="/function/credit-card-instalments">信用卡还款</a></li>
-                        <li><a href="/function/inverst">投资收益</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/function/app">iOS App</a></li>
+                        <li><a href="/charts-wordcloud">消费关键词词云</a></li>
                     </ul>
                 </li>
                 <li {% if title == 'analyse' %} class="active" {% endif %}>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">数据分析<b class="caret"></b></a>
                     <span class="dropdown-arrow"></span>
                     <ul class="dropdown-menu">
-                        <li><a href="/analyse/automate-complete">自动补全</a></li>
-                        <li><a href="/analyse/automate-category">自动分类</a></li>
-                        <li><a href="/analyse/predict-spending">预测支出</a></li>
+                        <li><a href="/analyse-automate-complete">自动补全</a></li>
+                        <li><a href="/analyse-automate-category">自动分类</a></li>
+                        <li><a href="/analyse-predict-spending">预测支出</a></li>
                         <li class="divider"></li>
-                        <li><a href="/analyse/financial-report">财务报告</a></li>
+                        <li><a href="/analyse-financial-report">财务报告</a></li>
+                    </ul>
+                </li>
+                <li {% if title == 'function' %} class="active" {% endif %}>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">实用功能<b class="caret"></b></a>
+                    <span class="dropdown-arrow"></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="/function-budget">预算</a></li>
+                        <li><a href="/function-instalments">分期还款</a></li>
+                        <li><a href="/function-credit-card-instalments">信用卡还款</a></li>
+                        <li><a href="/function-inverst">投资收益</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/function-app">iOS App</a></li>
                     </ul>
                 </li>
                 <li {% if title == 'about' %} class="active" {% endif %}><a href="/about">关于</a></li>
@@ -78,7 +78,7 @@
     <!-- /.container-fluid -->
 </nav>
 
-{% if !user %}
+<!-- {% if !user %}
     {% block js %}
     <script>
         document.getElementById('loginBtn').onclick = function() {
@@ -89,4 +89,4 @@
         };
     </script>
     {% endblock %}
-{% endif %}
+{% endif %} -->

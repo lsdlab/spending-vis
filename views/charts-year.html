@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block js %}
+    <script src="js/Chart.bundle.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    {% include "partials/navbar.html" %}
+
+    <div class="container">
+        {% include "partials/flash.html" %}
+    </div>
+
+    <div class="container" id="charts-container" style="margin-top: 20px">
+        <div class="page-header">
+            <h1>年支出<small>    </small></h1>
+        </div>
+
+        <div class="row">
+            <!-- <div class="col-md-1"></div> -->
+            <div class="col-md-10 center-block">
+                <canvas id="myChart"></canvas>
+            </div>
+            <!-- <div class="col-md-1"></div> -->
+        </div>
+
+
+        <script>
+            var ctx = document.getElementById('myChart');
+            $.getJSON('api/yearamount', function(rsp) {
+                var yearamountData;
+                if (rsp.message === 'OK') {
+                    yearamountData = rsp.data;
+                }
+
+                var yearKey = [];
+                var yearValue = [];
+
+                _.each(yearamountData, function(value, key){
+                    yearKey.push(key);
+                    yearValue.push(value);
+                });
+
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: yearKey,
+                        datasets: [{
+                            label: '支出',
+                            data: yearValue,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        responsive: true,
+                        hover: {
+                            // Overrides the global setting
+                            mode: 'single'
+                        },
+                        title: {
+                            display: true,
+                            text: '年支出（元/年）'
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            });
+        </script>
+    </div>
+{% endblock %}

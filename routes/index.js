@@ -8,11 +8,14 @@ router.get('/', function(req, res, next) {
     res.render('index');
 });
 
-/* GET home page. */
+/* GET table page. */
 router.get('/tables', function(req, res, next) {
-
-
     res.render('tables');
+});
+
+/* GET charts year page. */
+router.get('/charts-year', function(req, res, next) {
+    res.render('charts-year');
 });
 
 /* GET 404 page. */
