@@ -18,7 +18,7 @@ Visualize my daily spend data to tables some charts.(WIP)
 ### 2016/07/26
 用 datatables 的表格基本完成了。
 
-![表格](https://cl.ly/430W233D2E2g/Screen%20Shot%202016-07-26%20at%2021.44.47.png)
+![表格](http://o81quvr4u.bkt.clouddn.com/Screen%20Shot%202016-07-26%20at%2021.44.47.png)
 
 ## LICENSE
 
