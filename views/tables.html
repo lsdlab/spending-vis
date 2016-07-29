@@ -12,10 +12,6 @@
         margin-bottom: 0px;
         float: right!important
     }
-    #table-container .col-md-5 {
-        margin-top: 10px;
-        margin-bottom: 10px
-    }
     #table-container #myTables_filter {
         float: right!important
     }
@@ -34,11 +30,11 @@
         {% include "partials/flash.html" %}
     </div>
 
-    <div class="container" id="table-container" style="margin-top: 20px">
+    <div class="container" id="table-container" style="margin-top: 10px">
         <div class="page-header">
             <h1>表格<small>    全部数据</small></h1>
         </div>
-        <table id="myTables" class="table table-bordered" cellspacing="0" width="100%"></table>
+        <table id="myTables" class="table table-bordered" cellspacing="0" width="100%" style="margin-bottom: 10px"></table>
         <script>
             $.getJSON('api/alldata', function(rsp) {
                 var yearamountData;
