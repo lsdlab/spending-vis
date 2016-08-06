@@ -48,7 +48,7 @@
         <script>
             $.getJSON('api/alldata', function(rsp) {
                 var yearamountData;
-                if (rsp.message === 'OK') {
+                if (rsp.message === 0) {
                     yearamountData = rsp.data;
                 }
                 dataSet = yearamountData.reverse();
@@ -57,8 +57,8 @@
                     "columns": [
                         { "data": "_id", 'title': 'MonogoDB ID'},
                         { "data": "categoryid", 'title': '分类 ID'},
-                        { "data": "timestring", 'title':  '时间'},
-                        { "data": "amount", 'title': '金额' },
+                        { "data": "date", 'title':  '时间'},
+                        { "data": "amount", 'title': '金额（元）' },
                         { "data": "note", 'title': '备注' }
                     ],
                     "autoWidth": true,

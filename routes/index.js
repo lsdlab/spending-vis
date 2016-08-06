@@ -18,6 +18,11 @@ router.get('/charts-year', function(req, res, next) {
     res.render('charts-year');
 });
 
+/* GET charts month page. */
+router.get('/charts-month', function(req, res, next) {
+    res.render('charts-month');
+});
+
 /* GET 404 page. */
 router.get('/404', function(req, res, next) {
     res.render('404');
