@@ -3,13 +3,12 @@ var router = express.Router();
 
 var MongoClient = require('mongodb').MongoClient;
 
-
 var _ = require('underscore');
 var Q = require('q');
 
 require('../util/fourcalculation');
 
-var url = 'mongodb://localhost:27017/spending-vis-backend';
+var url = 'mongodb://localhost:27017/spending-vis';
 var entry;
 getEntry(url).then(function(data) {
     entry = data;
@@ -110,7 +109,8 @@ router.get('/allmonth', function(req, res) {
                     '2016-3': 0,
                     '2016-4': 0,
                     '2016-5': 0,
-                    '2016-6': 0
+                    '2016-6': 0,
+                    '2016-7': 0
                 }
                 _.each(doc, function(item){
                     if (item.year === '2014') {
@@ -168,9 +168,10 @@ router.get('/allmonth', function(req, res) {
                             allmonthData['2016-5'] = allmonthData['2016-5'].add(item.amount)
                         } else if (item.month === '6') {
                             allmonthData['2016-6'] = allmonthData['2016-6'].add(item.amount)
+                        } else if (item.month === '7') {
+                            allmonthData['2016-7'] = allmonthData['2016-7'].add(item.amount)
                         }
                     }
-
                 });
                 res.json({
                     message: 0,
