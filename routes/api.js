@@ -3,15 +3,15 @@ var router = express.Router();
 
 var MongoClient = require('mongodb').MongoClient;
 
-var url = 'mongodb://localhost:27017/spending-vis-backend';
 
 var _ = require('underscore');
 var Q = require('q');
 
 require('../util/fourcalculation');
 
+var url = 'mongodb://localhost:27017/spending-vis-backend';
 var entry;
-getCollection().then(function(data) {
+getEntry(url).then(function(data) {
     entry = data;
 }).catch(function() {
     entry = {
@@ -256,20 +256,19 @@ router.get('/bymonth/:year(\\d{4})', function(req, res) {
 });
 
 
-
-function getCollection() {
-    var getCollectionDefer = Q.defer();
+function getEntry(url) {
+    var getEntryDefer = Q.defer();
 
     MongoClient.connect(url, function(err, db) {
         if (!err) {
             var entry = db.collection('entry');
-            getCollectionDefer.resolve(entry);
+            getEntryDefer.resolve(entry);
         } else {
-            getCollectionDefer.reject();
+            getEntryDefer.reject();
         }
     });
 
-    return getCollectionDefer.promise;
+    return getEntryDefer.promise;
 }
 
 
