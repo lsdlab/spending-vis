@@ -55,7 +55,8 @@
             $.getJSON('api/bymonth/2016', function(rsp) {
                 var yearamountData;
                 if (rsp.message === 0) {
-                    yearamountData = rsp.data;
+                    yearamountData = rsp.data.data;
+                    titleText = rsp.data.title;
                 } else {
                     yearamountData = {0: 0}
                 }
@@ -93,7 +94,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2016 年支出（元/年）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {
@@ -163,7 +164,8 @@
             $.getJSON('api/bymonth/2015', function(rsp) {
                 var yearamountData;
                 if (rsp.message === 0) {
-                    yearamountData = rsp.data;
+                    yearamountData = rsp.data.data;
+                    titleText = rsp.data.title;
                 } else {
                     yearamountData = {0: 0}
                 }
@@ -201,7 +203,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2015 年支出（元/年）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {
@@ -252,7 +254,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2015 年支出（元/年）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {
@@ -271,7 +273,8 @@
             $.getJSON('api/bymonth/2014', function(rsp) {
                 var yearamountData;
                 if (rsp.message === 0) {
-                    yearamountData = rsp.data;
+                    yearamountData = rsp.data.data;
+                    titleText = rsp.data.title;
                 } else {
                     yearamountData = {0: 0}
                 }
@@ -309,7 +312,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2014 年支出（元/年）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {
@@ -360,7 +363,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2016 年支出（元/年）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {

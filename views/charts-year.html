@@ -46,7 +46,8 @@
             $.getJSON('api/years', function(rsp) {
                 var yearamountData;
                 if (rsp.message === 0) {
-                    yearamountData = rsp.data;
+                    yearamountData = rsp.data.data;
+                    titleText = rsp.data.title;
                 } else {
                     yearamountData = {0: 0}
                 }
@@ -84,7 +85,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2014 ~ 2016 年支出（元/年）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {
@@ -135,7 +136,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2014 ~ 2016 年支出（元/年）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {
@@ -154,7 +155,8 @@
             $.getJSON('api/allmonth', function(rsp) {
                 var yearamountData;
                 if (rsp.message === 0) {
-                    yearamountData = rsp.data;
+                    yearamountData = rsp.data.data;
+                    titleText = rsp.data.title;
                 } else {
                     yearamountData = {0: 0}
                 }
@@ -192,7 +194,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2014 ~ 2016 年支出（元/月）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {
@@ -243,7 +245,7 @@
                         },
                         title: {
                             display: true,
-                            text: '2014 ~ 2016 年支出（元/月）',
+                            text: titleText,
                             fontSize: 18
                         },
                         scales: {

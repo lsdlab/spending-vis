@@ -47,17 +47,25 @@ router.get('/years', function(req, res) {
     if (entry['message'] !== 1) {
         entry.find({}).toArray(function(err, doc) {
             if (doc != null) {
-                var yearData = _.reduce(doc, function(years, item) {
-                    if (years[item.year + ' 年']) {
-                        years[item.year + ' 年'] = years[item.year + ' 年'].add(item.amount)
+                var reducedData = _.reduce(doc, function(years, item) {
+                    if (years[item.year]) {
+                        years[item.year] = years[item.year].add(item.amount)
                     } else {
-                        years[item.year + ' 年'] = item.amount
+                        years[item.year] = item.amount
                     }
                     return years
                 }, {});
+                var yearData = {}
+                _.each(reducedData, function(value, key){
+                    key += ' 年'
+                    yearData[key] = value
+                });
                 res.json({
                     message: 0,
-                    data: yearData
+                    data: {
+                        title: '2014 ~ 2016 年支出（元/年）',
+                        data: yearData
+                    }
                 });
             } else {
                 res.json({
@@ -79,16 +87,20 @@ router.get('/allmonth', function(req, res) {
         entry.find({}).toArray(function(err, doc) {
             if (doc != null) {
                 var allmonthData = _.reduce(doc, function(allmonths, item) {
-                    if (allmonths[item.year + '-' + item.month]) {
-                        allmonths[item.year + '-' + item.month] = allmonths[item.year + '-' + item.month].add(item.amount)
+                    dataKey = item.year + '-' + item.month
+                    if (allmonths[dataKey]) {
+                        allmonths[dataKey] = allmonths[dataKey].add(item.amount)
                     } else {
-                        allmonths[item.year + '-' + item.month] = item.amount
+                        allmonths[dataKey] = item.amount
                     }
                     return allmonths
                 }, {});
                 res.json({
                     message: 0,
-                    data: allmonthData
+                    data: {
+                        title: '2014 ~ 2016 年支出（元/月）',
+                        data: allmonthData
+                    }
                 });
             } else {
                 res.json({
@@ -110,17 +122,25 @@ router.get('/bymonth/:year(\\d{4})', function(req, res) {
             'year': req.params.year
         }).toArray(function(err, doc) {
             if (doc != null) {
-                var monthData = _.reduce(doc, function(months, item) {
-                    if (months[item.month + ' 月']) {
-                        months[item.month + ' 月'] = months[item.month + ' 月'].add(item.amount)
+                var reducedData = _.reduce(doc, function(months, item) {
+                    if (months[item.month]) {
+                        months[item.month] = months[item.month].add(item.amount)
                     } else {
-                        months[item.month + ' 月'] = item.amount
+                        months[item.month] = item.amount
                     }
                     return months
                 }, {});
+                var monthData = {}
+                _.each(reducedData, function(value, key){
+                    key += ' 月'
+                    monthData[key] = value
+                });
                 res.json({
                     message: 0,
-                    data: monthData
+                    data: {
+                        title: req.params.year.toString() + ' 年支出（元/月）',
+                        data: monthData
+                    }
                 });
             } else {
                 res.json({
