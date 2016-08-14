@@ -20,7 +20,9 @@
         <div class="page-header">
             <h1>可视化 - 月支出<small>    2014 ~ 2016</small></h1>
         </div>
-
+        <div class="row mb10">
+            <button class="btn btn-info pull-right" id="fullscrean">全屏</button>
+        </div>
         <div class="row mb30">
             <div class="col-md-6">
                 <canvas id="bar-chart-2016"></canvas>
@@ -29,7 +31,6 @@
                 <canvas id="line-chart-2016"></canvas>
             </div>
         </div>
-
         <div class="row mb30">
             <div class="col-md-6">
                 <canvas id="bar-chart-2015"></canvas>
@@ -38,7 +39,6 @@
                 <canvas id="line-chart-2015"></canvas>
             </div>
         </div>
-
         <div class="row mb30">
             <div class="col-md-6">
                 <canvas id="bar-chart-2014"></canvas>
@@ -50,9 +50,32 @@
 
 
         <script>
+            Chart.defaults.global.legend.display = false;
+            Chart.defaults.global.responsive = true;
+            Chart.defaults.global.hover.mode = 'single';
+            Chart.defaults.global.hover.animationDuration = 300;
+            Chart.defaults.global.title.display = true;
+            Chart.defaults.global.title.position = 'top';
+            Chart.defaults.global.title.fullWidth = true;
+            Chart.defaults.global.title.fontSize = 18;
+
+            $('#fullscrean').on('click', function(){
+                if (screenfull.enabled) {
+                    document.addEventListener(screenfull.raw.fullscreenchange, function() {
+                        if (screenfull.isFullscreen) {
+                            notie.alert('success', '进入全屏展示，「ESC」退出全屏', 3)
+                        } else {
+                            notie.alert('success', '退出全屏展示', 3)
+                        }
+                    })
+                    screenfull.toggle();
+                } else {
+                    notie.alert('error', '此浏览器不支持全屏', 3)
+                }
+            })
             var bar_ctx_2016 = document.getElementById('bar-chart-2016');
             var line_ctx_2016 = document.getElementById('line-chart-2016');
-            $.getJSON('api/bymonth/2016', function(rsp) {
+            $.getJSON('api/monthdatabyyear/2016', function(rsp) {
                 var yearamountData;
                 if (rsp.message === 0) {
                     yearamountData = rsp.data.data;
@@ -76,26 +99,16 @@
                         datasets: [{
                             label: '支出',
                             data: yearValue,
-                            backgroundColor: 'rgba(54, 162, 235, 0.4)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
                             borderWidth: 1,
-                            hoverBorderColor: 'rgba(54, 162, 235, 1)',
+                            hoverBorderColor: 'rgba(52, 152, 219, 1)',
                             hoverBorderWidth: 1.5
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{
@@ -116,8 +129,8 @@
                             data: yearValue,
                             fill: false,
                             lineTension: 0.1,
-                            backgroundColor: "rgba(54, 162, 235, 0.4)",
-                            borderColor: "rgba(54, 162, 235, 1)",
+                            backgroundColor: "rgba(52, 152, 219, 0.4)",
+                            borderColor: "rgba(52, 152, 219, 1)",
                             borderCapStyle: 'butt',
                             borderDash: [],
                             borderDashOffset: 0.0,
@@ -126,7 +139,7 @@
                             pointBackgroundColor: "#fff",
                             pointBorderWidth: 1,
                             pointHoverRadius: 6,
-                            pointHoverBackgroundColor: "rgba(54, 162, 235, 1)",
+                            pointHoverBackgroundColor: "rgba(52, 152, 219, 1)",
                             pointHoverBorderColor: "rgba(220,220,220,1)",
                             pointHoverBorderWidth: 2,
                             pointRadius: 1,
@@ -135,18 +148,8 @@
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: '2016 年支出（元/年）',
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{
@@ -161,7 +164,7 @@
 
             var bar_ctx_2015 = document.getElementById('bar-chart-2015');
             var line_ctx_2015 = document.getElementById('line-chart-2015');
-            $.getJSON('api/bymonth/2015', function(rsp) {
+            $.getJSON('api/monthdatabyyear/2015', function(rsp) {
                 var yearamountData;
                 if (rsp.message === 0) {
                     yearamountData = rsp.data.data;
@@ -185,26 +188,16 @@
                         datasets: [{
                             label: '支出',
                             data: yearValue,
-                            backgroundColor: 'rgba(54, 162, 235, 0.4)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
                             borderWidth: 1,
-                            hoverBorderColor: 'rgba(54, 162, 235, 1)',
+                            hoverBorderColor: 'rgba(52, 152, 219, 1)',
                             hoverBorderWidth: 1.5
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{
@@ -225,8 +218,8 @@
                             data: yearValue,
                             fill: false,
                             lineTension: 0.1,
-                            backgroundColor: "rgba(54, 162, 235, 0.4)",
-                            borderColor: "rgba(54, 162, 235, 1)",
+                            backgroundColor: "rgba(52, 152, 219, 0.4)",
+                            borderColor: "rgba(52, 152, 219, 1)",
                             borderCapStyle: 'butt',
                             borderDash: [],
                             borderDashOffset: 0.0,
@@ -235,7 +228,7 @@
                             pointBackgroundColor: "#fff",
                             pointBorderWidth: 1,
                             pointHoverRadius: 6,
-                            pointHoverBackgroundColor: "rgba(54, 162, 235, 1)",
+                            pointHoverBackgroundColor: "rgba(52, 152, 219, 1)",
                             pointHoverBorderColor: "rgba(220,220,220,1)",
                             pointHoverBorderWidth: 2,
                             pointRadius: 1,
@@ -244,18 +237,8 @@
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{
@@ -270,7 +253,7 @@
 
             var bar_ctx_2014 = document.getElementById('bar-chart-2014');
             var line_ctx_2014 = document.getElementById('line-chart-2014');
-            $.getJSON('api/bymonth/2014', function(rsp) {
+            $.getJSON('api/monthdatabyyear/2014', function(rsp) {
                 var yearamountData;
                 if (rsp.message === 0) {
                     yearamountData = rsp.data.data;
@@ -294,26 +277,16 @@
                         datasets: [{
                             label: '支出',
                             data: yearValue,
-                            backgroundColor: 'rgba(54, 162, 235, 0.4)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
                             borderWidth: 1,
-                            hoverBorderColor: 'rgba(54, 162, 235, 1)',
+                            hoverBorderColor: 'rgba(52, 152, 219, 1)',
                             hoverBorderWidth: 1.5
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{
@@ -334,8 +307,8 @@
                             data: yearValue,
                             fill: false,
                             lineTension: 0.1,
-                            backgroundColor: "rgba(54, 162, 235, 0.4)",
-                            borderColor: "rgba(54, 162, 235, 1)",
+                            backgroundColor: "rgba(52, 152, 219, 0.4)",
+                            borderColor: "rgba(52, 152, 219, 1)",
                             borderCapStyle: 'butt',
                             borderDash: [],
                             borderDashOffset: 0.0,
@@ -344,7 +317,7 @@
                             pointBackgroundColor: "#fff",
                             pointBorderWidth: 1,
                             pointHoverRadius: 6,
-                            pointHoverBackgroundColor: "rgba(54, 162, 235, 1)",
+                            pointHoverBackgroundColor: "rgba(52, 152, 219, 1)",
                             pointHoverBorderColor: "rgba(220,220,220,1)",
                             pointHoverBorderWidth: 2,
                             pointRadius: 1,
@@ -353,18 +326,8 @@
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{

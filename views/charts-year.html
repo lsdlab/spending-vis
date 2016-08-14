@@ -20,53 +20,74 @@
         <div class="page-header">
             <h1>可视化 - 年支出<small>    2014 ~ 2016</small></h1>
         </div>
-
+        <div class="row mb10">
+            <button class="btn btn-info pull-right" id="fullscrean">全屏</button>
+        </div>
         <div class="row mb30">
             <div class="col-md-6">
-                <canvas id="bar-chart-years"></canvas>
+                <canvas id="bar-years"></canvas>
             </div>
             <div class="col-md-6">
-                <canvas id="line-chart-years"></canvas>
+                <canvas id="line-years"></canvas>
             </div>
         </div>
-
         <div class="row mb30">
             <div class="col-md-12">
-                <canvas id="bar-chart-all-month"></canvas>
+                <canvas id="bar-all-month"></canvas>
             </div>
             <div class="col-md-12">
-                <canvas id="line-chart-all-month"></canvas>
+                <canvas id="line-all-month"></canvas>
             </div>
         </div>
 
 
         <script>
-            var bar_ctx_years = document.getElementById('bar-chart-years');
-            var line_ctx_years = document.getElementById('line-chart-years');
+            Chart.defaults.global.legend.display = false;
+            Chart.defaults.global.responsive = true;
+            Chart.defaults.global.hover.mode = 'single';
+            Chart.defaults.global.hover.animationDuration = 300;
+            Chart.defaults.global.title.display = true;
+            Chart.defaults.global.title.position = 'top';
+            Chart.defaults.global.title.fullWidth = true;
+            Chart.defaults.global.title.fontSize = 18;
+            $('#fullscrean').on('click', function(){
+                if (screenfull.enabled) {
+                    screenfull.toggle();
+                    document.addEventListener(screenfull.raw.fullscreenchange, function() {
+                        if (screenfull.isFullscreen) {
+                            notie.alert('success', '进入全屏展示，「ESC」退出全屏', 3)
+                        } else {
+                            notie.alert('success', '退出全屏展示', 3)
+                        }
+                    })
+                } else {
+                    notie.alert('error', '此浏览器不支持全屏', 3)
+                }
+            })
+            var bar_ctx_years = document.getElementById('bar-years');
+            var line_ctx_years = document.getElementById('line-years');
             $.getJSON('api/years', function(rsp) {
-                var yearamountData;
+                var yearsData;
                 if (rsp.message === 0) {
-                    yearamountData = rsp.data.data;
+                    yearsData = rsp.data.data;
                     titleText = rsp.data.title;
                 } else {
-                    yearamountData = {0: 0}
+                    yearsData = {0: 0}
                 }
-
-                var yearKey = [];
-                var yearValue = [];
-
-                _.each(yearamountData, function(value, key){
-                    yearKey.push(key);
-                    yearValue.push(value);
+                var yearsKey = [];
+                var yearsValue = [];
+                _.each(yearsData, function(value, key){
+                    yearsKey.push(key);
+                    yearsValue.push(value);
                 });
 
-                var barChrtYears = new Chart(bar_ctx_years, {
+                var barChartYears = new Chart(bar_ctx_years, {
                     type: 'bar',
                     data: {
-                        labels: yearKey,
+                        labels: yearsKey,
                         datasets: [{
+                            data: yearsValue,
                             label: '支出',
-                            data: yearValue,
                             backgroundColor: 'rgba(54, 162, 235, 0.4)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1,
@@ -75,18 +96,8 @@
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{
@@ -101,10 +112,10 @@
                 var lineChartYears = new Chart(line_ctx_years, {
                     type: 'line',
                     data: {
-                        labels: yearKey,
+                        labels: yearsKey,
                         datasets: [{
+                            data: yearsValue,
                             label: '支出',
-                            data: yearValue,
                             fill: false,
                             lineTension: 0.1,
                             backgroundColor: "rgba(54, 162, 235, 0.4)",
@@ -126,18 +137,8 @@
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{
@@ -150,32 +151,31 @@
                 });
             });
 
-            var bar_ctx_all_month = document.getElementById('bar-chart-all-month');
-            var line_ctx_all_month = document.getElementById('line-chart-all-month');
+            var bar_ctx_all_month = document.getElementById('bar-all-month');
+            var line_ctx_all_month = document.getElementById('line-all-month');
             $.getJSON('api/allmonth', function(rsp) {
-                var yearamountData;
+                var yearsData;
                 if (rsp.message === 0) {
-                    yearamountData = rsp.data.data;
+                    yearsData = rsp.data.data;
                     titleText = rsp.data.title;
                 } else {
-                    yearamountData = {0: 0}
+                    yearsData = {0: 0}
                 }
 
-                var yearKey = [];
-                var yearValue = [];
-
-                _.each(yearamountData, function(value, key){
-                    yearKey.push(key);
-                    yearValue.push(value);
+                var yearsKey = [];
+                var yearsValue = [];
+                _.each(yearsData, function(value, key){
+                    yearsKey.push(key);
+                    yearsValue.push(value);
                 });
 
-                var barChrtAllMonth = new Chart(bar_ctx_all_month, {
+                var barChartAllMonth = new Chart(bar_ctx_all_month, {
                     type: 'bar',
                     data: {
-                        labels: yearKey,
+                        labels: yearsKey,
                         datasets: [{
+                            data: yearsValue,
                             label: '支出',
-                            data: yearValue,
                             backgroundColor: 'rgba(54, 162, 235, 0.4)',
                             borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1,
@@ -184,18 +184,8 @@
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{
@@ -210,10 +200,10 @@
                 var lineChartAllMonth = new Chart(line_ctx_all_month, {
                     type: 'line',
                     data: {
-                        labels: yearKey,
+                        labels: yearsKey,
                         datasets: [{
+                            data: yearsValue,
                             label: '支出',
-                            data: yearValue,
                             fill: false,
                             lineTension: 0.1,
                             backgroundColor: "rgba(54, 162, 235, 0.4)",
@@ -235,18 +225,8 @@
                         }]
                     },
                     options: {
-                        legend: {
-                            display: false
-                        },
-                        responsive: true,
-                        hover: {
-                            // Overrides the global setting
-                            mode: 'single'
-                        },
                         title: {
-                            display: true,
-                            text: titleText,
-                            fontSize: 18
+                            text: titleText
                         },
                         scales: {
                             yAxes: [{

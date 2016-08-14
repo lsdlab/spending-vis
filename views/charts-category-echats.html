@@ -83,84 +83,6 @@
 
 
         <script>
-            Chart.defaults.global.cutoutPercentage = 0;
-            Chart.defaults.global.legend.display = false;
-            Chart.defaults.global.responsive = true;
-            Chart.defaults.global.hover.mode = 'single';
-            Chart.defaults.global.hover.animationDuration = 300;
-            Chart.defaults.global.title.display = true;
-            Chart.defaults.global.title.position = 'top';
-            Chart.defaults.global.title.fullWidth = true;
-            Chart.defaults.global.title.fontSize = 18;
-            Chart.defaults.global.animation.animateRotate = true;
-            Chart.defaults.global.animation.animateScale = true;
-
-            Chart.pluginService.register({
-                afterDraw: function (chart, easing) {
-                    if (chart.config.options.showPercentage || chart.config.options.showLabel) {
-                        var self = chart.config;
-                        var ctx = chart.chart.ctx;
-
-                        ctx.font = '18px Arial';
-                        ctx.textAlign = "center";
-                        ctx.fillStyle = "#fff";
-
-                        self.data.datasets.forEach(function (dataset, datasetIndex) {
-                            var total = 0, //total values to compute fraction
-                                labelxy = [],
-                                offset = Math.PI / 2, //start sector from top
-                                radius,
-                                centerx,
-                                centery,
-                                lastend = 0; //prev arc's end line: starting with 0
-
-                            for (var val of dataset.data) { total += val; }
-
-                            //TODO needs improvement
-                            var i = 0;
-                            var meta = dataset._meta[i];
-                            while(!meta) {
-                                i++;
-                                meta = dataset._meta[i];
-                            }
-
-                            var element;
-                            for(index = 0; index < meta.data.length; index++) {
-
-                                element = meta.data[index];
-                                radius = 0.9 * element._view.outerRadius - element._view.innerRadius;
-                                centerx = element._model.x;
-                                centery = element._model.y;
-                                var thispart = dataset.data[index],
-                                    arcsector = Math.PI * (2 * thispart / total);
-                                if (element.hasValue() && dataset.data[index] > 0) {
-                                  labelxy.push(lastend + arcsector / 2 + Math.PI + offset);
-                                }
-                                else {
-                                  labelxy.push(-1);
-                                }
-                                lastend += arcsector;
-                            }
-
-
-                            var lradius = radius * 3 / 4;
-                            for (var idx in labelxy) {
-                                if (labelxy[idx] === -1) continue;
-                                var langle = labelxy[idx],
-                                dx = centerx + lradius * Math.cos(langle),
-                                dy = centery + lradius * Math.sin(langle),
-                                val = Math.round(dataset.data[idx] / total * 100);
-                                if (chart.config.options.showPercentage)
-                                    ctx.fillText(val + '%', dx, dy);
-                                else
-                                    ctx.fillText(chart.config.data.labels[idx], dx, dy);
-                            }
-                            ctx.restore();
-                        });
-                    }
-                }
-            });
-
             $('#fullscrean').on('click', function(){
                 if (screenfull.enabled) {
                     screenfull.toggle();
@@ -190,6 +112,12 @@
                 var yearsValue = [];
                 _.each(yearsData, function(value, key){
                     yearsKey.push(key);
+                    valueItem = {};
+                    valueItem['value'] = value;
+                    valueItem['label'] = key;
+                    valueItem['color'] = '#e74c3c';
+                    valueItem['labelColor'] = 'white';
+                    valueItem['labelFontSize'] = '16';
                     yearsValue.push(value);
                 });
 
@@ -203,18 +131,26 @@
                         }]
                 };
 
+
                 var myPieChart = new Chart(pie_ctx_2016,{
                     type: 'pie',
                     data: data,
                     options: {
-                        title: {
-                            text: titleText
+                        cutoutPercentage: 50,
+                        legend: {
+                            display: false
                         },
-                        animation: {
-                            animateRotate: true,
-                            animateScale: true
-                        }
-
+                        responsive: true,
+                        hover: {
+                            // Overrides the global setting
+                            mode: 'single'
+                        },
+                        title: {
+                            display: true,
+                            text: titleText,
+                            fontSize: 18
+                        },
+                        showLabel: true,
                     }
                 });
             });
@@ -249,12 +185,19 @@
                     type: 'pie',
                     data: data,
                     options: {
-                        title: {
-                            text: titleText
+                        cutoutPercentage: 50,
+                        legend: {
+                            display: false
                         },
-                        animation: {
-                            animateRotate: true,
-                            animateScale: true
+                        responsive: true,
+                        hover: {
+                            // Overrides the global setting
+                            mode: 'single'
+                        },
+                        title: {
+                            display: true,
+                            text: titleText,
+                            fontSize: 18
                         }
                     }
                 });
@@ -290,16 +233,26 @@
                     type: 'pie',
                     data: data,
                     options: {
-                        title: {
-                            text: titleText,
+                        cutoutPercentage: 50,
+                        legend: {
+                            display: false
                         },
-                        animation: {
-                            animateRotate: true,
-                            animateScale: true
+                        responsive: true,
+                        hover: {
+                            // Overrides the global setting
+                            mode: 'single'
+                        },
+                        title: {
+                            display: true,
+                            text: titleText,
+                            fontSize: 18
                         }
                     }
                 });
             });
+
+
+
         </script>
     </div>
 {% endblock %}

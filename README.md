@@ -1,7 +1,7 @@
 # spending-vis
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
 
-Visualize my daily spend data to tables some charts.(WIP)
+Visualize my daily spending data to tables some charts.(WIP)
 
 可视化我的日常支出数据，尝试产品化，搭建具有数据分析功能的后端平台，以及 iOS App。
 

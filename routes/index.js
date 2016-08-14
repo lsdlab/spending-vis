@@ -23,6 +23,11 @@ router.get('/charts-month', function(req, res, next) {
     res.render('charts-month');
 });
 
+/* GET charts category page. */
+router.get('/charts-category', function(req, res, next) {
+    res.render('charts-category');
+});
+
 /* GET 404 page. */
 router.get('/404', function(req, res, next) {
     res.render('404');

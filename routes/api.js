@@ -18,6 +18,34 @@ getEntry(url).then(function(data) {
     };
 });
 
+var category = {
+    '0': '食品',
+    '1': '食品',
+    '2': '穿',
+    '4': '食品',
+    '6': '居住',
+    '10': '交通通信',
+    '13': '食品',
+    '17': '教育',
+    '18': '教育',
+    '19': '文化娱乐',
+    '28': '教育',
+    '30': '交通通信',
+    '31': '穿',
+    '33': '居住',
+    '34': '居住',
+    '39': '教育',
+    '40': '食品',
+    '43': '穿',
+    '44': '居住',
+    '48': '食品',
+    '57': '穿',
+    '62': '文化娱乐',
+    '67': '文化娱乐',
+    '80': '文化娱乐',
+    '81': '教育',
+    '87': '交通通信'
+}
 
 /* GET all data for table page. */
 router.get('/alldata', function(req, res) {
@@ -116,7 +144,7 @@ router.get('/allmonth', function(req, res) {
 })
 
 /* GET month amount data by year for charts-month */
-router.get('/bymonth/:year(\\d{4})', function(req, res) {
+router.get('/monthdatabyyear/:year(\\d{4})', function(req, res) {
     if (entry['message'] !== 1) {
         entry.find({
             'year': req.params.year
@@ -139,6 +167,58 @@ router.get('/bymonth/:year(\\d{4})', function(req, res) {
                     message: 0,
                     data: {
                         title: req.params.year.toString() + ' 年支出（元/月）',
+                        data: monthData
+                    }
+                });
+            } else {
+                res.json({
+                    message: 1,
+                });
+            }
+        });
+    } else {
+        res.json({
+            message: 0,
+        });
+    }
+});
+
+/* GET all category amount data by year */
+router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
+    if (entry['message'] !== 1) {
+        entry.find({
+            'year': req.params.year
+        }).toArray(function(err, doc) {
+            if (doc != null) {
+                var reducedData = _.reduce(doc, function(months, item) {
+                    if (months[item.categoryid]) {
+                        months[item.categoryid] = months[item.categoryid].add(item.amount)
+                    } else {
+                        months[item.categoryid] = item.amount
+                    }
+                    return months
+                }, {});
+
+                var totalAmount = _.reduce(reducedData, function(memo, value){
+                    return memo.add(value);
+                }, 0);
+                console.log(totalAmount)
+                var monthData = {}
+                _.each(reducedData, function(value, key){
+                    newKey = category[key]
+                    if (monthData[newKey]) {
+                        monthData[newKey] = monthData[newKey].add(value)
+                    } else {
+                        monthData[newKey] = value
+                    }
+                });
+                _.each(monthData, function(value, key){
+                    monthData[key] = value.div(totalAmount).mul(100).toFixed(2)
+                });
+                res.json({
+                    message: 0,
+                    data: {
+                        title: req.params.year.toString() + ' 年支出（百分比）',
                         data: monthData
                     }
                 });
