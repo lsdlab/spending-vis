@@ -12,29 +12,28 @@ Visualize my daily spending data to tables some charts.(WIP)
 - Visualization charts: [Chart.js](https://github.com/nnnick/Chart.js)
 
 ## Changelog：
-### 2016/07/16
+### 2016/7/16
 前后端先都用 Node.js 做，webpack   还要研究下到底怎么搞。
 
-### 2016/07/26
+### 2016/7/26
 用 datatables 的表格基本完成了。
 
 ![表格](https://cl.ly/2106201F2Y0T/Screen%20Shot%202016-08-06%20at%2020.16.51.png)
 
-### 2016/08/6
+### 2016/8/6
 以年、月为单位的统计条形图和折线图基本完成了，处理数据的地方写死了在里面，虽然也不慢，但代码太丑，需要重写。要不就凑合用着，等第一版完成后用 Python 重写的时候再考虑数据该怎么存的问题。
-
-
 
 下一步就是要加上消费分类占比的饼图，消费指数的雷达图和关键词词云了，刚看Chart.js 还提供一个散点图，可以把记录每天记录条数给做成散点图展示，还有就是消费类别也能做成散点图。
 
-
-
 Webpack 还是没研究出来，抽空好好看看。
-
-
 
 ![年](https://cl.ly/432l2z3c3U35/Screen%20Shot%202016-08-06%20at%2020.17.09.png)
 ![月](https://cl.ly/2E21112v2U2n/Screen%20Shot%202016-08-06%20at%2020.17.18.png)
+
+### 2016/8/14
+分类饼图做了一点，但是 Charts.JS 不能直接在饼图每个部分上显示文字，搜了一些办法都不行，准备饼图用 ECharts 单独做，雷达图和散点图还是用 Charts.JS 做。
+
+![分类](https://cl.ly/1z1a47331C0S/Screen%20Shot%202016-08-14%20at%2018.48.03.png)
 
 ## LICENSE
 
