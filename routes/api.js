@@ -202,7 +202,6 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
                 var totalAmount = _.reduce(reducedData, function(memo, value){
                     return memo.add(value);
                 }, 0);
-                console.log(totalAmount)
                 var monthData = {}
                 _.each(reducedData, function(value, key){
                     newKey = category[key]

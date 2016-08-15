@@ -28,11 +28,15 @@ router.get('/charts-category', function(req, res, next) {
     res.render('charts-category');
 });
 
+/* GET charts category page using ECharts. */
+router.get('/charts-category-echarts', function(req, res, next) {
+    res.render('charts-category-echarts');
+});
+
 /* GET 404 page. */
 router.get('/404', function(req, res, next) {
     res.render('404');
 });
-
 
 
 module.exports = router;
