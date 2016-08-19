@@ -1,22 +1,22 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
 
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient
 
-var _ = require('underscore');
-var Q = require('q');
+var _ = require('underscore')
+var Q = require('q')
 
-require('../util/fourcalculation');
+require('../util/fourcalculation')
 
-var url = 'mongodb://localhost:27017/spending-vis';
-var entry;
+var url = 'mongodb://localhost:27017/spending-vis'
+var entry
 getEntry(url).then(function(data) {
-    entry = data;
+    entry = data
 }).catch(function() {
     entry = {
         'message': 1
-    };
-});
+    }
+})
 
 var category = {
     '0': '食品',
@@ -55,19 +55,19 @@ router.get('/alldata', function(req, res) {
                 res.json({
                     message: 0,
                     data: doc
-                });
+                })
             } else {
                 res.json({
                     message: 1,
-                });
+                })
             }
-        });
+        })
     } else {
         res.json({
             message: 1,
-        });
+        })
     }
-});
+})
 
 
 /* GET year amount data for charts-year. */
@@ -82,31 +82,31 @@ router.get('/years', function(req, res) {
                         years[item.year] = item.amount
                     }
                     return years
-                }, {});
+                }, {})
                 var yearData = {}
-                _.each(reducedData, function(value, key){
+                _.each(reducedData, function(value, key) {
                     key += ' 年'
                     yearData[key] = value
-                });
+                })
                 res.json({
                     message: 0,
                     data: {
                         title: '2014 ~ 2016 年支出（元/年）',
                         data: yearData
                     }
-                });
+                })
             } else {
                 res.json({
                     message: 1,
-                });
+                })
             }
-        });
+        })
     } else {
         res.json({
             message: 0,
-        });
+        })
     }
-});
+})
 
 
 /* GET all month amount data by year for charts-year */
@@ -115,6 +115,7 @@ router.get('/allmonth', function(req, res) {
         entry.find({}).toArray(function(err, doc) {
             if (doc != null) {
                 var allmonthData = _.reduce(doc, function(allmonths, item) {
+                    var dataKey
                     dataKey = item.year + '-' + item.month
                     if (allmonths[dataKey]) {
                         allmonths[dataKey] = allmonths[dataKey].add(item.amount)
@@ -122,24 +123,24 @@ router.get('/allmonth', function(req, res) {
                         allmonths[dataKey] = item.amount
                     }
                     return allmonths
-                }, {});
+                }, {})
                 res.json({
                     message: 0,
                     data: {
                         title: '2014 ~ 2016 年支出（元/月）',
                         data: allmonthData
                     }
-                });
+                })
             } else {
                 res.json({
                     message: 1,
-                });
+                })
             }
-        });
+        })
     } else {
         res.json({
             message: 0,
-        });
+        })
     }
 })
 
@@ -157,31 +158,31 @@ router.get('/monthdatabyyear/:year(\\d{4})', function(req, res) {
                         months[item.month] = item.amount
                     }
                     return months
-                }, {});
+                }, {})
                 var monthData = {}
-                _.each(reducedData, function(value, key){
+                _.each(reducedData, function(value, key) {
                     key += ' 月'
                     monthData[key] = value
-                });
+                })
                 res.json({
                     message: 0,
                     data: {
                         title: req.params.year.toString() + ' 年支出（元/月）',
                         data: monthData
                     }
-                });
+                })
             } else {
                 res.json({
                     message: 1,
-                });
+                })
             }
-        });
+        })
     } else {
         res.json({
             message: 0,
-        });
+        })
     }
-});
+})
 
 /* GET all category amount data by year */
 router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
@@ -197,58 +198,59 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
                         months[item.categoryid] = item.amount
                     }
                     return months
-                }, {});
+                }, {})
 
-                var totalAmount = _.reduce(reducedData, function(memo, value){
-                    return memo.add(value);
-                }, 0);
+                var totalAmount = _.reduce(reducedData, function(memo, value) {
+                    return memo.add(value)
+                }, 0)
                 var monthData = {}
-                _.each(reducedData, function(value, key){
+                _.each(reducedData, function(value, key) {
+                    var newKey
                     newKey = category[key]
                     if (monthData[newKey]) {
                         monthData[newKey] = monthData[newKey].add(value)
                     } else {
                         monthData[newKey] = value
                     }
-                });
-                _.each(monthData, function(value, key){
+                })
+                _.each(monthData, function(value, key) {
                     monthData[key] = value.div(totalAmount).mul(100).toFixed(2)
-                });
+                })
                 res.json({
                     message: 0,
                     data: {
                         title: req.params.year.toString() + ' 年支出（百分比）',
                         data: monthData
                     }
-                });
+                })
             } else {
                 res.json({
                     message: 1,
-                });
+                })
             }
-        });
+        })
     } else {
         res.json({
             message: 0,
-        });
+        })
     }
-});
+})
 
 
 function getEntry(url) {
-    var getEntryDefer = Q.defer();
+    var getEntryDefer = Q.defer()
 
     MongoClient.connect(url, function(err, db) {
         if (!err) {
-            var entry = db.collection('entry');
-            getEntryDefer.resolve(entry);
+            var entry = db.collection('entry')
+            getEntryDefer.resolve(entry)
         } else {
-            getEntryDefer.reject();
+            getEntryDefer.reject()
         }
-    });
+    })
 
-    return getEntryDefer.promise;
+    return getEntryDefer.promise
 }
 
 
-module.exports = router;
+module.exports = router

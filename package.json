@@ -10,9 +10,10 @@
     "cookie-parser": "^1.4.3",
     "debug": "^2.2.0",
     "express": "^4.14.0",
+    "express-status-monitor": "0.0.9",
     "lodash": "^4.15.0",
-    "mongodb": "^2.2.5",
-    "mongoose": "^4.5.8",
+    "mongodb": "^2.2.6",
+    "mongoose": "^4.5.9",
     "morgan": "^1.7.0",
     "node-fetch": "^1.6.0",
     "node-uuid": "^1.4.7",
@@ -23,12 +24,9 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-shell": "^0.5.2",
-    "gulp-watch": "^4.3.8",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
-    "webpack": "^1.13.1",
+    "webpack": "^1.13.2",
     "webpack-dev-server": "^1.14.1"
   }
 }

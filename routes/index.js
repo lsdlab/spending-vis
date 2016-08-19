@@ -1,42 +1,41 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
 
-var request = require('request');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index');
-});
+    res.render('index')
+})
 
 /* GET table page. */
 router.get('/tables', function(req, res, next) {
-    res.render('tables');
-});
+    res.render('tables')
+})
 
 /* GET charts year page. */
 router.get('/charts-year', function(req, res, next) {
-    res.render('charts-year');
-});
+    res.render('charts-year')
+})
 
 /* GET charts month page. */
 router.get('/charts-month', function(req, res, next) {
-    res.render('charts-month');
-});
+    res.render('charts-month')
+})
 
 /* GET charts category page. */
 router.get('/charts-category', function(req, res, next) {
-    res.render('charts-category');
-});
+    res.render('charts-category')
+})
 
 /* GET charts category page using ECharts. */
 router.get('/charts-category-echarts', function(req, res, next) {
-    res.render('charts-category-echarts');
-});
+    res.render('charts-category-echarts')
+})
 
 /* GET 404 page. */
 router.get('/404', function(req, res, next) {
-    res.render('404');
-});
+    res.render('404')
+})
 
 
-module.exports = router;
+module.exports = router
