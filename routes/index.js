@@ -27,6 +27,12 @@ router.get('/charts-category', function(req, res, next) {
     res.render('charts-category')
 })
 
+/* GET charts category page. */
+router.get('/charts-category-quarter', function(req, res, next) {
+    res.render('charts-category-quarter')
+})
+
+
 /* GET charts category page using ECharts. */
 router.get('/charts-category-echarts', function(req, res, next) {
     res.render('charts-category-echarts')
