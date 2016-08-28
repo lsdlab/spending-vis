@@ -70,13 +70,13 @@
                     screenfull.toggle();
                     document.addEventListener(screenfull.raw.fullscreenchange, function() {
                         if (screenfull.isFullscreen) {
-                            notie.alert('success', '进入全屏展示，「ESC」退出全屏', 3)
+                            notie.alert('success', '进入全屏展示，「ESC」退出全屏', 2)
                         } else {
-                            notie.alert('success', '退出全屏展示', 3)
+                            notie.alert('success', '退出全屏展示', 2)
                         }
                     })
                 } else {
-                    notie.alert('error', '此浏览器不支持全屏', 3)
+                    notie.alert('error', '此浏览器不支持全屏', 2)
                 }
             })
 

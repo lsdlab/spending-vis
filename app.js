@@ -29,6 +29,7 @@ swig.setDefaults({
 // Don't leave both of these to `false` in production!
 
 
+// express status monitor
 app.use(require('express-status-monitor')())
 
 // uncomment after placing your favicon in /static
