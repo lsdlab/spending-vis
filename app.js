@@ -32,15 +32,15 @@ swig.setDefaults({
 // express status monitor
 app.use(require('express-status-monitor')())
 
-// uncomment after placing your favicon in /static
-app.use(favicon(path.join(__dirname, 'static/img/', 'favicon.png')))
+// uncomment after placing your favicon in /public
+app.use(favicon(path.join(__dirname, 'public/img/', 'favicon.png')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: false
 }))
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'static')))
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', routes)
 app.use('/api', api)
