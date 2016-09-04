@@ -1,5 +1,5 @@
 # spending-vis
-![Language](https://img.shields.io/badge/language-Node.js-green.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Language](https://img.shields.io/badge/language-Node.js-brightgreen.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Visualize my daily spending data to tables some charts.(WIP)
 
