@@ -271,7 +271,7 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
                         return months
                     }, {})
                     reducedList.push(reducedData)
-                });
+                })
 
                 var totalAmountData = {}
                 _.each(reducedList, function(value, key){
@@ -279,7 +279,7 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
                         return memo.add(value)
                     }, 0)
                     totalAmountData[key+1] = yearlyAmount
-                });
+                })
 
                 var unformatQuarterPercentData = {}
                 _.each(reducedList, function(value, key1){
@@ -297,7 +297,7 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
                         monthData[key] = value.div(totalAmountData[key1+1]).mul(100).toFixed(2)
                     })
                     unformatQuarterPercentData[key1+1] = monthData
-                });
+                })
 
                 var quarterPercentData = []
                 _.each(unformatQuarterPercentData, function(value, key){
@@ -305,7 +305,7 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
                     categoryPercentData['title'] = req.params.year + ' 年 第 ' + key  + ' 季度支出 (百分比)'
                     categoryPercentData['data'] = value
                     quarterPercentData.push(categoryPercentData)
-                });
+                })
                 res.json({
                     message: 0,
                     data: {
