@@ -1,5 +1,5 @@
 # spending-vis
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)]()
+![Language](https://img.shields.io/badge/language-JavaScript-orange.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Visualize my daily spending data to tables some charts.(WIP)
 

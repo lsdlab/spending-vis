@@ -10,10 +10,11 @@
     "cookie-parser": "^1.4.3",
     "debug": "^2.2.0",
     "express": "^4.14.0",
-    "express-status-monitor": "^0.1.0",
+    "express-status-monitor": "^0.1.1",
+    "ioredis": "^2.3.0",
     "lodash": "^4.15.0",
     "mailgen": "^1.0.25",
-    "mongodb": "^2.2.8",
+    "mongodb": "^2.2.9",
     "mongoose": "^4.5.10",
     "morgan": "^1.7.0",
     "node-fetch": "^1.6.0",
@@ -28,6 +29,6 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.15.0"
+    "webpack-dev-server": "^1.15.1"
   }
 }

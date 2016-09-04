@@ -8,6 +8,11 @@ router.get('/', function(req, res, next) {
 })
 
 /* GET table page. */
+router.get('/brief', function(req, res, next) {
+    res.render('brief')
+})
+
+/* GET table page. */
 router.get('/tables', function(req, res, next) {
     res.render('tables')
 })
