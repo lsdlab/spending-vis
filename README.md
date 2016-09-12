@@ -1,4 +1,4 @@
-# spending-vis
+# spendingviz
 ![Language](https://img.shields.io/badge/language-Node.js-brightgreen.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Visualize my daily spending data to tables some charts.(WIP)
@@ -18,7 +18,7 @@ Visualize my daily spending data to tables some charts.(WIP)
 ### 2016/7/26
 用 datatables 的表格基本完成了。
 
-![表格](https://cl.ly/2106201F2Y0T/Screen%20Shot%202016-08-06%20at%2020.16.51.png)
+![表格](http://o81quvr4u.bkt.clouddn.com/tables.png)
 
 ### 2016/8/6
 以年、月为单位的统计条形图和折线图基本完成了，处理数据的地方写死了在里面，虽然也不慢，但代码太丑，需要重写。要不就凑合用着，等第一版完成后用 Python 重写的时候再考虑数据该怎么存的问题。
@@ -27,13 +27,13 @@ Visualize my daily spending data to tables some charts.(WIP)
 
 Webpack 还是没研究出来，抽空好好看看。
 
-![年](https://cl.ly/432l2z3c3U35/Screen%20Shot%202016-08-06%20at%2020.17.09.png)
-![月](https://cl.ly/2E21112v2U2n/Screen%20Shot%202016-08-06%20at%2020.17.18.png)
+![年](http://o81quvr4u.bkt.clouddn.com/charts-year.png)
+![月](http://o81quvr4u.bkt.clouddn.com/charts-month.png)
 
 ### 2016/8/14
 分类饼图做了一点，但是 Charts.JS 不能直接在饼图每个部分上显示文字，搜了一些办法都不行，准备饼图用 ECharts 单独做，雷达图和散点图还是用 Charts.JS 做。
 
-![分类](https://cl.ly/1z1a47331C0S/Screen%20Shot%202016-08-14%20at%2018.48.03.png)
+![分类](http://o81quvr4u.bkt.clouddn.com/charts-category.png)
 
 ## LICENSE
 

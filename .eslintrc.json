@@ -25,6 +25,10 @@
         "semi": [
             "error",
             "never"
-        ]
+        ],
+        "no-console": "off",
+        "globals": {
+            "connection": true
+        }
     }
 }

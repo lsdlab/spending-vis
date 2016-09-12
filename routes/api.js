@@ -1,14 +1,20 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 
-var MongoClient = require('mongodb').MongoClient
+const dotenv = require('dotenv')
+const chalk = require('chalk');
+const MongoClient = require('mongodb').MongoClient
+const _ = require('underscore')
+const Q = require('q')
 
-var _ = require('underscore')
-var Q = require('q')
+const util = require('../utils/util')
 
-require('../util/fourcalculation')
+dotenv.load({
+    path: '.env.development'
+})
 
-var url = 'mongodb://localhost:27017/spending-vis'
+// GET MongoDB collection [entry]
+const url = process.env.MONGODB_URI
 var entry
 getEntry(url).then(function(data) {
     entry = data
@@ -18,34 +24,8 @@ getEntry(url).then(function(data) {
     }
 })
 
-var category = {
-    '0': '食品',
-    '1': '食品',
-    '2': '穿',
-    '4': '食品',
-    '6': '居住',
-    '10': '交通通信',
-    '13': '食品',
-    '17': '教育',
-    '18': '教育',
-    '19': '文化娱乐',
-    '28': '教育',
-    '30': '交通通信',
-    '31': '穿',
-    '33': '居住',
-    '34': '居住',
-    '39': '教育',
-    '40': '食品',
-    '43': '穿',
-    '44': '居住',
-    '48': '食品',
-    '57': '穿',
-    '62': '文化娱乐',
-    '67': '文化娱乐',
-    '80': '文化娱乐',
-    '81': '教育',
-    '87': '交通通信'
-}
+// category summary util
+const category = util.category()
 
 /* GET all data for table page. */
 router.get('/alldata', function(req, res) {
@@ -334,13 +314,14 @@ function getEntry(url) {
         if (!err) {
             var entry = db.collection('entry')
             getEntryDefer.resolve(entry)
+            console.log('%s MongoDB collection [entry] connection established!', chalk.blue('✓'));
         } else {
             getEntryDefer.reject()
+            console.log('%s MongoDB collection [entry] failed!', chalk.red('✗'));
         }
     })
 
     return getEntryDefer.promise
 }
-
 
 module.exports = router

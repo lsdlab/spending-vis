@@ -126,8 +126,40 @@ Number.prototype.div = function(arg) {
     return accDiv(this, arg);
 };
 
+function category() {
+    return {
+        '0': '食品',
+        '1': '食品',
+        '2': '穿',
+        '4': '食品',
+        '6': '居住',
+        '10': '交通通信',
+        '13': '食品',
+        '17': '教育',
+        '18': '教育',
+        '19': '文化娱乐',
+        '28': '教育',
+        '30': '交通通信',
+        '31': '穿',
+        '33': '居住',
+        '34': '居住',
+        '39': '教育',
+        '40': '食品',
+        '43': '穿',
+        '44': '居住',
+        '48': '食品',
+        '57': '穿',
+        '62': '文化娱乐',
+        '67': '文化娱乐',
+        '80': '文化娱乐',
+        '81': '教育',
+        '87': '交通通信'
+    }
+}
+
 
 module.exports.accAdd = accAdd
 module.exports.accSub = accSub
 module.exports.accMul = accMul
 module.exports.accDiv = accDiv
+module.exports.category = category
