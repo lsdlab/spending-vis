@@ -37,7 +37,6 @@
     "multer": "^1.2.0",
     "node-fetch": "^1.6.1",
     "node-uuid": "^1.4.7",
-    "nodejieba": "^2.2.3",
     "nodemailer": "^2.6.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
@@ -54,8 +53,6 @@
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
-    "supertest": "^2.0.0",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.1"
+    "supertest": "^2.0.0"
   }
 }
