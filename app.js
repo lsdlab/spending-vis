@@ -5,8 +5,9 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
-const routes = require('./routes/index')
-const api = require('./routes/api')
+const indexRouter = require('./routes/index')
+const userRouter = require('./routes/user')
+const apiRouter = require('./routes/api')
 
 // dependencies
 const dotenv = require('dotenv')
@@ -115,8 +116,9 @@ app.post('/profile', upload.single('avatar'), function (req, res, next) {
   // req.body will hold the text fields, if there were any
 })
 
-app.use('/', routes)
-app.use('/api', api)
+app.use('/', indexRouter)
+app.use('/', userRouter)
+app.use('/api', apiRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

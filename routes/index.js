@@ -12,6 +12,16 @@ router.get('/about', function(req, res) {
     res.render('about')
 })
 
+/* GET 404 page. */
+router.get('/404', function(req, res) {
+    res.render('404')
+})
+
+/* GET working on page. */
+router.get('/working-on', function(req, res) {
+    res.render('working')
+})
+
 /* GET table page. */
 router.get('/brief', function(req, res) {
     res.render('brief')
@@ -42,15 +52,9 @@ router.get('/charts-category-quarter', function(req, res) {
     res.render('charts-category-quarter')
 })
 
-
 /* GET charts category page using ECharts. */
 router.get('/charts-category-echarts', function(req, res) {
     res.render('charts-category-echarts')
-})
-
-/* GET 404 page. */
-router.get('/404', function(req, res) {
-    res.render('404')
 })
 
 
