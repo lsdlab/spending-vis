@@ -43,8 +43,8 @@ router.get('/charts-month', function(req, res) {
 })
 
 /* GET charts category page. */
-router.get('/charts-category', function(req, res) {
-    res.render('charts-category')
+router.get('/charts-category-year', function(req, res) {
+    res.render('charts-category-year')
 })
 
 /* GET charts category page. */

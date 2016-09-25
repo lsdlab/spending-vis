@@ -33,7 +33,15 @@ Webpack 还是没研究出来，抽空好好看看。
 ### 2016/8/14
 分类饼图做了一点，但是 Charts.JS 不能直接在饼图每个部分上显示文字，搜了一些办法都不行，准备饼图用 ECharts 单独做，雷达图和散点图还是用 Charts.JS 做。
 
-![分类](http://o81quvr4u.bkt.clouddn.com/charts-category.png)
+![年分类](http://o81quvr4u.bkt.clouddn.com/charts-category-year.png)
+![季度分类](http://o81quvr4u.bkt.clouddn.com/charts-category-quarter.png)
+
+### 2016/9/25
+
+概要页面完成
+![概要](http://o81quvr4u.bkt.clouddn.com/brief1.png)
+![概要](http://o81quvr4u.bkt.clouddn.com/brief3.png)
+
 
 ## LICENSE
 

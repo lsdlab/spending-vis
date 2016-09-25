@@ -85,6 +85,8 @@
             Chart.defaults.global.title.fontSize = 18
             Chart.defaults.global.animation.animateRotate = true
             Chart.defaults.global.animation.animateScale = true
+            Chart.defaults.global.tooltips.enabled = true
+            Chart.defaults.global.tooltips.mode = 'single'
 
             $('#fullscrean').on('click', function(){
                 if (screenfull.enabled) {
@@ -135,9 +137,12 @@
                         title: {
                             text: titleText
                         },
-                        animation: {
-                            animateRotate: true,
-                            animateScale: true
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItems, data) {
+                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                                }
+                            }
                         }
 
                     }
@@ -177,9 +182,12 @@
                         title: {
                             text: titleText
                         },
-                        animation: {
-                            animateRotate: true,
-                            animateScale: true
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItems, data) {
+                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                                }
+                            }
                         }
                     }
                 })
@@ -218,9 +226,12 @@
                         title: {
                             text: titleText,
                         },
-                        animation: {
-                            animateRotate: true,
-                            animateScale: true
+                        tooltips: {
+                            callbacks: {
+                                label: function(tooltipItems, data) {
+                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                                }
+                            }
                         }
                     }
                 })

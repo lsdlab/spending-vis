@@ -26,8 +26,9 @@ getEntry(url).then(function(data) {
 
 // category summary util
 const category = util.category()
+const sortedCategory = util.sortedCategory()
 
-/* GET all data for table page. */
+/* 所有数据 for tables */
 router.get('/alldata', function(req, res) {
     if (entry['message'] !== 1) {
         entry.find({}).toArray(function(err, doc) {
@@ -50,7 +51,7 @@ router.get('/alldata', function(req, res) {
 })
 
 
-/* GET year amount data for charts-year. */
+/* 按年 每年的总支出金额 for charts-year */
 router.get('/years', function(req, res) {
     if (entry['message'] !== 1) {
         entry.find({}).toArray(function(err, doc) {
@@ -89,7 +90,7 @@ router.get('/years', function(req, res) {
 })
 
 
-/* GET all month amount data by year for charts-year */
+/* 所有月份 每月的支出金额 for charts-year */
 router.get('/allmonth', function(req, res) {
     if (entry['message'] !== 1) {
         entry.find({}).toArray(function(err, doc) {
@@ -124,7 +125,7 @@ router.get('/allmonth', function(req, res) {
     }
 })
 
-/* GET month amount data by year for charts-month */
+/* 按年 每个月的支出金额 for charts-month */
 router.get('/monthdatabyyear/:year(\\d{4})', function(req, res) {
     if (entry['message'] !== 1) {
         entry.find({
@@ -164,7 +165,8 @@ router.get('/monthdatabyyear/:year(\\d{4})', function(req, res) {
     }
 })
 
-/* GET all category amount data by year */
+
+/* 按年 每年的 CPI for charts-category-year */
 router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
     if (entry['message'] !== 1) {
         entry.find({
@@ -180,9 +182,6 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
                     return months
                 }, {})
 
-                var totalAmount = _.reduce(reducedData, function(memo, value) {
-                    return memo.add(value)
-                }, 0)
                 var categoryData = {}
                 _.each(reducedData, function(value, key) {
                     var newKey
@@ -193,14 +192,25 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
                         categoryData[newKey] = value
                     }
                 })
+
+                var totalAmount = _.reduce(reducedData, function(memo, value) {
+                    return memo.add(value)
+                }, 0)
                 _.each(categoryData, function(value, key) {
                     categoryData[key] = value.div(totalAmount).mul(100).toFixed(2)
                 })
+
+                formatedData = {}
+                _.each(categoryData, function(value, key){
+                    newKey = sortedCategory[key]
+                    formatedData[newKey] = value
+                });
+
                 res.json({
                     message: 0,
                     data: {
                         title: req.params.year.toString() + ' 年支出 (百分比)',
-                        data: categoryData
+                        data: formatedData
                     }
                 })
             } else {
@@ -216,7 +226,8 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
     }
 })
 
-/* GET all category amount data by year */
+
+/* 按年 每个季度的 CPI for charts-category-quarter */
 router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
     if (entry['message'] !== 1) {
         entry.find({
@@ -276,7 +287,14 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
                     _.each(monthData, function(value, key) {
                         monthData[key] = value.div(totalAmountData[key1+1]).mul(100).toFixed(2)
                     })
-                    unformatQuarterPercentData[key1+1] = monthData
+
+                    formatedData = {}
+                    _.each(monthData, function(value, key){
+                        newKey = sortedCategory[key]
+                        formatedData[newKey] = value
+                    });
+
+                    unformatQuarterPercentData[key1+1] = formatedData
                 })
 
                 var quarterPercentData = []
@@ -302,6 +320,255 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
     } else {
         res.json({
             message: 0,
+        })
+    }
+})
+
+
+/* 最近复五个月每月总支出 for brief */
+router.get('/pre5month', function(req, res) {
+    var myDate = new Date()
+    var year = myDate.getFullYear()
+    var month = myDate.getMonth()
+    if (entry['message'] !== 1) {
+        entry.find({
+            "year": year.toString(),
+            "month": {"$gte": (month-4).toString() , "$lte": month.toString()}
+        }).toArray(function(err, doc) {
+            if (doc != null) {
+                var pre5monthData = _.reduce(doc, function(allmonths, item) {
+                    var dataKey
+                    dataKey = item.year + '-' + item.month
+                    if (allmonths[dataKey]) {
+                        allmonths[dataKey] = allmonths[dataKey].add(item.amount)
+                    } else {
+                        allmonths[dataKey] = item.amount
+                    }
+                    return allmonths
+                }, {})
+                res.json({
+                    message: 0,
+                    data: {
+                        title: year + ' 年 ' +  (month-4).toString() + ' 至 ' + month.toString() + ' 月' + '最近五个月消费',
+                        data: pre5monthData
+                    }
+                })
+            } else {
+                res.json({
+                    message: 1,
+                })
+            }
+        })
+    } else {
+        res.json({
+            message: 0,
+        })
+    }
+})
+
+
+/* 当月 CPI for brief */
+router.get('/thismonthpercent', function(req, res) {
+    var myDate = new Date()
+    var year = myDate.getFullYear()
+    var month = myDate.getMonth()
+    if (entry['message'] !== 1) {
+        entry.find({
+            'year': year.toString(),
+            "month": month.toString()
+        }).toArray(function(err, doc) {
+            if (doc != null) {
+                var reducedData = _.reduce(doc, function(months, item) {
+                    if (months[item.categoryid]) {
+                        months[item.categoryid] = months[item.categoryid].add(item.amount)
+                    } else {
+                        months[item.categoryid] = item.amount
+                    }
+                    return months
+                }, {})
+
+                var totalAmount = _.reduce(reducedData, function(memo, value) {
+                    return memo.add(value)
+                }, 0)
+                var categoryData = {}
+                _.each(reducedData, function(value, key) {
+                    var newKey
+                    newKey = category[key]
+                    if (categoryData[newKey]) {
+                        categoryData[newKey] = categoryData[newKey].add(value)
+                    } else {
+                        categoryData[newKey] = value
+                    }
+                })
+
+                var totalAmount = _.reduce(reducedData, function(memo, value) {
+                    return memo.add(value)
+                }, 0)
+                _.each(categoryData, function(value, key) {
+                    categoryData[key] = value.div(totalAmount).mul(100).toFixed(2)
+                })
+
+                formatedData = {}
+                _.each(categoryData, function(value, key){
+                    newKey = sortedCategory[key]
+                    formatedData[newKey] = value
+                });
+
+                res.json({
+                    message: 0,
+                    data: {
+                        title: year.toString() + ' 年 ' + month.toString() + ' 月分类支出占比',
+                        data: formatedData
+                    }
+                })
+            } else {
+                res.json({
+                    message: 1,
+                })
+            }
+        })
+    } else {
+        res.json({
+            message: 0,
+        })
+    }
+})
+
+
+/* 当月分类支出金额 for brief */
+router.get('/thismonthsummary', function(req, res) {
+    var myDate = new Date()
+    var year = myDate.getFullYear()
+    var month = myDate.getMonth()
+    if (entry['message'] !== 1) {
+        entry.find({
+            'year': year.toString(),
+            "month": month.toString()
+        }).toArray(function(err, doc) {
+            if (doc != null) {
+                var reducedData = _.reduce(doc, function(months, item) {
+                    if (months[item.categoryid]) {
+                        months[item.categoryid] = months[item.categoryid].add(item.amount)
+                    } else {
+                        months[item.categoryid] = item.amount
+                    }
+                    return months
+                }, {})
+
+                var categoryData = {}
+                _.each(reducedData, function(value, key) {
+                    var newKey
+                    newKey = category[key]
+                    if (categoryData[newKey]) {
+                        categoryData[newKey] = categoryData[newKey].add(value)
+                    } else {
+                        categoryData[newKey] = value
+                    }
+
+                    formatedData = {}
+                    _.each(categoryData, function(value, key){
+                        newKey = sortedCategory[key]
+                        formatedData[newKey] = value
+                    });
+                })
+
+                res.json({
+                    message: 0,
+                    data: {
+                        title: year.toString() + ' 年 ' + month.toString() + ' 月分类支出',
+                        data: formatedData
+                    }
+                })
+            } else {
+                res.json({
+                    message: 1,
+                })
+            }
+        })
+    } else {
+        res.json({
+            message: 0,
+        })
+    }
+})
+
+
+/* 当月最大六笔支出 */
+router.get('/thismonthmaxsix', function(req, res) {
+    var myDate = new Date()
+    var year = myDate.getFullYear()
+    var month = myDate.getMonth()
+    if (entry['message'] !== 1) {
+        entry.find({
+            'year': year.toString(),
+            "month": month.toString()
+        }).sort({"amount":-1}).limit(6).toArray(function(err, doc) {
+            if (doc != null) {
+
+                formatedData = []
+                _.each(doc, function(item){
+                    formatedItem = {}
+                    newKey = category[item.categoryid]
+
+                    _.each(item, function(firstvalue, key) {
+                        if (key === 'note') {
+                            formatedItem['note'] = firstvalue
+                        }
+
+                        if (key === 'amount') {
+                            formatedItem['amount'] = firstvalue
+                        }
+
+                        categoryText = sortedCategory[newKey]
+                        formatedItem['categorytext'] = categoryText
+                    })
+                    formatedData.push(formatedItem)
+                });
+
+                res.json({
+                    message: 0,
+                    data: {
+                        title: year.toString() + ' 年 ' + month.toString() + ' 月金额最大的六笔支出',
+                        data: formatedData
+                    }
+                })
+            } else {
+                res.json({
+                    message: 1,
+                })
+            }
+        })
+    } else {
+        res.json({
+            message: 0,
+        })
+    }
+})
+
+/* 当月所有数据 for brief */
+router.get('/thismonthtable', function(req, res) {
+    var myDate = new Date()
+    var year = myDate.getFullYear()
+    var month = myDate.getMonth()
+    if (entry['message'] !== 1) {
+        entry.find({
+            'year': year.toString(),
+            "month": month.toString()
+        }).toArray(function(err, doc) {
+            if (doc != null) {
+                res.json({
+                    message: 0,
+                    data: doc
+                })
+            } else {
+                res.json({
+                    message: 1,
+                })
+            }
+        })
+    } else {
+        res.json({
+            message: 1,
         })
     }
 })

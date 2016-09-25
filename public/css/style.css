@@ -152,10 +152,10 @@ body {
 }
 
 #table-container {
-    margin-top: 10px
+    /*margin-top: 10px*/
 }
 #table-container .row {
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
 }
 #table-container .pagination-plain {
     margin-bottom: 0px;
