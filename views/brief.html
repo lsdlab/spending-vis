@@ -83,242 +83,244 @@
                 </div>
             </div>
         </div>
+    </div>
+{% endblock %}
 
-        <script>
-            Chart.defaults.global.legend.display = false;
-            Chart.defaults.global.responsive = true;
-            Chart.defaults.global.hover.mode = 'single';
-            Chart.defaults.global.hover.animationDuration = 300;
-            Chart.defaults.global.title.display = true;
-            Chart.defaults.global.title.position = 'top';
-            Chart.defaults.global.title.fullWidth = true;
-            Chart.defaults.global.title.fontSize = 18;
+{% block page-js %}
+    <script>
+        Chart.defaults.global.legend.display = false;
+        Chart.defaults.global.responsive = true;
+        Chart.defaults.global.hover.mode = 'single';
+        Chart.defaults.global.hover.animationDuration = 300;
+        Chart.defaults.global.title.display = true;
+        Chart.defaults.global.title.position = 'top';
+        Chart.defaults.global.title.fullWidth = true;
+        Chart.defaults.global.title.fontSize = 18;
 
-            Chart.defaults.global.animation.animateRotate = true
-            Chart.defaults.global.animation.animateScale = true
-            Chart.defaults.global.tooltips.enabled = true
-            Chart.defaults.global.tooltips.mode = 'single'
+        Chart.defaults.global.animation.animateRotate = true
+        Chart.defaults.global.animation.animateScale = true
+        Chart.defaults.global.tooltips.enabled = true
+        Chart.defaults.global.tooltips.mode = 'single'
 
-            $('#fullscrean').on('click', function(){
-                if (screenfull.enabled) {
-                    screenfull.toggle();
-                    document.addEventListener(screenfull.raw.fullscreenchange, function() {
-                        if (screenfull.isFullscreen) {
-                            notie.alert('success', '进入全屏展示，「ESC」退出全屏', 2)
-                        } else {
-                            notie.alert('success', '退出全屏展示', 2)
-                        }
-                    })
-                } else {
-                    notie.alert('error', '此浏览器不支持全屏', 2)
-                }
-            })
+        $('#fullscrean').on('click', function(){
+            if (screenfull.enabled) {
+                screenfull.toggle();
+                document.addEventListener(screenfull.raw.fullscreenchange, function() {
+                    if (screenfull.isFullscreen) {
+                        notie.alert('success', '进入全屏展示，「ESC」退出全屏', 2)
+                    } else {
+                        notie.alert('success', '退出全屏展示', 2)
+                    }
+                })
+            } else {
+                notie.alert('error', '此浏览器不支持全屏', 2)
+            }
+        })
 
-            var line_ctx_pre5month = document.getElementById('line-pre5month');
-            $.getJSON('api/pre5month', function(rsp) {
-                var yearsData;
-                if (rsp.message === 0) {
-                    yearsData = rsp.data.data;
-                    titleText = rsp.data.title;
-                } else {
-                    yearsData = {0: 0}
-                }
+        var line_ctx_pre5month = document.getElementById('line-pre5month');
+        $.getJSON('api/pre5month', function(rsp) {
+            var yearsData;
+            if (rsp.message === 0) {
+                yearsData = rsp.data.data;
+                titleText = rsp.data.title;
+            } else {
+                yearsData = {0: 0}
+            }
 
-                var yearsKey = [];
-                var yearsValue = [];
-                _.each(yearsData, function(value, key){
-                    yearsKey.push(key);
-                    yearsValue.push(value);
-                });
+            var yearsKey = [];
+            var yearsValue = [];
+            _.each(yearsData, function(value, key){
+                yearsKey.push(key);
+                yearsValue.push(value);
+            });
 
-                var lineChartPre5Month = new Chart(line_ctx_pre5month, {
-                    type: 'line',
-                    data: {
-                        labels: yearsKey,
-                        datasets: [{
-                            data: yearsValue,
-                            label: '支出',
-                            fill: false,
-                            lineTension: 0.1,
-                            backgroundColor: "rgba(54, 162, 235, 0.4)",
-                            borderColor: "rgba(54, 162, 235, 1)",
-                            borderCapStyle: 'butt',
-                            borderDash: [],
-                            borderDashOffset: 0.0,
-                            borderJoinStyle: 'miter',
-                            pointBorderColor: "rgba(75,192,192,1)",
-                            pointBackgroundColor: "#fff",
-                            pointBorderWidth: 1,
-                            pointHoverRadius: 6,
-                            pointHoverBackgroundColor: "rgba(54, 162, 235, 1)",
-                            pointHoverBorderColor: "rgba(220,220,220,1)",
-                            pointHoverBorderWidth: 2,
-                            pointRadius: 1,
-                            pointHitRadius: 10,
-                            spanGaps: false,
+            var lineChartPre5Month = new Chart(line_ctx_pre5month, {
+                type: 'line',
+                data: {
+                    labels: yearsKey,
+                    datasets: [{
+                        data: yearsValue,
+                        label: '支出',
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "rgba(54, 162, 235, 0.4)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderCapStyle: 'butt',
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgba(75,192,192,1)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: "rgba(54, 162, 235, 1)",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 1,
+                        pointHitRadius: 10,
+                        spanGaps: false,
+                    }]
+                },
+                options: {
+                    title: {
+                        text: titleText
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
                         }]
                     },
-                    options: {
-                        title: {
-                            text: titleText
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                        },
-                        tooltips: {
-                            enabled: true,
-                            mode: 'single',
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return tooltipItems.yLabel + ' 元';
-                                }
+                    tooltips: {
+                        enabled: true,
+                        mode: 'single',
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return tooltipItems.yLabel + ' 元';
                             }
                         }
                     }
-                })
+                }
+            })
+        })
+
+        var colorList = ['#E74C3C', '#1ABC9C', '#2ECC71', '#F39C12', '#3498DB', '#9B59B6']
+        var pie_ctx_this_month = document.getElementById('pie-this-month')
+        $.getJSON('api/thismonthpercent', function(rsp) {
+            var yearsData
+            if (rsp.message === 0) {
+                yearsData = rsp.data.data
+                titleText = rsp.data.title
+            } else {
+                yearsData = {0: 0}
+            }
+            var yearsKey = []
+            var yearsValue = []
+            _.each(yearsData, function(value, key){
+                yearsKey.push(key)
+                yearsValue.push(value)
             })
 
-            var colorList = ['#E74C3C', '#1ABC9C', '#2ECC71', '#F39C12', '#3498DB', '#9B59B6']
-            var pie_ctx_this_month = document.getElementById('pie-this-month')
-            $.getJSON('api/thismonthpercent', function(rsp) {
-                var yearsData
-                if (rsp.message === 0) {
-                    yearsData = rsp.data.data
-                    titleText = rsp.data.title
-                } else {
-                    yearsData = {0: 0}
-                }
-                var yearsKey = []
-                var yearsValue = []
-                _.each(yearsData, function(value, key){
-                    yearsKey.push(key)
-                    yearsValue.push(value)
-                })
+            var data = {
+                labels: yearsKey,
+                datasets: [
+                    {
+                        data: yearsValue,
+                        backgroundColor: colorList,
+                        hoverBackgroundColor: colorList,
+                    }]
+            }
 
-                var data = {
-                    labels: yearsKey,
-                    datasets: [
-                        {
-                            data: yearsValue,
-                            backgroundColor: colorList,
-                            hoverBackgroundColor: colorList,
-                        }]
-                }
-
-                var myPieChart = new Chart(pie_ctx_this_month,{
-                    type: 'pie',
-                    data: data,
-                    options: {
-                        title: {
-                            text: titleText,
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
+            var myPieChart = new Chart(pie_ctx_this_month,{
+                type: 'pie',
+                data: data,
+                options: {
+                    title: {
+                        text: titleText,
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
                             }
                         }
                     }
-                })
+                }
             })
+        })
 
-            $.getJSON('api/thismonthsummary', function(rsp) {
-                var yearsData
-                if (rsp.message === 0) {
-                    yearsData = rsp.data.data
-                    titleText = rsp.data.title
-                } else {
-                    yearsData = {0: 0}
-                }
+        $.getJSON('api/thismonthsummary', function(rsp) {
+            var yearsData
+            if (rsp.message === 0) {
+                yearsData = rsp.data.data
+                titleText = rsp.data.title
+            } else {
+                yearsData = {0: 0}
+            }
 
-                var colorList = {
-                    '食品': '#E74C3C',
-                    '穿': '#1ABC9C',
-                    '居住': '#2ECC71',
-                    '交通通信': '#F39C12',
-                    '教育': '#3498DB',
-                    '文化娱乐': '#9B59B6'
-                }
+            var colorList = {
+                '食品': '#E74C3C',
+                '穿': '#1ABC9C',
+                '居住': '#2ECC71',
+                '交通通信': '#F39C12',
+                '教育': '#3498DB',
+                '文化娱乐': '#9B59B6'
+            }
 
-                _.each(yearsData, function(value, key){
-                    var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= key %></li>')
-                    tmp = $(compiled({key: key, value: value, color: colorList[key]}))
-                    $('#categroy-list').append(tmp)
-                })
+            _.each(yearsData, function(value, key){
+                var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= key %></li>')
+                tmp = $(compiled({key: key, value: value, color: colorList[key]}))
+                $('#categroy-list').append(tmp)
             })
+        })
 
-            $.getJSON('api/thismonthmaxsix', function(rsp) {
-                var yearsData
-                if (rsp.message === 0) {
-                    yearsData = rsp.data.data
-                    titleText = rsp.data.title
-                } else {
-                    yearsData = {0: 0}
-                }
+        $.getJSON('api/thismonthmaxsix', function(rsp) {
+            var yearsData
+            if (rsp.message === 0) {
+                yearsData = rsp.data.data
+                titleText = rsp.data.title
+            } else {
+                yearsData = {0: 0}
+            }
 
-                var colorList = {
-                    '食品': '#E74C3C',
-                    '穿': '#1ABC9C',
-                    '居住': '#2ECC71',
-                    '交通通信': '#F39C12',
-                    '教育': '#3498DB',
-                    '文化娱乐': '#9B59B6'
-                }
+            var colorList = {
+                '食品': '#E74C3C',
+                '穿': '#1ABC9C',
+                '居住': '#2ECC71',
+                '交通通信': '#F39C12',
+                '教育': '#3498DB',
+                '文化娱乐': '#9B59B6'
+            }
 
-                _.each(yearsData, function(value, key){
-                    var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= key %></li>')
-                    tmp = $(compiled({key: value['note'], value: value['amount'], color: colorList[value['categorytext']]}))
-                    $('#categroy-list-max-six').append(tmp)
-                })
+            _.each(yearsData, function(value, key){
+                var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= key %></li>')
+                tmp = $(compiled({key: value['note'], value: value['amount'], color: colorList[value['categorytext']]}))
+                $('#categroy-list-max-six').append(tmp)
             })
+        })
 
-            $.getJSON('api/thismonthtable', function(rsp) {
-                var yearamountData;
-                if (rsp.message === 0) {
-                    yearamountData = rsp.data;
-                }
-                dataSet = yearamountData.reverse();
-                $("#myTables").DataTable({
-                    "data": dataSet,
-                    "columns": [
-                        { "data": "categoryid", 'title': '分类 ID'},
-                        { "data": "date", 'title':  '时间'},
-                        { "data": "amount", 'title': '金额（元）' },
-                        { "data": "note", 'title': '备注' }
-                    ],
-                    "autoWidth": true,
-                    'paging': true,
-                    'ordering': false,
-                    'info': true,
-                    'searching': true,
-                    'lengthMenu': [
-                        [10, 25, 50, 100, -1],
-                        [10, 25, 50, 100, '全部']
-                    ],
-                    'language': {
-                        'lengthMenu': '每页 _MENU_ 条记录',
-                        'zeroRecords': '没有找到',
-                        'info': '第 _PAGE_ 页，总 _PAGES_ 页',
-                        'infoEmpty': '没有记录',
-                        'infoFiltered': '(从 _MAX_ 条记录中过滤)',
-                        'search': '搜索：',
-                        'emptyTable': '这张表中没有数据',
-                        'loadingRecords': '加载中...',
-                        'processing': '处理中...',
-                        'paginate': {
-                            'first': '第一页',
-                            'last': '末页',
-                            'next': '下一页',
-                            'previous': '上一页'
-                        }
+        $.getJSON('api/thismonthtable', function(rsp) {
+            var yearamountData;
+            if (rsp.message === 0) {
+                yearamountData = rsp.data;
+            }
+            dataSet = yearamountData.reverse();
+            $("#myTables").DataTable({
+                "data": dataSet,
+                "columns": [
+                    { "data": "categoryid", 'title': '分类 ID'},
+                    { "data": "date", 'title':  '时间'},
+                    { "data": "amount", 'title': '金额（元）' },
+                    { "data": "note", 'title': '备注' }
+                ],
+                "autoWidth": true,
+                'paging': true,
+                'ordering': false,
+                'info': true,
+                'searching': true,
+                'lengthMenu': [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, '全部']
+                ],
+                'language': {
+                    'lengthMenu': '每页 _MENU_ 条记录',
+                    'zeroRecords': '没有找到',
+                    'info': '第 _PAGE_ 页，总 _PAGES_ 页',
+                    'infoEmpty': '没有记录',
+                    'infoFiltered': '(从 _MAX_ 条记录中过滤)',
+                    'search': '搜索：',
+                    'emptyTable': '这张表中没有数据',
+                    'loadingRecords': '加载中...',
+                    'processing': '处理中...',
+                    'paginate': {
+                        'first': '第一页',
+                        'last': '末页',
+                        'next': '下一页',
+                        'previous': '上一页'
                     }
-                });
+                }
             });
-        </script>
-    </div>
+        });
+    </script>
 {% endblock %}

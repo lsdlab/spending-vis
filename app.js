@@ -74,6 +74,7 @@ app.use(require('express-status-monitor')())
 app.use(favicon(path.join(__dirname, 'public/img/', 'favicon.png')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
+app.use(expressValidator())
 app.use(bodyParser.urlencoded({
     extended: false
 }))
@@ -100,6 +101,8 @@ app.use(function(req, res, next) {
     res.locals.user = req.user
     next()
 })
+app.locals._ = require('underscore')
+
 app.use(function(req, res, next) {
     // After successful login, redirect back to the intended page
     if (!req.user &&

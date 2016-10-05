@@ -4,57 +4,57 @@ const router = express.Router()
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    res.render('index')
+  res.render('index')
 })
 
 /* GET about page. */
 router.get('/about', function(req, res) {
-    res.render('about')
+  res.render('about')
 })
 
 /* GET 404 page. */
 router.get('/404', function(req, res) {
-    res.render('404')
+  res.render('404')
 })
 
 /* GET working on page. */
 router.get('/working-on', function(req, res) {
-    res.render('working')
+  res.render('working')
 })
 
 /* GET table page. */
 router.get('/brief', function(req, res) {
-    res.render('brief')
+  res.render('brief')
 })
 
 /* GET table page. */
 router.get('/tables', function(req, res) {
-    res.render('tables')
+  res.render('tables')
 })
 
 /* GET charts year page. */
 router.get('/charts-year', function(req, res) {
-    res.render('charts-year')
+  res.render('charts-year')
 })
 
 /* GET charts month page. */
 router.get('/charts-month', function(req, res) {
-    res.render('charts-month')
+  res.render('charts-month')
 })
 
 /* GET charts category page. */
 router.get('/charts-category-year', function(req, res) {
-    res.render('charts-category-year')
+  res.render('charts-category-year')
 })
 
 /* GET charts category page. */
 router.get('/charts-category-quarter', function(req, res) {
-    res.render('charts-category-quarter')
+  res.render('charts-category-quarter')
 })
 
 /* GET charts category page using ECharts. */
 router.get('/charts-category-echarts', function(req, res) {
-    res.render('charts-category-echarts')
+  res.render('charts-category-echarts')
 })
 
 

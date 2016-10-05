@@ -31,6 +31,7 @@
     "lodash": "^4.16.2",
     "lusca": "^1.4.1",
     "mailgen": "^1.0.26",
+    "marked": "^0.3.6",
     "mongodb": "^2.2.10",
     "mongoose": "^4.6.1",
     "morgan": "^1.7.0",
@@ -39,6 +40,7 @@
     "node-uuid": "^1.4.7",
     "nodemailer": "^2.6.4",
     "passport": "^0.3.2",
+    "passport-jwt": "^2.1.0",
     "passport-local": "^1.0.0",
     "pg": "^6.1.0",
     "postmark": "^1.2.1",
@@ -48,14 +50,17 @@
     "serve-favicon": "~2.3.0",
     "swig": "^1.4.2",
     "underscore": "^1.8.3",
-    "validator": "^6.0.0"
+    "validator": "^6.0.0",
+    "vue": "^1.0.28"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.0",
+    "ora": "^0.3.0",
     "supertest": "^2.0.0",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.1"
+    "webpack-dev-server": "^1.16.1",
+    "webpack-hot-middleware": "^2.12.2"
   }
 }

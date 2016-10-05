@@ -29,52 +29,56 @@
         </div>
 
 
-        <script>
-            $.getJSON('api/alldata', function(rsp) {
-                var yearamountData;
-                if (rsp.message === 0) {
-                    yearamountData = rsp.data;
-                }
-                dataSet = yearamountData.reverse();
-                $("#myTables").DataTable({
-                    "data": dataSet,
-                    "columns": [
-                        { "data": "categoryid", 'title': '分类 ID'},
-                        { "data": "date", 'title':  '时间'},
-                        { "data": "amount", 'title': '金额（元）' },
-                        { "data": "note", 'title': '备注' }
-                    ],
-                    "autoWidth": true,
-                    'paging': true,
-                    'ordering': false,
-                    'info': true,
-                    'searching': true,
-                    'lengthMenu': [
-                        [10, 25, 50, 100, -1],
-                        [10, 25, 50, 100, '全部']
-                    ],
-                    'language': {
-                        'lengthMenu': '每页 _MENU_ 条记录',
-                        'zeroRecords': '没有找到',
-                        'info': '第 _PAGE_ 页，总 _PAGES_ 页',
-                        'infoEmpty': '没有记录',
-                        'infoFiltered': '(从 _MAX_ 条记录中过滤)',
-                        'search': '搜索：',
-                        'emptyTable': '这张表中没有数据',
-                        'loadingRecords': '加载中...',
-                        'processing': '处理中...',
-                        'paginate': {
-                            'first': '第一页',
-                            'last': '末页',
-                            'next': '下一页',
-                            'previous': '上一页'
-                        }
-                    }
-                });
-            });
-        </script>
+
     </div>
     <div class="container" id="table-notify">
         <p>请在桌面浏览器或 iPad 浏览器上查看表格以获得更佳体验。</p>
     </div>
+{% endblock %}
+
+{% block page-js %}
+    <script>
+        $.getJSON('api/alldata', function(rsp) {
+            var yearamountData;
+            if (rsp.message === 0) {
+                yearamountData = rsp.data;
+            }
+            dataSet = yearamountData.reverse();
+            $("#myTables").DataTable({
+                "data": dataSet,
+                "columns": [
+                    { "data": "categoryid", 'title': '分类 ID'},
+                    { "data": "date", 'title':  '时间'},
+                    { "data": "amount", 'title': '金额（元）' },
+                    { "data": "note", 'title': '备注' }
+                ],
+                "autoWidth": true,
+                'paging': true,
+                'ordering': false,
+                'info': true,
+                'searching': true,
+                'lengthMenu': [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, '全部']
+                ],
+                'language': {
+                    'lengthMenu': '每页 _MENU_ 条记录',
+                    'zeroRecords': '没有找到',
+                    'info': '第 _PAGE_ 页，总 _PAGES_ 页',
+                    'infoEmpty': '没有记录',
+                    'infoFiltered': '(从 _MAX_ 条记录中过滤)',
+                    'search': '搜索：',
+                    'emptyTable': '这张表中没有数据',
+                    'loadingRecords': '加载中...',
+                    'processing': '处理中...',
+                    'paginate': {
+                        'first': '第一页',
+                        'last': '末页',
+                        'next': '下一页',
+                        'previous': '上一页'
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}

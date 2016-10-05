@@ -112,340 +112,344 @@
         </div>
 
 
-        <script>
-            Chart.defaults.global.legend.display = false
-            Chart.defaults.global.responsive = true
-            Chart.defaults.global.hover.mode = 'single'
-            Chart.defaults.global.hover.animationDuration = 300
-            Chart.defaults.global.title.display = true
-            Chart.defaults.global.title.position = 'top'
-            Chart.defaults.global.title.fullWidth = true
-            Chart.defaults.global.title.fontSize = 18
-            Chart.defaults.global.animation.animateRotate = true
-            Chart.defaults.global.animation.animateScale = true
-            Chart.defaults.global.tooltips.enabled = true
-            Chart.defaults.global.tooltips.mode = 'single'
 
-            $('#fullscrean').on('click', function(){
-                if (screenfull.enabled) {
-                    screenfull.toggle()
-                    document.addEventListener(screenfull.raw.fullscreenchange, function() {
-                        if (screenfull.isFullscreen) {
-                        notie.alert('success', '进入全屏展示，「ESC」退出全屏', 2)
-                        } else {
-                            notie.alert('success', '退出全屏展示', 2)
-                        }
-                    })
-                } else {
-                    notie.alert('error', '此浏览器不支持全屏', 2)
-                }
-            })
-
-            var colorList = ['#E74C3C', '#1ABC9C', '#2ECC71', '#F39C12', '#3498DB', '#9B59B6']
-            var pie_ctx_2016_q1 = document.getElementById('pie_2016_q1')
-            var pie_ctx_2016_q2 = document.getElementById('pie_2016_q2')
-            var pie_ctx_2016_q3 = document.getElementById('pie_2016_q3')
-            $.getJSON('api/categorydatabyquarter/2016', function(rsp) {
-                var categoryData
-                if (rsp.message === 0) {
-                    categoryData = rsp.data.data
-                } else {
-                    categoryData = {0: 0}
-                }
-                var category = {}
-                _.each(categoryData, function(value, key1){
-                    var categoryItem = {}
-                    var categoryKey = []
-                    var categoryValue = []
-                    _.each(value['data'], function(value, key){
-                        categoryKey.push(key)
-                        categoryValue.push(value)
-                    });
-                    categoryItem['key'] = categoryKey
-                    categoryItem['value'] = categoryValue
-                    categoryItem['title'] = value['title']
-                    category[key1+1] = categoryItem
-                })
-
-                var myPieChart2016q1 = new Chart(pie_ctx_2016_q1,{
-                    type: 'pie',
-                    data: {
-                        labels: category['1']['key'],
-                        datasets: [
-                            {
-                                data: category['1']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['1']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-
-                var myPieChart2016q2 = new Chart(pie_ctx_2016_q2,{
-                    type: 'pie',
-                    data: {
-                        labels: category['2']['key'],
-                        datasets: [
-                            {
-                                data: category['2']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['2']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-
-                var myPieChart2016q3 = new Chart(pie_ctx_2016_q3,{
-                    type: 'pie',
-                    data: {
-                        labels: category['3']['key'],
-                        datasets: [
-                            {
-                                data: category['3']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['3']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-            })
-
-
-            var pie_ctx_2015_q1 = document.getElementById('pie_2015_q1')
-            var pie_ctx_2015_q2 = document.getElementById('pie_2015_q2')
-            var pie_ctx_2015_q3 = document.getElementById('pie_2015_q3')
-            var pie_ctx_2015_q4 = document.getElementById('pie_2015_q4')
-            $.getJSON('api/categorydatabyquarter/2015', function(rsp) {
-                var categoryData
-                if (rsp.message === 0) {
-                    categoryData = rsp.data.data
-                } else {
-                    categoryData = {0: 0}
-                }
-                var category = {}
-                _.each(categoryData, function(value, key1){
-                    var categoryItem = {}
-                    var categoryKey = []
-                    var categoryValue = []
-                    _.each(value['data'], function(value, key){
-                        categoryKey.push(key)
-                        categoryValue.push(value)
-                    });
-                    categoryItem['key'] = categoryKey
-                    categoryItem['value'] = categoryValue
-                    categoryItem['title'] = value['title']
-                    category[key1+1] = categoryItem
-                })
-
-                var myPieChart2015q1 = new Chart(pie_ctx_2015_q1,{
-                    type: 'pie',
-                    data: {
-                        labels: category['1']['key'],
-                        datasets: [
-                            {
-                                data: category['1']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['1']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-
-                var myPieChart2015q2 = new Chart(pie_ctx_2015_q2,{
-                    type: 'pie',
-                    data: {
-                        labels: category['2']['key'],
-                        datasets: [
-                            {
-                                data: category['2']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['2']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-
-                var myPieChart2015q3 = new Chart(pie_ctx_2015_q3,{
-                    type: 'pie',
-                    data: {
-                        labels: category['3']['key'],
-                        datasets: [
-                            {
-                                data: category['3']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['3']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-
-                var myPieChart2015q4 = new Chart(pie_ctx_2015_q4,{
-                    type: 'pie',
-                    data: {
-                        labels: category['4']['key'],
-                        datasets: [
-                            {
-                                data: category['4']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['4']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-            })
-
-
-            var pie_ctx_2014_q3 = document.getElementById('pie_2014_q3')
-            var pie_ctx_2014_q4 = document.getElementById('pie_2014_q4')
-            $.getJSON('api/categorydatabyquarter/2014', function(rsp) {
-                var categoryData
-                if (rsp.message === 0) {
-                    categoryData = rsp.data.data
-                } else {
-                    categoryData = {0: 0}
-                }
-                var category = {}
-                _.each(categoryData, function(value, key1){
-                    var categoryItem = {}
-                    var categoryKey = []
-                    var categoryValue = []
-                    _.each(value['data'], function(value, key){
-                        categoryKey.push(key)
-                        categoryValue.push(value)
-                    });
-                    categoryItem['key'] = categoryKey
-                    categoryItem['value'] = categoryValue
-                    categoryItem['title'] = value['title']
-                    category[key1+1] = categoryItem
-                })
-
-                var myPieChart2014q3 = new Chart(pie_ctx_2014_q3,{
-                    type: 'pie',
-                    data: {
-                        labels: category['3']['key'],
-                        datasets: [
-                            {
-                                data: category['3']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['3']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-
-                var myPieChart2014q4 = new Chart(pie_ctx_2014_q4,{
-                    type: 'pie',
-                    data: {
-                        labels: category['4']['key'],
-                        datasets: [
-                            {
-                                data: category['4']['value'],
-                                backgroundColor: colorList,
-                                hoverBackgroundColor: colorList,
-                            }]
-                    },
-                    options: {
-                        title: {
-                            text: category['4']['title']
-                        },
-                        tooltips: {
-                            callbacks: {
-                                label: function(tooltipItems, data) {
-                                    return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
-                                }
-                            }
-                        }
-                    }
-                })
-            })
-        </script>
     </div>
+{% endblock %}
+
+{% block page-js %}
+    <script>
+        Chart.defaults.global.legend.display = false
+        Chart.defaults.global.responsive = true
+        Chart.defaults.global.hover.mode = 'single'
+        Chart.defaults.global.hover.animationDuration = 300
+        Chart.defaults.global.title.display = true
+        Chart.defaults.global.title.position = 'top'
+        Chart.defaults.global.title.fullWidth = true
+        Chart.defaults.global.title.fontSize = 18
+        Chart.defaults.global.animation.animateRotate = true
+        Chart.defaults.global.animation.animateScale = true
+        Chart.defaults.global.tooltips.enabled = true
+        Chart.defaults.global.tooltips.mode = 'single'
+
+        $('#fullscrean').on('click', function(){
+            if (screenfull.enabled) {
+                screenfull.toggle()
+                document.addEventListener(screenfull.raw.fullscreenchange, function() {
+                    if (screenfull.isFullscreen) {
+                    notie.alert('success', '进入全屏展示，「ESC」退出全屏', 2)
+                    } else {
+                        notie.alert('success', '退出全屏展示', 2)
+                    }
+                })
+            } else {
+                notie.alert('error', '此浏览器不支持全屏', 2)
+            }
+        })
+
+        var colorList = ['#E74C3C', '#1ABC9C', '#2ECC71', '#F39C12', '#3498DB', '#9B59B6']
+        var pie_ctx_2016_q1 = document.getElementById('pie_2016_q1')
+        var pie_ctx_2016_q2 = document.getElementById('pie_2016_q2')
+        var pie_ctx_2016_q3 = document.getElementById('pie_2016_q3')
+        $.getJSON('api/categorydatabyquarter/2016', function(rsp) {
+            var categoryData
+            if (rsp.message === 0) {
+                categoryData = rsp.data.data
+            } else {
+                categoryData = {0: 0}
+            }
+            var category = {}
+            _.each(categoryData, function(value, key1){
+                var categoryItem = {}
+                var categoryKey = []
+                var categoryValue = []
+                _.each(value['data'], function(value, key){
+                    categoryKey.push(key)
+                    categoryValue.push(value)
+                });
+                categoryItem['key'] = categoryKey
+                categoryItem['value'] = categoryValue
+                categoryItem['title'] = value['title']
+                category[key1+1] = categoryItem
+            })
+
+            var myPieChart2016q1 = new Chart(pie_ctx_2016_q1,{
+                type: 'pie',
+                data: {
+                    labels: category['1']['key'],
+                    datasets: [
+                        {
+                            data: category['1']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['1']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+
+            var myPieChart2016q2 = new Chart(pie_ctx_2016_q2,{
+                type: 'pie',
+                data: {
+                    labels: category['2']['key'],
+                    datasets: [
+                        {
+                            data: category['2']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['2']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+
+            var myPieChart2016q3 = new Chart(pie_ctx_2016_q3,{
+                type: 'pie',
+                data: {
+                    labels: category['3']['key'],
+                    datasets: [
+                        {
+                            data: category['3']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['3']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+        })
+
+
+        var pie_ctx_2015_q1 = document.getElementById('pie_2015_q1')
+        var pie_ctx_2015_q2 = document.getElementById('pie_2015_q2')
+        var pie_ctx_2015_q3 = document.getElementById('pie_2015_q3')
+        var pie_ctx_2015_q4 = document.getElementById('pie_2015_q4')
+        $.getJSON('api/categorydatabyquarter/2015', function(rsp) {
+            var categoryData
+            if (rsp.message === 0) {
+                categoryData = rsp.data.data
+            } else {
+                categoryData = {0: 0}
+            }
+            var category = {}
+            _.each(categoryData, function(value, key1){
+                var categoryItem = {}
+                var categoryKey = []
+                var categoryValue = []
+                _.each(value['data'], function(value, key){
+                    categoryKey.push(key)
+                    categoryValue.push(value)
+                });
+                categoryItem['key'] = categoryKey
+                categoryItem['value'] = categoryValue
+                categoryItem['title'] = value['title']
+                category[key1+1] = categoryItem
+            })
+
+            var myPieChart2015q1 = new Chart(pie_ctx_2015_q1,{
+                type: 'pie',
+                data: {
+                    labels: category['1']['key'],
+                    datasets: [
+                        {
+                            data: category['1']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['1']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+
+            var myPieChart2015q2 = new Chart(pie_ctx_2015_q2,{
+                type: 'pie',
+                data: {
+                    labels: category['2']['key'],
+                    datasets: [
+                        {
+                            data: category['2']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['2']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+
+            var myPieChart2015q3 = new Chart(pie_ctx_2015_q3,{
+                type: 'pie',
+                data: {
+                    labels: category['3']['key'],
+                    datasets: [
+                        {
+                            data: category['3']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['3']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+
+            var myPieChart2015q4 = new Chart(pie_ctx_2015_q4,{
+                type: 'pie',
+                data: {
+                    labels: category['4']['key'],
+                    datasets: [
+                        {
+                            data: category['4']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['4']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+        })
+
+
+        var pie_ctx_2014_q3 = document.getElementById('pie_2014_q3')
+        var pie_ctx_2014_q4 = document.getElementById('pie_2014_q4')
+        $.getJSON('api/categorydatabyquarter/2014', function(rsp) {
+            var categoryData
+            if (rsp.message === 0) {
+                categoryData = rsp.data.data
+            } else {
+                categoryData = {0: 0}
+            }
+            var category = {}
+            _.each(categoryData, function(value, key1){
+                var categoryItem = {}
+                var categoryKey = []
+                var categoryValue = []
+                _.each(value['data'], function(value, key){
+                    categoryKey.push(key)
+                    categoryValue.push(value)
+                });
+                categoryItem['key'] = categoryKey
+                categoryItem['value'] = categoryValue
+                categoryItem['title'] = value['title']
+                category[key1+1] = categoryItem
+            })
+
+            var myPieChart2014q3 = new Chart(pie_ctx_2014_q3,{
+                type: 'pie',
+                data: {
+                    labels: category['3']['key'],
+                    datasets: [
+                        {
+                            data: category['3']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['3']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+
+            var myPieChart2014q4 = new Chart(pie_ctx_2014_q4,{
+                type: 'pie',
+                data: {
+                    labels: category['4']['key'],
+                    datasets: [
+                        {
+                            data: category['4']['value'],
+                            backgroundColor: colorList,
+                            hoverBackgroundColor: colorList,
+                        }]
+                },
+                options: {
+                    title: {
+                        text: category['4']['title']
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                            }
+                        }
+                    }
+                }
+            })
+        })
+    </script>
 {% endblock %}
