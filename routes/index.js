@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const fs = require('fs')
+const marked = require('marked')
 
 
 /* GET home page. */
@@ -9,7 +11,14 @@ router.get('/', function(req, res) {
 
 /* GET about page. */
 router.get('/about', function(req, res) {
-  res.render('about')
+  var path = __dirname.slice(0, -7) + '/views/markdown/about.md'
+  fs.readFile(path, 'utf8', function(err, data) {
+    if(err) {
+      console.log(err)
+    }
+    var markdownContent = marked(data)
+    res.render('about', { markdownContent: markdownContent })
+  })
 })
 
 /* GET 404 page. */

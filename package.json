@@ -23,6 +23,7 @@
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "express-flash": "0.0.2",
+    "express-jwt": "^5.1.0",
     "express-session": "^1.14.1",
     "express-status-monitor": "^0.1.5",
     "express-validator": "^2.20.10",
@@ -30,7 +31,6 @@
     "ioredis": "^2.4.0",
     "lodash": "^4.16.4",
     "lusca": "^1.4.1",
-    "mailgen": "^2.0.0",
     "marked": "^0.3.6",
     "mongodb": "^2.2.10",
     "mongoose": "^4.6.3",
@@ -38,6 +38,7 @@
     "multer": "^1.2.0",
     "node-fetch": "^1.6.3",
     "node-uuid": "^1.4.7",
+    "nodejieba": "^2.2.3",
     "nodemailer": "^2.6.4",
     "passport": "^0.3.2",
     "passport-github": "^1.1.0",
@@ -48,19 +49,15 @@
     "request": "^2.75.0",
     "sendgrid": "^4.5.0",
     "serve-favicon": "~2.3.0",
+    "shortid": "^2.2.6",
     "swig": "^1.4.2",
     "underscore": "^1.8.3",
-    "validator": "^6.0.0",
-    "vue": "^2.0.1"
+    "validator": "^6.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "istanbul": "^0.4.5",
     "mocha": "^3.1.0",
-    "ora": "^0.3.0",
-    "supertest": "^2.0.0",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.2",
-    "webpack-hot-middleware": "^2.12.2"
+    "nodejs-dashboard": "^0.1.1",
+    "supertest": "^2.0.0"
   }
 }

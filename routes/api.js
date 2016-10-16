@@ -7,7 +7,7 @@ const MongoClient = require('mongodb').MongoClient
 const _ = require('underscore')
 const Q = require('q')
 
-const util = require('../utils/util')
+const utils = require('../utils/utils')
 
 dotenv.load({
   path: '.env.development'
@@ -24,9 +24,9 @@ getEntry(url).then(function(data) {
   }
 })
 
-// category summary util
-const category = util.category()
-const sortedCategory = util.sortedCategory()
+// category summary utils
+const category = utils.category()
+const sortedCategory = utils.sortedCategory()
 
 /* 所有数据 for tables */
 router.get('/alldata', function(req, res) {
@@ -200,11 +200,11 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
           categoryData[key] = value.div(totalAmount).mul(100).toFixed(2)
         })
 
-        formatedData = {}
+        var formatedData = {}
         _.each(categoryData, function(value, key) {
-          newKey = sortedCategory[key]
+          var newKey = sortedCategory[key]
           formatedData[newKey] = value
-        });
+        })
 
         res.json({
           message: 0,
@@ -288,11 +288,11 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
             monthData[key] = value.div(totalAmountData[key1 + 1]).mul(100).toFixed(2)
           })
 
-          formatedData = {}
+          var formatedData = {}
           _.each(monthData, function(value, key) {
-            newKey = sortedCategory[key]
+            var newKey = sortedCategory[key]
             formatedData[newKey] = value
-          });
+          })
 
           unformatQuarterPercentData[key1 + 1] = formatedData
         })
@@ -332,8 +332,8 @@ router.get('/pre5month', function(req, res) {
   var month = myDate.getMonth()
   if (entry['message'] !== 1) {
     entry.find({
-      "year": year.toString(),
-      "month": { "$gte": (month - 4).toString(), "$lte": month.toString() }
+      'year': year.toString(),
+      'month': { '$gte': (month - 4).toString(), '$lte': month.toString() }
     }).toArray(function(err, doc) {
       if (doc != null) {
         var pre5monthData = _.reduce(doc, function(allmonths, item) {
@@ -375,7 +375,7 @@ router.get('/thismonthpercent', function(req, res) {
   if (entry['message'] !== 1) {
     entry.find({
       'year': year.toString(),
-      "month": month.toString()
+      'month': month.toString()
     }).toArray(function(err, doc) {
       if (doc != null) {
         var reducedData = _.reduce(doc, function(months, item) {
@@ -401,18 +401,15 @@ router.get('/thismonthpercent', function(req, res) {
           }
         })
 
-        var totalAmount = _.reduce(reducedData, function(memo, value) {
-          return memo.add(value)
-        }, 0)
         _.each(categoryData, function(value, key) {
           categoryData[key] = value.div(totalAmount).mul(100).toFixed(2)
         })
 
-        formatedData = {}
+        var formatedData = {}
         _.each(categoryData, function(value, key) {
-          newKey = sortedCategory[key]
+          var newKey = sortedCategory[key]
           formatedData[newKey] = value
-        });
+        })
 
         res.json({
           message: 0,
@@ -443,7 +440,7 @@ router.get('/thismonthsummary', function(req, res) {
   if (entry['message'] !== 1) {
     entry.find({
       'year': year.toString(),
-      "month": month.toString()
+      'month': month.toString()
     }).toArray(function(err, doc) {
       if (doc != null) {
         var reducedData = _.reduce(doc, function(months, item) {
@@ -465,11 +462,11 @@ router.get('/thismonthsummary', function(req, res) {
             categoryData[newKey] = value
           }
 
-          formatedData = {}
+          var formatedData = {}
           _.each(categoryData, function(value, key) {
-            newKey = sortedCategory[key]
+            var newKey = sortedCategory[key]
             formatedData[newKey] = value
-          });
+          })
         })
 
         res.json({
@@ -501,14 +498,14 @@ router.get('/thismonthmaxsix', function(req, res) {
   if (entry['message'] !== 1) {
     entry.find({
       'year': year.toString(),
-      "month": month.toString()
-    }).sort({ "amount": -1 }).limit(6).toArray(function(err, doc) {
+      'month': month.toString()
+    }).sort({ 'amount': -1 }).limit(6).toArray(function(err, doc) {
       if (doc != null) {
 
-        formatedData = []
+        var formatedData = []
         _.each(doc, function(item) {
-          formatedItem = {}
-          newKey = category[item.categoryid]
+          var formatedItem = {}
+          var newKey = category[item.categoryid]
 
           _.each(item, function(firstvalue, key) {
             if (key === 'note') {
@@ -519,11 +516,11 @@ router.get('/thismonthmaxsix', function(req, res) {
               formatedItem['amount'] = firstvalue
             }
 
-            categoryText = sortedCategory[newKey]
+            var categoryText = sortedCategory[newKey]
             formatedItem['categorytext'] = categoryText
           })
           formatedData.push(formatedItem)
-        });
+        })
 
         res.json({
           message: 0,
@@ -553,7 +550,7 @@ router.get('/thismonthtable', function(req, res) {
   if (entry['message'] !== 1) {
     entry.find({
       'year': year.toString(),
-      "month": month.toString()
+      'month': month.toString()
     }).toArray(function(err, doc) {
       if (doc != null) {
         res.json({
@@ -581,10 +578,10 @@ function getEntry(url) {
     if (!err) {
       var entry = db.collection('entry')
       getEntryDefer.resolve(entry)
-      console.log('%s MongoDB collection [entry] connection established!', chalk.blue('✓'));
+      console.log('%s MongoDB collection [entry] connection established!', chalk.blue('✓'))
     } else {
       getEntryDefer.reject()
-      console.log('%s MongoDB collection [entry] failed!', chalk.red('✗'));
+      console.log('%s MongoDB collection [entry] failed!', chalk.red('✗'))
     }
   })
 

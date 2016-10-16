@@ -3,14 +3,16 @@ const router = express.Router()
 
 const User = require('../models/user')
 const passport = require('passport')
+const passportConfig = require('../passport/passport')
+
 
 /**
  * GET /signup
  * Signup page.
  */
-router.get('/signup', function (req, res) {
+router.get('/signup', function(req, res) {
   if (req.user) {
-    req.flash('success', { msg: '登录成功' })
+    req.flash('success', { msg: 'Signup successed' })
     return res.redirect('/')
   }
   res.render('user/signup', {
@@ -18,14 +20,15 @@ router.get('/signup', function (req, res) {
   })
 })
 
+
 /**
  * POST /signup
  * Create a new local account.
  */
-router.post('/signup', function (req, res, next) {
-  req.assert('email', '邮箱格式无效').isEmail()
-  req.assert('password', '密码最少 8 个字符').len(8)
-  req.assert('confirmPassword', '两次输入密码不一致').equals(req.body.password)
+router.post('/signup', function(req, res, next) {
+  req.assert('email', 'Email is not valid.').isEmail()
+  req.assert('password', 'Password must be at least 8 characters long').len(8)
+  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password)
 
   var errors = req.validationErrors()
 
@@ -39,30 +42,32 @@ router.post('/signup', function (req, res, next) {
     password: req.body.password
   })
 
-  User.findOne({ email: req.body.email }, function (err, existingUser) {
+  User.findOne({ email: req.body.email }, function(err, existingUser) {
     if (existingUser) {
-      req.flash('errors', { msg: '此邮箱已经注册，请直接登录' })
+      req.flash('errors', { msg: 'Account with that email address already exists.' })
       return res.redirect('/signup')
     }
-    user.save(function (err) {
+    user.save(function(err) {
       if (err) {
         return next(err)
       }
-      req.logIn(user, function (err) {
+      req.logIn(user, function(err) {
         if (err) {
           return next(err)
         }
-        res.redirect('/')
+        req.flash('success', { msg: 'Create account successed!' })
+        return res.redirect('/signup')
       })
     })
   })
 })
 
+
 /**
  * GET /login
  * Login page.
  */
-router.get('/login', function (req, res) {
+router.get('/login', function(req, res) {
   if (req.user) {
     return res.redirect('/')
   }
@@ -71,13 +76,14 @@ router.get('/login', function (req, res) {
   })
 })
 
+
 /**
  * POST /login
  * Sign in using email and password.
  */
-router.post('/login', function (req, res, next) {
-  req.assert('email', '邮箱格式无效').isEmail()
-  req.assert('password', '密码不能为空').notEmpty()
+router.post('/login', function(req, res, next) {
+  req.assert('email', 'Please enter a valid email address.').isEmail()
+  req.assert('password', 'Password cannot be blank').notEmpty()
 
   var errors = req.validationErrors()
 
@@ -86,7 +92,7 @@ router.post('/login', function (req, res, next) {
     return res.redirect('/login')
   }
 
-  passport.authenticate('local', function (err, user, info) {
+  passport.authenticate('local', function(err, user, info) {
     if (err) {
       return next(err)
     }
@@ -94,42 +100,45 @@ router.post('/login', function (req, res, next) {
       req.flash('errors', { msg: info.message })
       return res.redirect('/login')
     }
-    req.logIn(user, function (err) {
+    req.logIn(user, function(err) {
       if (err) {
         return next(err)
       }
-      req.flash('success', { msg: '登录成功' })
-      res.redirect(req.session.returnTo || '/')
+      req.flash('success', { msg: 'Login successed!' })
+      return res.redirect(req.session.returnTo || '/')
     })
   })(req, res, next)
 })
+
 
 /**
  * GET /logout
  * Log out.
  */
-router.get('/logout', function (req, res) {
+router.get('/logout', function(req, res) {
   req.logout()
-  res.redirect('/')
+  return res.redirect('/')
 })
+
 
 /**
  * GET /account
  * Profile page.
  */
-router.get('/account', function (req, res) {
+router.get('/account', passportConfig.isAuthenticated, function(req, res) {
   if (!req.user) {
     return res.redirect('/login')
   }
   res.render('user/profile')
 })
 
+
 /**
  * POST /account/profile
  * Update profile information.
  */
-router.post('/account/profile', function (req, res, next) {
-  User.findById(req.user.id, function (err, user) {
+router.post('/account/profile', passportConfig.isAuthenticated, function(req, res, next) {
+  User.findById(req.user.id, function(err, user) {
     if (err) {
       return next(err)
     }
@@ -138,23 +147,24 @@ router.post('/account/profile', function (req, res, next) {
     user.profile.bio = req.body.bio || ''
     user.profile.url = req.body.url || ''
     user.profile.location = req.body.location || ''
-    user.save(function (err) {
+    user.save(function(err) {
       if (err) {
         return next(err)
       }
-      req.flash('success', { msg: '个人资料更新成功' })
-      res.redirect('/account')
+      req.flash('success', { msg: 'Profile information has been updated.' })
+      return res.redirect('/account')
     })
   })
 })
+
 
 /**
  * POST /account/password
  * Update current password.
  */
-router.post('/account/password', function (req, res, next) {
-  req.assert('password', '密码最少 8 个字符').len(8)
-  req.assert('confirmPassword', '两次输入密码不一致').equals(req.body.password)
+router.post('/account/password', passportConfig.isAuthenticated, function(req, res, next) {
+  req.assert('password', 'Password must be at least 8 characters long').len(8)
+  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password)
 
   var errors = req.validationErrors()
 
@@ -163,34 +173,72 @@ router.post('/account/password', function (req, res, next) {
     return res.redirect('/account')
   }
 
-  User.findById(req.user.id, function (err, user) {
+  User.findById(req.user.id, function(err, user) {
     if (err) {
       return next(err)
     }
+
     user.password = req.body.password
-    user.save(function (err) {
+    user.save(function(err) {
       if (err) {
         return next(err)
       }
-      req.flash('success', { msg: '密码修改成功' })
+      req.flash('success', { msg: 'Password has been changed.' })
       res.redirect('/account')
     })
   })
 })
 
+
 /**
  * POST /account/delete
  * Delete user account.
  */
-router.post('/account/delete', function (req, res, next) {
-  User.remove({ _id: req.user.id }, function (err) {
+router.post('/account/delete', passportConfig.isAuthenticated, function(req, res, next) {
+  User.remove({ _id: req.user.id }, function(err) {
     if (err) {
       return next(err)
     }
     req.logout()
-    req.flash('info', { msg: '帐号已删除' })
-    res.redirect('/')
+    req.flash('info', { msg: 'Your account has been deleted.' })
+    return res.redirect('/')
   })
 })
+
+router.get('/account/unlink/:provider', passportConfig.isAuthenticated, function(req, res, next) {
+  const provider = req.params.provider
+  User.findById(req.user.id, (err, user) => {
+    if (err) {
+      return next(err)
+    }
+    user.provider = 'local'
+    user.tokens = user.tokens.filter(token => token.kind !== provider)
+    user.save((err) => {
+      if (err) {
+        return next(err)
+      }
+      if (provider == 'github') {
+        var provider_name = 'GitHub'
+      }
+      req.flash('info', { msg: `${provider_name} account has been unlinked.` })
+      return res.redirect('/account')
+    })
+  })
+})
+
+
+/**
+ * GET /GitHub auth
+ */
+router.get('/auth/github', passport.authenticate('github', { scope: 'profile email' }))
+
+
+/**
+ * GET /GitHub auth callback
+ */
+router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
+  return res.redirect(req.session.returnTo || '/')
+})
+
 
 module.exports = router
