@@ -29,11 +29,12 @@
     "express-validator": "^2.20.10",
     "got": "^6.5.0",
     "ioredis": "^2.4.0",
+    "kue": "^0.11.1",
     "lodash": "^4.16.4",
     "lusca": "^1.4.1",
     "marked": "^0.3.6",
     "mongodb": "^2.2.10",
-    "mongoose": "^4.6.3",
+    "mongoose": "^4.6.4",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
     "node-fetch": "^1.6.3",
@@ -47,17 +48,17 @@
     "postmark": "^1.2.1",
     "q": "^1.4.1",
     "request": "^2.75.0",
-    "sendgrid": "^4.5.0",
+    "sendgrid": "^4.7.0",
     "serve-favicon": "~2.3.0",
     "shortid": "^2.2.6",
     "swig": "^1.4.2",
     "underscore": "^1.8.3",
-    "validator": "^6.0.0"
+    "validator": "^6.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.1.0",
-    "nodejs-dashboard": "^0.1.1",
+    "nodejs-dashboard": "^0.1.2",
     "supertest": "^2.0.0"
   }
 }
