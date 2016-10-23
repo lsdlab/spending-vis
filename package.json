@@ -29,12 +29,11 @@
     "express-validator": "^2.20.10",
     "got": "^6.5.0",
     "ioredis": "^2.4.0",
-    "kue": "^0.11.1",
     "lodash": "^4.16.4",
     "lusca": "^1.4.1",
     "mailgen": "^2.0.1",
     "marked": "^0.3.6",
-    "mongodb": "^2.2.10",
+    "mongodb": "^2.2.11",
     "mongoose": "^4.6.4",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
@@ -59,6 +58,6 @@
     "chai": "^3.5.0",
     "mocha": "^3.1.0",
     "nodejs-dashboard": "^0.1.2",
-    "supertest": "^2.0.0"
+    "supertest": "^2.0.1"
   }
 }
