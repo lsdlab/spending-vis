@@ -56,7 +56,7 @@
         <div class="col-md-6">
             <div class="panel panel-info mb10">
                 <div class="panel-heading">各分类支出概要</div>
-                <ul class="list-group" id="categroy-list">
+                <ul class="list-group" id="category-list">
                 </ul>
             </div>
         </div>
@@ -64,7 +64,7 @@
         <div class="col-md-6">
             <div class="panel panel-info mb10">
                 <div class="panel-heading">金额最大六笔支出</div>
-                <ul class="list-group" id="categroy-list-max-six">
+                <ul class="list-group" id="category-list-max-six">
                 </ul>
             </div>
         </div>
@@ -88,14 +88,14 @@
 
 {% block page-js %}
     <script>
-        Chart.defaults.global.legend.display = false;
-        Chart.defaults.global.responsive = true;
-        Chart.defaults.global.hover.mode = 'single';
-        Chart.defaults.global.hover.animationDuration = 300;
-        Chart.defaults.global.title.display = true;
-        Chart.defaults.global.title.position = 'top';
-        Chart.defaults.global.title.fullWidth = true;
-        Chart.defaults.global.title.fontSize = 18;
+        Chart.defaults.global.legend.display = false
+        Chart.defaults.global.responsive = true
+        Chart.defaults.global.hover.mode = 'single'
+        Chart.defaults.global.hover.animationDuration = 300
+        Chart.defaults.global.title.display = true
+        Chart.defaults.global.title.position = 'top'
+        Chart.defaults.global.title.fullWidth = true
+        Chart.defaults.global.title.fontSize = 18
 
         Chart.defaults.global.animation.animateRotate = true
         Chart.defaults.global.animation.animateScale = true
@@ -104,7 +104,7 @@
 
         $('#fullscrean').on('click', function(){
             if (screenfull.enabled) {
-                screenfull.toggle();
+                screenfull.toggle()
                 document.addEventListener(screenfull.raw.fullscreenchange, function() {
                     if (screenfull.isFullscreen) {
                         notie.alert('success', '进入全屏展示，「ESC」退出全屏', 2)
@@ -117,22 +117,22 @@
             }
         })
 
-        var line_ctx_pre5month = document.getElementById('line-pre5month');
+        var line_ctx_pre5month = document.getElementById('line-pre5month')
         $.getJSON('api/pre5month', function(rsp) {
-            var yearsData;
+            var yearsData
             if (rsp.message === 0) {
-                yearsData = rsp.data.data;
-                titleText = rsp.data.title;
+                yearsData = rsp.data.data
+                titleText = rsp.data.title
             } else {
                 yearsData = {0: 0}
             }
 
-            var yearsKey = [];
-            var yearsValue = [];
+            var yearsKey = []
+            var yearsValue = []
             _.each(yearsData, function(value, key){
-                yearsKey.push(key);
-                yearsValue.push(value);
-            });
+                yearsKey.push(key)
+                yearsValue.push(value)
+            })
 
             var lineChartPre5Month = new Chart(line_ctx_pre5month, {
                 type: 'line',
@@ -177,7 +177,7 @@
                         mode: 'single',
                         callbacks: {
                             label: function(tooltipItems, data) {
-                                return tooltipItems.yLabel + ' 元';
+                                return tooltipItems.yLabel + ' 元'
                             }
                         }
                     }
@@ -222,7 +222,7 @@
                     tooltips: {
                         callbacks: {
                             label: function(tooltipItems, data) {
-                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%';
+                                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%'
                             }
                         }
                     }
@@ -251,7 +251,7 @@
             _.each(yearsData, function(value, key){
                 var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= key %></li>')
                 tmp = $(compiled({key: key, value: value, color: colorList[key]}))
-                $('#categroy-list').append(tmp)
+                $('#category-list').append(tmp)
             })
         })
 
@@ -275,21 +275,21 @@
 
             _.each(yearsData, function(value, key){
                 var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= key %></li>')
-                tmp = $(compiled({key: value['note'], value: value['amount'], color: colorList[value['categorytext']]}))
-                $('#categroy-list-max-six').append(tmp)
+                tmp = $(compiled({key: value['note'], value: value['amount'], color: colorList[value['cpi_text']]}))
+                $('#category-list-max-six').append(tmp)
             })
         })
 
         $.getJSON('api/thismonthtable', function(rsp) {
-            var yearamountData;
+            var yearamountData
             if (rsp.message === 0) {
-                yearamountData = rsp.data;
+                yearamountData = rsp.data
             }
-            dataSet = yearamountData.reverse();
+            dataSet = yearamountData.reverse()
             $("#myTables").DataTable({
                 "data": dataSet,
                 "columns": [
-                    { "data": "categoryid", 'title': '分类 ID'},
+                    { "data": "cpi_text", 'title': '分类 ID'},
                     { "data": "date", 'title':  '时间'},
                     { "data": "amount", 'title': '金额（元）' },
                     { "data": "note", 'title': '备注' }
@@ -320,7 +320,7 @@
                         'previous': '上一页'
                     }
                 }
-            });
-        });
+            })
+        })
     </script>
 {% endblock %}

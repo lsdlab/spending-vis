@@ -43,20 +43,19 @@ mongoose.connection.on('error', () => {
   process.exit()
 })
 
-
-const app = express()
+var app = express()
 
 /**
  * Express configuration.
  */
 app.set('port', process.env.PORT || 3000)
-// swig template engine setup
-const swig = require('swig')
+  // swig template engine setup
+var swig = require('swig')
   // This is where all the magic happens!
 app.engine('html', swig.renderFile)
 
 app.set('view engine', 'html')
-app.set('views', __dirname + '/views')
+app.set('views', path.join(__dirname, '/views'))
 
 // Swig will cache templates for you, but you can disable
 // that and use Express's caching instead, if you like:
@@ -78,24 +77,20 @@ require('nodejs-dashboard')
 app.use(favicon(path.join(__dirname, 'public/img/', 'favicon.png')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
-app.use(expressValidator())
 app.use(bodyParser.urlencoded({
   extended: false
 }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// dependencies setup
+
 app.use(expressValidator())
 app.use(session({
   secret: process.env.MONGODB_SECRET,
   saveUninitialized: true,
   resave: true,
   store: new MongoStore({
-    url: process.env.MONGODB_URI,
-    ttl: 7 * 24 * 60 * 60,
-    autoReconnect: true,
-    autoRemove: 'native'
+    url: process.env.MONGODB_URI
   })
 }))
 
@@ -124,7 +119,7 @@ app.use(function(req, res, next) {
   }
   next()
 })
-app.post('/profile', upload.single('avatar'), function(req, res, next) {
+app.post('/profile/upload', upload.single('avatar'), function(req, res, next) {
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any
 })
@@ -135,7 +130,7 @@ app.use('/api', apiRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  const err = new Error('Not Found')
+  var err = new Error('Not Found')
   err.status = 404
   next(err)
 })

@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 
-const dotenv = require('dotenv')
 const chalk = require('chalk')
 const MongoClient = require('mongodb').MongoClient
 const _ = require('underscore')
@@ -9,6 +8,7 @@ const Q = require('q')
 
 const utils = require('../utils/utils')
 
+const dotenv = require('dotenv')
 dotenv.load({
   path: '.env.development'
 })
@@ -25,7 +25,6 @@ getEntry(url).then(function(data) {
 })
 
 // category summary utils
-const category = utils.category()
 const sortedCategory = utils.sortedCategory()
 
 /* 所有数据 for tables */
@@ -174,37 +173,28 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
     }).toArray(function(err, doc) {
       if (doc != null) {
         var reducedData = _.reduce(doc, function(months, item) {
-          if (months[item.categoryid]) {
-            months[item.categoryid] = months[item.categoryid].add(item.amount)
+          if (months[item.cpi_text]) {
+            months[item.cpi_text] = months[item.cpi_text].add(item.amount)
           } else {
-            months[item.categoryid] = item.amount
+            months[item.cpi_text] = item.amount
           }
           return months
         }, {})
 
-        var categoryData = {}
-        _.each(reducedData, function(value, key) {
-          var newKey
-          newKey = category[key]
-          if (categoryData[newKey]) {
-            categoryData[newKey] = categoryData[newKey].add(value)
-          } else {
-            categoryData[newKey] = value
-          }
-        })
-
         var totalAmount = _.reduce(reducedData, function(memo, value) {
           return memo.add(value)
         }, 0)
-        _.each(categoryData, function(value, key) {
-          categoryData[key] = value.div(totalAmount).mul(100).toFixed(2)
+        _.each(reducedData, function(value, key) {
+          reducedData[key] = value.div(totalAmount).mul(100).toFixed(2)
         })
 
         var formatedData = {}
-        _.each(categoryData, function(value, key) {
-          var newKey = sortedCategory[key]
-          formatedData[newKey] = value
-        })
+        formatedData['食品'] = reducedData['食品']
+        formatedData['穿'] = reducedData['穿']
+        formatedData['居住'] = reducedData['居住']
+        formatedData['交通通信'] = reducedData['交通通信']
+        formatedData['教育'] = reducedData['教育']
+        formatedData['文化娱乐'] = reducedData['文化娱乐']
 
         res.json({
           message: 0,
@@ -254,10 +244,10 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
         var reducedList = []
         _.each(quarterData, function(quarterItem) {
           var reducedData = _.reduce(quarterItem, function(months, item) {
-            if (months[item.categoryid]) {
-              months[item.categoryid] = months[item.categoryid].add(item.amount)
+            if (months[item.cpi_text]) {
+              months[item.cpi_text] = months[item.cpi_text].add(item.amount)
             } else {
-              months[item.categoryid] = item.amount
+              months[item.cpi_text] = item.amount
             }
             return months
           }, {})
@@ -272,38 +262,41 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
           totalAmountData[key + 1] = yearlyAmount
         })
 
-        var unformatQuarterPercentData = {}
-        _.each(reducedList, function(value, key1) {
-          var monthData = {}
-          _.each(value, function(value, key) {
-            var newKey
-            newKey = category[key]
-            if (monthData[newKey]) {
-              monthData[newKey] = monthData[newKey].add(value)
-            } else {
-              monthData[newKey] = value
+        var unformatQuarterData = []
+        _.each(reducedList, function(value) {
+          if (value != { }) {
+            var formatedData = {}
+            formatedData['食品'] = value['食品']
+            formatedData['穿'] = value['穿']
+            formatedData['居住'] = value['居住']
+            formatedData['交通通信'] = value['交通通信']
+            formatedData['教育'] = value['教育']
+            formatedData['文化娱乐'] = value['文化娱乐']
+            unformatQuarterData.push(formatedData)
+          }
+        })
+
+        var unformatQuarterPercentData = []
+        _.each(unformatQuarterData, function(value, key) {
+          var formatQuarterDataItem = {}
+          _.each(value, function(value1, key1){
+            if (value1) {
+              formatQuarterDataItem[key1] = value1.div(totalAmountData[key + 1]).mul(100).toFixed(2)
             }
-          })
-          _.each(monthData, function(value, key) {
-            monthData[key] = value.div(totalAmountData[key1 + 1]).mul(100).toFixed(2)
-          })
 
-          var formatedData = {}
-          _.each(monthData, function(value, key) {
-            var newKey = sortedCategory[key]
-            formatedData[newKey] = value
           })
-
-          unformatQuarterPercentData[key1 + 1] = formatedData
+          unformatQuarterPercentData.push(formatQuarterDataItem)
         })
 
         var quarterPercentData = []
         _.each(unformatQuarterPercentData, function(value, key) {
+          var newkey = key + 1
           var categoryPercentData = {}
-          categoryPercentData['title'] = req.params.year + ' 年 第 ' + key + ' 季度支出 (百分比)'
+          categoryPercentData['title'] = req.params.year + ' 年 第 ' + newkey + ' 季度支出 (百分比)'
           categoryPercentData['data'] = value
           quarterPercentData.push(categoryPercentData)
         })
+
         res.json({
           message: 0,
           data: {
@@ -379,10 +372,10 @@ router.get('/thismonthpercent', function(req, res) {
     }).toArray(function(err, doc) {
       if (doc != null) {
         var reducedData = _.reduce(doc, function(months, item) {
-          if (months[item.categoryid]) {
-            months[item.categoryid] = months[item.categoryid].add(item.amount)
+          if (months[item.cpi_text]) {
+            months[item.cpi_text] = months[item.cpi_text].add(item.amount)
           } else {
-            months[item.categoryid] = item.amount
+            months[item.cpi_text] = item.amount
           }
           return months
         }, {})
@@ -390,26 +383,17 @@ router.get('/thismonthpercent', function(req, res) {
         var totalAmount = _.reduce(reducedData, function(memo, value) {
           return memo.add(value)
         }, 0)
-        var categoryData = {}
         _.each(reducedData, function(value, key) {
-          var newKey
-          newKey = category[key]
-          if (categoryData[newKey]) {
-            categoryData[newKey] = categoryData[newKey].add(value)
-          } else {
-            categoryData[newKey] = value
-          }
-        })
-
-        _.each(categoryData, function(value, key) {
-          categoryData[key] = value.div(totalAmount).mul(100).toFixed(2)
+          reducedData[key] = value.div(totalAmount).mul(100).toFixed(2)
         })
 
         var formatedData = {}
-        _.each(categoryData, function(value, key) {
-          var newKey = sortedCategory[key]
-          formatedData[newKey] = value
-        })
+        formatedData['食品'] = reducedData['食品']
+        formatedData['穿'] = reducedData['穿']
+        formatedData['居住'] = reducedData['居住']
+        formatedData['交通通信'] = reducedData['交通通信']
+        formatedData['教育'] = reducedData['教育']
+        formatedData['文化娱乐'] = reducedData['文化娱乐']
 
         res.json({
           message: 0,
@@ -444,30 +428,21 @@ router.get('/thismonthsummary', function(req, res) {
     }).toArray(function(err, doc) {
       if (doc != null) {
         var reducedData = _.reduce(doc, function(months, item) {
-          if (months[item.categoryid]) {
-            months[item.categoryid] = months[item.categoryid].add(item.amount)
+          if (months[item.cpi_text]) {
+            months[item.cpi_text] = months[item.cpi_text].add(item.amount)
           } else {
-            months[item.categoryid] = item.amount
+            months[item.cpi_text] = item.amount
           }
           return months
         }, {})
 
-        var categoryData = {}
-        _.each(reducedData, function(value, key) {
-          var newKey
-          newKey = category[key]
-          if (categoryData[newKey]) {
-            categoryData[newKey] = categoryData[newKey].add(value)
-          } else {
-            categoryData[newKey] = value
-          }
-
-          var formatedData = {}
-          _.each(categoryData, function(value, key) {
-            var newKey = sortedCategory[key]
-            formatedData[newKey] = value
-          })
-        })
+        var formatedData = {}
+        formatedData['食品'] = reducedData['食品']
+        formatedData['穿'] = reducedData['穿']
+        formatedData['居住'] = reducedData['居住']
+        formatedData['交通通信'] = reducedData['交通通信']
+        formatedData['教育'] = reducedData['教育']
+        formatedData['文化娱乐'] = reducedData['文化娱乐']
 
         res.json({
           message: 0,
@@ -505,7 +480,6 @@ router.get('/thismonthmaxsix', function(req, res) {
         var formatedData = []
         _.each(doc, function(item) {
           var formatedItem = {}
-          var newKey = category[item.categoryid]
 
           _.each(item, function(firstvalue, key) {
             if (key === 'note') {
@@ -515,9 +489,9 @@ router.get('/thismonthmaxsix', function(req, res) {
             if (key === 'amount') {
               formatedItem['amount'] = firstvalue
             }
-
-            var categoryText = sortedCategory[newKey]
-            formatedItem['categorytext'] = categoryText
+            if (key === 'cpi_text') {
+              formatedItem['cpi_text'] = firstvalue
+            }
           })
           formatedData.push(formatedItem)
         })

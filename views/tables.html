@@ -39,15 +39,15 @@
 {% block page-js %}
     <script>
         $.getJSON('api/alldata', function(rsp) {
-            var yearamountData;
+            var yearamountData
             if (rsp.message === 0) {
-                yearamountData = rsp.data;
+                yearamountData = rsp.data
             }
-            dataSet = yearamountData.reverse();
+            dataSet = yearamountData.reverse()
             $("#myTables").DataTable({
                 "data": dataSet,
                 "columns": [
-                    { "data": "categoryid", 'title': '分类 ID'},
+                    { "data": "cpi_text", 'title': 'CPI 分类'},
                     { "data": "date", 'title':  '时间'},
                     { "data": "amount", 'title': '金额（元）' },
                     { "data": "note", 'title': '备注' }
@@ -78,7 +78,7 @@
                         'previous': '上一页'
                     }
                 }
-            });
-        });
+            })
+        })
     </script>
 {% endblock %}
