@@ -16,73 +16,21 @@
         {% include "partials/flash.html" %}
     </div>
 
-    <div class="container" id="charts-container" style="margin-top: 10px">
+    <div class="container mt10 pln prn" id="charts-container">
         <div class="page-header">
-            <h1>可视化 - 分类支出<small>    2014 ~ 2016</small></h1>
+            <h6>可视化 - 分类（年）<small>    2014 ~ 2016</small></h6>
         </div>
-        <div class="row mb10">
-            <div class="pallete-item">
-                <dl class="palette palette-alizarin">
-                    <dt>食品</dt>
-                </dl>
-            </div>
-            <div class="pallete-item">
-                <dl class="palette palette-turquoise">
-                    <dt>穿</dt>
-                </dl>
-            </div>
-            <div class="pallete-item">
-                <dl class="palette palette-emerald">
-                    <dt>居住</dt>
-                </dl>
-            </div>
-            <div class="pallete-item">
-                <dl class="palette palette-orange">
-                    <dt>交通通信</dt>
-                </dl>
-            </div>
-            <div class="pallete-item">
-                <dl class="palette palette-peter-river">
-                    <dt>教育</dt>
-                </dl>
-            </div>
-            <div class="pallete-item">
-                <dl class="palette palette-amethyst">
-                    <dt>文化娱乐</dt>
-                </dl>
-            </div>
-            <div style="padding-top: 6px;">
-                <button class="btn btn-info pull-right" id="fullscrean">全屏</button>
-            </div>
-
-        </div>
-
         <div class="col-md-12">
             <div id="main" style="height: 600px"></div>
         </div>
     </div>
 {% endblock %}
 
-{% block page-js %}
+{% block pagejs %}
     <script>
-        $('#fullscrean').on('click', function(){
-            if (screenfull.enabled) {
-                screenfull.toggle();
-                document.addEventListener(screenfull.raw.fullscreenchange, function() {
-                    if (screenfull.isFullscreen) {
-                        notie.alert('success', '进入全屏展示，「ESC」退出全屏', 2)
-                    } else {
-                        notie.alert('success', '退出全屏展示', 2)
-                    }
-                })
-            } else {
-                notie.alert('error', '此浏览器不支持全屏', 2)
-            }
-        })
-
         var myChart = echarts.init(document.getElementById('main'));
 
-        option = {
+        var option = {
             backgroundColor: '#2c343c',
 
             title: {
@@ -140,8 +88,8 @@
                     }
                 }
             ]
-        };
-
-        myChart.setOption(option);
+        }
+        myChart.setOption(option)
+        NProgress.done()
     </script>
 {% endblock %}

@@ -1,399 +1,427 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    月支出
+  月支出
 {% endblock %}
 
 {% block js %}
-    <script src="js/Chart.bundle.min.js"></script>
+  <script src="js/Chart.bundle.min.js"></script>
 {% endblock %}
 
 {% block content %}
 
-    {% include "partials/navbar.html" %}
+  {% include "partials/navbar.html" %}
 
-    <div class="container">
-        {% include "partials/flash.html" %}
-    </div>
+  <div class="container">
+    {% include "partials/flash.html" %}
+  </div>
 
-    <div class="container" id="charts-container" style="margin-top: 10px">
-        <div class="page-header">
-            <h1>可视化 - 月支出<small>    2014 ~ 2016</small></h1>
-        </div>
-        <div class="row mb10">
-            <button class="btn btn-info pull-right" id="fullscrean">全屏</button>
-        </div>
-        <div class="row mb30">
-            <div class="col-md-6">
-                <canvas id="bar-chart-2016"></canvas>
-            </div>
-            <div class="col-md-6">
-                <canvas id="line-chart-2016"></canvas>
-            </div>
-        </div>
-        <div class="row mb30">
-            <div class="col-md-6">
-                <canvas id="bar-chart-2015"></canvas>
-            </div>
-            <div class="col-md-6">
-                <canvas id="line-chart-2015"></canvas>
-            </div>
-        </div>
-        <div class="row mb30">
-            <div class="col-md-6">
-                <canvas id="bar-chart-2014"></canvas>
-            </div>
-            <div class="col-md-6">
-                <canvas id="line-chart-2014"></canvas>
-            </div>
-        </div>
+  <div class="container mt10 pln prn" id="charts-container">
+    <div class="page-header">
+      <h6>可视化 - 月<small>    2014 ~ 2016</small></h6>
     </div>
+    <div class="mb20">
+      <div class="col-md-6">
+        <div class="panel panel-info">
+          <div class="panel-heading" id="bar-chart-2016-title"></div>
+          <div class="panel-body">
+            <canvas id="bar-chart-2016"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-info">
+          <div class="panel-heading" id="line-chart-2016-title"></div>
+          <div class="panel-body">
+            <canvas id="line-chart-2016"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb20">
+      <div class="col-md-6">
+        <div class="panel panel-info">
+          <div class="panel-heading" id="bar-chart-2015-title"></div>
+          <div class="panel-body">
+            <canvas id="bar-chart-2015"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-info">
+          <div class="panel-heading" id="line-chart-2015-title"></div>
+          <div class="panel-body">
+            <canvas id="line-chart-2015"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mb20">
+      <div class="col-md-6">
+        <div class="panel panel-info">
+          <div class="panel-heading" id="bar-chart-2014-title"></div>
+          <div class="panel-body">
+            <canvas id="bar-chart-2014"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-info">
+          <div class="panel-heading" id="line-chart-2014-title"></div>
+          <div class="panel-body">
+            <canvas id="line-chart-2014"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
-{% block page-js %}
-    <script>
-        Chart.defaults.global.legend.display = false;
-        Chart.defaults.global.responsive = true;
-        Chart.defaults.global.hover.mode = 'single';
-        Chart.defaults.global.hover.animationDuration = 300;
-        Chart.defaults.global.title.display = true;
-        Chart.defaults.global.title.position = 'top';
-        Chart.defaults.global.title.fullWidth = true;
-        Chart.defaults.global.title.fontSize = 18;
+{% block pagejs %}
+  <script>
+    Chart.defaults.global.legend.display = false
+    Chart.defaults.global.responsive = true
+    Chart.defaults.global.hover.mode = 'single'
+    Chart.defaults.global.hover.animationDuration = 300
+    Chart.defaults.global.title.display = true
+    Chart.defaults.global.title.position = 'top'
+    Chart.defaults.global.title.fullWidth = true
+    Chart.defaults.global.title.fontSize = 18
 
-        $('#fullscrean').on('click', function(){
-            if (screenfull.enabled) {
-                document.addEventListener(screenfull.raw.fullscreenchange, function() {
-                    if (screenfull.isFullscreen) {
-                        notie.alert('success', '进入全屏展示，「ESC」退出全屏', 2)
-                    } else {
-                        notie.alert('success', '退出全屏展示', 2)
-                    }
-                })
-                screenfull.toggle();
-            } else {
-                notie.alert('error', '此浏览器不支持全屏', 2)
+    var bar_ctx_2016 = document.getElementById('bar-chart-2016')
+    var line_ctx_2016 = document.getElementById('line-chart-2016')
+    var bar_ctx_2015 = document.getElementById('bar-chart-2015')
+    var line_ctx_2015 = document.getElementById('line-chart-2015')
+    var bar_ctx_2014 = document.getElementById('bar-chart-2014')
+    var line_ctx_2014 = document.getElementById('line-chart-2014')
+
+    NProgress.start()
+    $.getJSON('api/monthdatabyyear/2016', function(rsp) {
+      if (rsp.message === 0) {
+        var yearamountData = rsp.data.data
+        var titleText = rsp.data.title
+      } else {
+        yearamountData = {
+          0: 0
+        }
+      }
+
+      $('#bar-chart-2016-title').text(titleText)
+      $('#line-chart-2016-title').text(titleText)
+
+      var yearKey = []
+      var yearValue = []
+
+      _.each(yearamountData, function(value, key) {
+        yearKey.push(key)
+        yearValue.push(value)
+      })
+
+      var barChart2016 = new Chart(bar_ctx_2016, {
+        type: 'bar',
+        data: {
+          labels: yearKey,
+          datasets: [{
+            label: '支出',
+            data: yearValue,
+            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderWidth: 1,
+            hoverBorderColor: 'rgba(52, 152, 219, 1)',
+            hoverBorderWidth: 1.5
+          }]
+        },
+        options: {
+          // title: {
+          //   text: titleText
+          // },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+              label: function(tooltipItems, data) {
+                return tooltipItems.yLabel + ' 元'
+              }
             }
-        })
-        var bar_ctx_2016 = document.getElementById('bar-chart-2016');
-        var line_ctx_2016 = document.getElementById('line-chart-2016');
-        $.getJSON('api/monthdatabyyear/2016', function(rsp) {
-            var yearamountData;
-            if (rsp.message === 0) {
-                yearamountData = rsp.data.data;
-                titleText = rsp.data.title;
-            } else {
-                yearamountData = {0: 0}
+          }
+        }
+      })
+
+      var lineChart2016 = new Chart(line_ctx_2016, {
+        type: 'line',
+        data: {
+          labels: yearKey,
+          datasets: [{
+            label: '支出',
+            data: yearValue,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: 'rgba(75,192,192,1)',
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: 'rgba(52, 152, 219, 1)',
+            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            spanGaps: false,
+          }]
+        },
+        options: {
+          // title: {
+          //   text: titleText
+          // },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+              label: function(tooltipItems) {
+                return tooltipItems.yLabel + ' 元'
+              }
             }
+          }
+        }
+      })
+    })
 
-            var yearKey = [];
-            var yearValue = [];
+    $.getJSON('api/monthdatabyyear/2015', function(rsp) {
+      if (rsp.message === 0) {
+        var yearamountData = rsp.data.data
+        var titleText = rsp.data.title
+      } else {
+        yearamountData = {
+          0: 0
+        }
+      }
 
-            _.each(yearamountData, function(value, key){
-                yearKey.push(key);
-                yearValue.push(value);
-            });
+      $('#bar-chart-2015-title').text(titleText)
+      $('#line-chart-2015-title').text(titleText)
 
-            var barChart2016 = new Chart(bar_ctx_2016, {
-                type: 'bar',
-                data: {
-                    labels: yearKey,
-                    datasets: [{
-                        label: '支出',
-                        data: yearValue,
-                        backgroundColor: 'rgba(52, 152, 219, 0.4)',
-                        borderColor: 'rgba(52, 152, 219, 1)',
-                        borderWidth: 1,
-                        hoverBorderColor: 'rgba(52, 152, 219, 1)',
-                        hoverBorderWidth: 1.5
-                    }]
-                },
-                options: {
-                    title: {
-                        text: titleText
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    tooltips: {
-                        enabled: true,
-                        mode: 'single',
-                        callbacks: {
-                            label: function(tooltipItems, data) {
-                                return tooltipItems.yLabel + ' 元';
-                            }
-                        }
-                    }
-                }
-            });
+      var yearKey = []
+      var yearValue = []
 
-            var lineChart2016 = new Chart(line_ctx_2016, {
-                type: 'line',
-                data: {
-                    labels: yearKey,
-                    datasets: [{
-                        label: '支出',
-                        data: yearValue,
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: "rgba(52, 152, 219, 0.4)",
-                        borderColor: "rgba(52, 152, 219, 1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 6,
-                        pointHoverBackgroundColor: "rgba(52, 152, 219, 1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        spanGaps: false,
-                    }]
-                },
-                options: {
-                    title: {
-                        text: titleText
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    tooltips: {
-                        enabled: true,
-                        mode: 'single',
-                        callbacks: {
-                            label: function(tooltipItems, data) {
-                                return tooltipItems.yLabel + ' 元';
-                            }
-                        }
-                    }
-                }
-            });
-        });
+      _.each(yearamountData, function(value, key) {
+        yearKey.push(key)
+        yearValue.push(value)
+      })
 
-        var bar_ctx_2015 = document.getElementById('bar-chart-2015');
-        var line_ctx_2015 = document.getElementById('line-chart-2015');
-        $.getJSON('api/monthdatabyyear/2015', function(rsp) {
-            var yearamountData;
-            if (rsp.message === 0) {
-                yearamountData = rsp.data.data;
-                titleText = rsp.data.title;
-            } else {
-                yearamountData = {0: 0}
+      var barChart2015 = new Chart(bar_ctx_2015, {
+        type: 'bar',
+        data: {
+          labels: yearKey,
+          datasets: [{
+            label: '支出',
+            data: yearValue,
+            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderWidth: 1,
+            hoverBorderColor: 'rgba(52, 152, 219, 1)',
+            hoverBorderWidth: 1.5
+          }]
+        },
+        options: {
+          // title: {
+          //   text: titleText
+          // },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+              label: function(tooltipItems, data) {
+                return tooltipItems.yLabel + ' 元'
+              }
             }
+          }
+        }
+      })
 
-            var yearKey = [];
-            var yearValue = [];
-
-            _.each(yearamountData, function(value, key){
-                yearKey.push(key);
-                yearValue.push(value);
-            });
-
-            var barChart2015 = new Chart(bar_ctx_2015, {
-                type: 'bar',
-                data: {
-                    labels: yearKey,
-                    datasets: [{
-                        label: '支出',
-                        data: yearValue,
-                        backgroundColor: 'rgba(52, 152, 219, 0.4)',
-                        borderColor: 'rgba(52, 152, 219, 1)',
-                        borderWidth: 1,
-                        hoverBorderColor: 'rgba(52, 152, 219, 1)',
-                        hoverBorderWidth: 1.5
-                    }]
-                },
-                options: {
-                    title: {
-                        text: titleText
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    tooltips: {
-                        enabled: true,
-                        mode: 'single',
-                        callbacks: {
-                            label: function(tooltipItems, data) {
-                                return tooltipItems.yLabel + ' 元';
-                            }
-                        }
-                    }
-                }
-            });
-
-            var lineChart2015 = new Chart(line_ctx_2015, {
-                type: 'line',
-                data: {
-                    labels: yearKey,
-                    datasets: [{
-                        label: '支出',
-                        data: yearValue,
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: "rgba(52, 152, 219, 0.4)",
-                        borderColor: "rgba(52, 152, 219, 1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 6,
-                        pointHoverBackgroundColor: "rgba(52, 152, 219, 1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        spanGaps: false,
-                    }]
-                },
-                options: {
-                    title: {
-                        text: titleText
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    tooltips: {
-                        enabled: true,
-                        mode: 'single',
-                        callbacks: {
-                            label: function(tooltipItems, data) {
-                                return tooltipItems.yLabel + ' 元';
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-        var bar_ctx_2014 = document.getElementById('bar-chart-2014');
-        var line_ctx_2014 = document.getElementById('line-chart-2014');
-        $.getJSON('api/monthdatabyyear/2014', function(rsp) {
-            var yearamountData;
-            if (rsp.message === 0) {
-                yearamountData = rsp.data.data;
-                titleText = rsp.data.title;
-            } else {
-                yearamountData = {0: 0}
+      var lineChart2015 = new Chart(line_ctx_2015, {
+        type: 'line',
+        data: {
+          labels: yearKey,
+          datasets: [{
+            label: '支出',
+            data: yearValue,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: 'rgba(75,192,192,1)',
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: 'rgba(52, 152, 219, 1)',
+            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            spanGaps: false,
+          }]
+        },
+        options: {
+          // title: {
+          //   text: titleText
+          // },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+              label: function(tooltipItems, data) {
+                return tooltipItems.yLabel + ' 元'
+              }
             }
+          }
+        }
+      })
+    })
 
-            var yearKey = [];
-            var yearValue = [];
+    $.getJSON('api/monthdatabyyear/2014', function(rsp) {
+      if (rsp.message === 0) {
+        var yearamountData = rsp.data.data
+        var titleText = rsp.data.title
+      } else {
+        yearamountData = {
+          0: 0
+        }
+      }
 
-            _.each(yearamountData, function(value, key){
-                yearKey.push(key);
-                yearValue.push(value);
-            });
+      $('#bar-chart-2014-title').text(titleText)
+      $('#line-chart-2014-title').text(titleText)
 
-            var barChart2014 = new Chart(bar_ctx_2014, {
-                type: 'bar',
-                data: {
-                    labels: yearKey,
-                    datasets: [{
-                        label: '支出',
-                        data: yearValue,
-                        backgroundColor: 'rgba(52, 152, 219, 0.4)',
-                        borderColor: 'rgba(52, 152, 219, 1)',
-                        borderWidth: 1,
-                        hoverBorderColor: 'rgba(52, 152, 219, 1)',
-                        hoverBorderWidth: 1.5
-                    }]
-                },
-                options: {
-                    title: {
-                        text: titleText
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    tooltips: {
-                        enabled: true,
-                        mode: 'single',
-                        callbacks: {
-                            label: function(tooltipItems, data) {
-                                return tooltipItems.yLabel + ' 元';
-                            }
-                        }
-                    }
-                }
-            });
+      var yearKey = []
+      var yearValue = []
 
-            var lineChart2014 = new Chart(line_ctx_2014, {
-                type: 'line',
-                data: {
-                    labels: yearKey,
-                    datasets: [{
-                        label: '支出',
-                        data: yearValue,
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: "rgba(52, 152, 219, 0.4)",
-                        borderColor: "rgba(52, 152, 219, 1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 6,
-                        pointHoverBackgroundColor: "rgba(52, 152, 219, 1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        spanGaps: false,
-                    }]
-                },
-                options: {
-                    title: {
-                        text: titleText
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    tooltips: {
-                        enabled: true,
-                        mode: 'single',
-                        callbacks: {
-                            label: function(tooltipItems, data) {
-                                return tooltipItems.yLabel + ' 元';
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
+      _.each(yearamountData, function(value, key) {
+        yearKey.push(key)
+        yearValue.push(value)
+      })
+
+      var barChart2014 = new Chart(bar_ctx_2014, {
+        type: 'bar',
+        data: {
+          labels: yearKey,
+          datasets: [{
+            label: '支出',
+            data: yearValue,
+            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderWidth: 1,
+            hoverBorderColor: 'rgba(52, 152, 219, 1)',
+            hoverBorderWidth: 1.5
+          }]
+        },
+        options: {
+          // title: {
+          //   text: titleText
+          // },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+              label: function(tooltipItems, data) {
+                return tooltipItems.yLabel + ' 元'
+              }
+            }
+          }
+        }
+      })
+
+      var lineChart2014 = new Chart(line_ctx_2014, {
+        type: 'line',
+        data: {
+          labels: yearKey,
+          datasets: [{
+            label: '支出',
+            data: yearValue,
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: 'rgba(52, 152, 219, 0.4)',
+            borderColor: 'rgba(52, 152, 219, 1)',
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: 'rgba(75,192,192,1)',
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: 'rgba(52, 152, 219, 1)',
+            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            spanGaps: false,
+          }]
+        },
+        options: {
+          // title: {
+          //   text: titleText
+          // },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+              label: function(tooltipItems) {
+                return tooltipItems.yLabel + ' 元'
+              }
+            }
+          }
+        }
+      })
+    })
+    NProgress.done()
+  </script>
 {% endblock %}

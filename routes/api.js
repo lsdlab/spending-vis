@@ -24,8 +24,6 @@ getEntry(url).then(function(data) {
   }
 })
 
-// category summary utils
-const sortedCategory = utils.sortedCategory()
 
 /* 所有数据 for tables */
 router.get('/alldata', function(req, res) {
@@ -199,7 +197,7 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
         res.json({
           message: 0,
           data: {
-            title: req.params.year.toString() + ' 年支出 (百分比)',
+            title: req.params.year.toString() + ' 年各分类支出占比',
             data: formatedData
           }
         })
@@ -342,7 +340,7 @@ router.get('/pre5month', function(req, res) {
         res.json({
           message: 0,
           data: {
-            title: year + ' 年 ' + (month - 4).toString() + ' 至 ' + month.toString() + ' 月' + '最近五个月消费',
+            title: year + ' 年 ' + (month - 4).toString() + ' 至 ' + month.toString() + ' 月' + '最近五个月支出（元/月）',
             data: pre5monthData
           }
         })
@@ -447,7 +445,7 @@ router.get('/thismonthsummary', function(req, res) {
         res.json({
           message: 0,
           data: {
-            title: year.toString() + ' 年 ' + month.toString() + ' 月分类支出',
+            title: year.toString() + ' 年 ' + month.toString() + ' 月分类支出概要',
             data: formatedData
           }
         })

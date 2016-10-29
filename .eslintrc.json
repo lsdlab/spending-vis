@@ -27,5 +27,13 @@
             "never"
         ],
         "no-console": "off"
+    },
+    "globals": {
+        "$": true,
+        "_": true,
+        "Chart": true,
+        "notie": true,
+        "screenfull": true,
+        "NProgress": true
     }
 }
