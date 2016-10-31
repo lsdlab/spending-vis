@@ -4,7 +4,7 @@
   月支出
 {% endblock %}
 
-{% block js %}
+{% block head %}
   <script src="js/Chart.bundle.min.js"></script>
 {% endblock %}
 
@@ -255,7 +255,7 @@
             enabled: true,
             mode: 'single',
             callbacks: {
-              label: function(tooltipItems, data) {
+              label: function(tooltipItems) {
                 return tooltipItems.yLabel + ' 元'
               }
             }
@@ -305,7 +305,7 @@
             enabled: true,
             mode: 'single',
             callbacks: {
-              label: function(tooltipItems, data) {
+              label: function(tooltipItems) {
                 return tooltipItems.yLabel + ' 元'
               }
             }
@@ -364,7 +364,7 @@
             enabled: true,
             mode: 'single',
             callbacks: {
-              label: function(tooltipItems, data) {
+              label: function(tooltipItems) {
                 return tooltipItems.yLabel + ' 元'
               }
             }

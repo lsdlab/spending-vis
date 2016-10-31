@@ -1,32 +1,21 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Dashboard
-{% endblock %}
-
-{% block css %}
-{% endblock %}
-
-{% block js %}
-  <script src="js/Chart.bundle.js"></script>
+  Dashboard
 {% endblock %}
 
 {% block content %}
-
   {% include "partials/navbar.html" %}
 
   <div class="container mt20">
-      {% include "partials/flash.html" %}
+    {% include "partials/flash.html" %}
   </div>
-
   <div class="container" style="margin-bottom: 50px">
     <div class="jumbotron pt20 pl20 pr20 pb20 mb20">
       <h1>Spendingviz</h1>
       <p class="lead">个人资产管理<small>    就是一个记账的……</small></p>
-
       <p><a class="btn btn-lg btn-primary" href="/signup" role="button">开始使用</a></p>
     </div>
-
     <div class="row">
       <div class="col-md-4">
         <h3>数据可视化</h3>
@@ -37,7 +26,7 @@
         <h2>数据分析</h2>
         <p>自然语言处理、自动分类、财务报告</p>
         <p><a class="btn btn-info" href="#" role="button">查看详情 »</a></p>
-     </div>
+      </div>
       <div class="col-md-4">
         <h2>iOS App</h2>
         <p>iOS App 录入数据</p>
@@ -49,4 +38,3 @@
   {% include "partials/footer.html" %}
 
 {% endblock %}
-

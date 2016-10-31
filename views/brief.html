@@ -1,59 +1,70 @@
-{% extends 'layout.html' %} {% block title %} 概要 {% endblock %} {% block js %}
-<script src="js/Chart.bundle.min.js"></script>
-<script src="js/datatables/jquery.dataTables.min.js"></script>
-<script src="js/datatables/dataTables.bootstrap.min.js"></script>
-{% endblock %} {% block content %} {% include "partials/navbar.html" %}
-<div class="container">
-  {% include "partials/flash.html" %}
-</div>
-<div class="container mt10 pln prn" id="charts-container">
-  <div class="page-header">
-    <h6>可视化 - 概要<small></small></h6>
+{% extends 'layout.html' %}
+
+{% block title %}
+  概要
+{% endblock %}
+
+{% block head %}
+  <script src="js/Chart.bundle.min.js"></script>
+  <script src="js/datatables/jquery.dataTables.min.js"></script>
+  <script src="js/datatables/dataTables.bootstrap.min.js"></script>
+{% endblock %}
+
+{% block content %}
+  {% include "partials/navbar.html" %}
+  <div class="container">
+    {% include "partials/flash.html" %}
   </div>
-  <div class="col-md-6">
-    <div class="panel panel-info">
-      <div class="panel-heading">最近五个月支出</div>
-      <div class="panel-body">
-        <canvas id="line-pre5month"></canvas>
+  <div class="container mt10 pln prn" id="charts-container">
+    <div class="page-header">
+      <h6>可视化 - 概要<small></small></h6>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-info">
+        <div class="panel-heading">最近五个月支出</div>
+        <div class="panel-body">
+          <canvas id="line-pre5month"></canvas>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-info">
-      <div class="panel-heading">当月 CPI</div>
-      <div class="panel-body">
-        <canvas id="pie-this-month"></canvas>
+    <div class="col-md-6">
+      <div class="panel panel-info">
+        <div class="panel-heading">当月 CPI</div>
+        <div class="panel-body">
+          <canvas id="pie-this-month"></canvas>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-info">
-      <div class="panel-heading" id="category-list-title">各分类支出概要</div>
-      <ul class="list-group" id="category-list">
-      </ul>
+    <div class="col-md-6">
+      <div class="panel panel-info">
+        <div class="panel-heading" id="category-list-title">各分类支出概要</div>
+        <ul class="list-group" id="category-list">
+        </ul>
+      </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="panel panel-info">
-      <div class="panel-heading" id="category-list-max-six-title">金额最大六笔支出</div>
-      <ul class="list-group" id="category-list-max-six">
-      </ul>
+    <div class="col-md-6">
+      <div class="panel panel-info">
+        <div class="panel-heading" id="category-list-max-six-title">金额最大六笔支出</div>
+        <ul class="list-group" id="category-list-max-six">
+        </ul>
+      </div>
     </div>
-  </div>
-  <div class="col-md-12" id="table-container">
-    <div class="panel panel-info">
-      <div class="panel-heading">当月支出详细表格</div>
-      <div class="panel-body">
-        <div id="table-row">
-          <div class="col-md-12 center-block">
-            <table id="myTables" class="table table-bordered" cellspacing="0" width="100%"></table>
+    <div class="col-md-12" id="table-container">
+      <div class="panel panel-info">
+        <div class="panel-heading">当月支出详细表格</div>
+        <div class="panel-body">
+          <div id="table-row">
+            <div class="col-md-12 center-block">
+              <table id="myTables" class="table table-bordered" cellspacing="0" width="100%"></table>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-{% endblock %} {% block pagejs %}
+{% endblock %}
+
+{% block pagejs %}
   <script>
     Chart.defaults.global.legend.display = false
     Chart.defaults.global.responsive = true

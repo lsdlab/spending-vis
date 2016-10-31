@@ -58,5 +58,4 @@ build/Release
 node_modules
 
 
-.env.development
-.env.production
+.env
