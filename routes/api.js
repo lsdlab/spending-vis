@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const router = express.Router()
 
@@ -6,12 +7,7 @@ const MongoClient = require('mongodb').MongoClient
 const _ = require('underscore')
 const Q = require('q')
 
-const utils = require('../utils/utils')
-
-const dotenv = require('dotenv')
-dotenv.load({
-  path: '.env.development'
-})
+require('../utils/utils')
 
 // GET MongoDB collection [entry]
 const url = process.env.MONGODB_URI
@@ -28,7 +24,7 @@ getEntry(url).then(function(data) {
 /* 所有数据 for tables */
 router.get('/alldata', function(req, res) {
   if (entry['message'] !== 1) {
-    entry.find({}).toArray(function(err, doc) {
+    entry.find({}, {'_id':0,'day':0, 'month':0, 'year':0, 'timestamp':0, 'cpi_index':0}).toArray(function(err, doc) {
       if (doc != null) {
         res.json({
           message: 0,
@@ -324,25 +320,34 @@ router.get('/pre5month', function(req, res) {
   if (entry['message'] !== 1) {
     entry.find({
       'year': year.toString(),
-      'month': { '$gte': (month - 4).toString(), '$lte': month.toString() }
-    }).toArray(function(err, doc) {
-      if (doc != null) {
-        var pre5monthData = _.reduce(doc, function(allmonths, item) {
-          var dataKey
-          dataKey = item.year + '-' + item.month
-          if (allmonths[dataKey]) {
-            allmonths[dataKey] = allmonths[dataKey].add(item.amount)
-          } else {
-            allmonths[dataKey] = item.amount
-          }
-          return allmonths
-        }, {})
-        res.json({
-          message: 0,
-          data: {
-            title: year + ' 年 ' + (month - 4).toString() + ' 至 ' + month.toString() + ' 月' + '最近五个月支出（元/月）',
-            data: pre5monthData
-          }
+      'month': { '$gte': (month - 4).toString()}
+    }).toArray(function(err, doc0) {
+      if (doc0 != null) {
+        entry.find({
+          'year': year.toString(),
+          'month': month.toString()
+        }).toArray(function(err, doc1) {
+          var doc = _.extend(doc0, doc1)
+          var pre5monthData = _.reduce(doc, function(allmonths, item) {
+            var dataKey
+            dataKey = item.year + '-' + item.month
+            if (allmonths[dataKey]) {
+              allmonths[dataKey] = allmonths[dataKey].add(item.amount)
+            } else {
+              allmonths[dataKey] = item.amount
+            }
+            return allmonths
+          }, {})
+
+          // TODO
+
+          res.json({
+            message: 0,
+            data: {
+              title: year + ' 年 ' + (month - 4).toString() + ' 至 ' + month.toString() + ' 月' + '最近五个月支出（元/月）',
+              data: pre5monthData
+            }
+          })
         })
       } else {
         res.json({
@@ -435,12 +440,12 @@ router.get('/thismonthsummary', function(req, res) {
         }, {})
 
         var formatedData = {}
-        formatedData['食品'] = reducedData['食品']
-        formatedData['穿'] = reducedData['穿']
-        formatedData['居住'] = reducedData['居住']
-        formatedData['交通通信'] = reducedData['交通通信']
-        formatedData['教育'] = reducedData['教育']
-        formatedData['文化娱乐'] = reducedData['文化娱乐']
+        formatedData['食品'] = reducedData['食品'] || 0
+        formatedData['穿'] = reducedData['穿'] || 0
+        formatedData['居住'] = reducedData['居住'] || 0
+        formatedData['交通通信'] = reducedData['交通通信'] || 0
+        formatedData['教育'] = reducedData['教育'] || 0
+        formatedData['文化娱乐'] = reducedData['文化娱乐'] || 0
 
         res.json({
           message: 0,
@@ -523,7 +528,7 @@ router.get('/thismonthtable', function(req, res) {
     entry.find({
       'year': year.toString(),
       'month': month.toString()
-    }).toArray(function(err, doc) {
+    }, {'_id':0,'day':0, 'month':0, 'year':0, 'timestamp':0, 'cpi_index':0}).toArray(function(err, doc) {
       if (doc != null) {
         res.json({
           message: 0,

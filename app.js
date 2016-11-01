@@ -7,42 +7,20 @@ const bodyParser = require('body-parser')
 const nunjucks = require('nunjucks')
 
 const indexRouter = require('./routes/index')
-const userRouter = require('./routes/user')
 const apiRouter = require('./routes/api')
 
 // dependencies
-const dotenv = require('dotenv')
+require('dotenv').config()
+require('nodejs-dashboard')
 const chalk = require('chalk')
-const expressValidator = require('express-validator')
-const mongoose = require('mongoose')
-const session = require('express-session')
-const MongoStore = require('connect-mongo/es5')(session)
-const lusca = require('lusca')
 const flash = require('express-flash')
-const passport = require('passport')
+const pg = require('pg')
+const session = require('express-session')
+const pgSession = require('connect-pg-simple')(session)
+const expressValidator = require('express-validator')
+const lusca = require('lusca')
 const multer = require('multer')
 const upload = multer({ dest: path.join(__dirname, 'uploads') })
-require('nodejs-dashboard')
-
-
-/**
- * Load environment variables from .env file, where API keys and passwords are configured.
- */
-dotenv.load({
-  path: '.env.development'
-})
-
-/**
- * mongoose connect to MongoDB.
- */
-mongoose.connect(process.env.MONGODB_URI)
-mongoose.connection.on('connected', () => {
-  console.log('%s MongoDB connection established!', chalk.blue('✓'))
-})
-mongoose.connection.on('error', () => {
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'))
-  process.exit()
-})
 
 
 /**
@@ -74,49 +52,33 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-
+// app.use(flash())
+// app.use(session({
+//   store: new pgSession({
+//     pg : pg,                                  // Use global pg-module
+//     conString : process.env.FOO_DATABASE_URL, // Connect using something else than default DATABASE_URL env variable
+//     tableName : 'user_sessions'               // Use another table-name than the default "session" one
+//   }),
+//   secret: process.env.FOO_COOKIE_SECRET,
+//   resave: true,
+//   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+// }))
 app.use(expressValidator())
-app.use(session({
-  secret: process.env.MONGODB_SECRET,
-  saveUninitialized: true,
-  resave: true,
-  store: new MongoStore({
-    url: process.env.MONGODB_URI
-  })
-}))
-
 app.use(lusca({
   xframe: 'SAMEORIGIN',
   xssProtection: true,
   nosniff: true
 }))
-app.use(flash())
-app.use(passport.initialize())
-app.use(passport.session())
 app.use(function(req, res, next) {
   res.locals.user = req.user
   app.locals._ = require('underscore')
-  next()
-})
-
-app.use(function(req, res, next) {
-  // After successful login, redirect back to the intended page
-  if (!req.user &&
-    req.path !== '/login' &&
-    req.path !== '/signup' &&
-    !req.path.match(/^\/auth/) &&
-    !req.path.match(/\./)) {
-    req.session.returnTo = req.path
-  }
   next()
 })
 app.post('/profile/upload', upload.single('avatar'), function(req, res, next) {
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any
 })
-
 app.use('/', indexRouter)
-app.use('/', userRouter)
 app.use('/api', apiRouter)
 
 // catch 404 and forward to error handler
