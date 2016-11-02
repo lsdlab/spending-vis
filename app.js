@@ -52,17 +52,17 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// app.use(flash())
-// app.use(session({
-//   store: new pgSession({
-//     pg : pg,                                  // Use global pg-module
-//     conString : process.env.FOO_DATABASE_URL, // Connect using something else than default DATABASE_URL env variable
-//     tableName : 'user_sessions'               // Use another table-name than the default "session" one
-//   }),
-//   secret: process.env.FOO_COOKIE_SECRET,
-//   resave: true,
-//   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-// }))
+app.use(flash())
+app.use(session({
+  store: new pgSession({
+    pg : pg,                                  // Use global pg-module
+    conString : process.env.POSTGRESQL_URL, // Connect using something else than default DATABASE_URL env variable
+    tableName : 'user_sessions'               // Use another table-name than the default "session" one
+  }),
+  secret: process.env.FOO_COOKIE_SECRET,
+  resave: true,
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+}))
 app.use(expressValidator())
 app.use(lusca({
   xframe: 'SAMEORIGIN',

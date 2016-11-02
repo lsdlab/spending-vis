@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('../utils/utils')
 const express = require('express')
 const router = express.Router()
 
@@ -7,7 +8,6 @@ const MongoClient = require('mongodb').MongoClient
 const _ = require('underscore')
 const Q = require('q')
 
-require('../utils/utils')
 
 // GET MongoDB collection [entry]
 const url = process.env.MONGODB_URI
@@ -24,7 +24,7 @@ getEntry(url).then(function(data) {
 /* 所有数据 for tables */
 router.get('/alldata', function(req, res) {
   if (entry['message'] !== 1) {
-    entry.find({}, {'_id':0,'day':0, 'month':0, 'year':0, 'timestamp':0, 'cpi_index':0}).toArray(function(err, doc) {
+    entry.find({}, {'_id':0, 'day':0, 'month':0, 'year':0, 'timestamp':0, 'cpi_index':0}).toArray(function(err, doc) {
       if (doc != null) {
         res.json({
           message: 0,
@@ -528,7 +528,7 @@ router.get('/thismonthtable', function(req, res) {
     entry.find({
       'year': year.toString(),
       'month': month.toString()
-    }, {'_id':0,'day':0, 'month':0, 'year':0, 'timestamp':0, 'cpi_index':0}).toArray(function(err, doc) {
+    }, {'_id':0, 'day':0, 'month':0, 'year':0, 'timestamp':0, 'cpi_index':0}).toArray(function(err, doc) {
       if (doc != null) {
         res.json({
           message: 0,

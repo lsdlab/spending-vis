@@ -30,7 +30,6 @@
     "marked": "^0.3.6",
     "mongodb": "^2.2.11",
     "morgan": "^1.7.0",
-    "multer": "^1.2.0",
     "nunjucks": "^2.5.2",
     "oauth2orize": "^1.5.1",
     "pg": "^6.1.0",
