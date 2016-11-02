@@ -19,8 +19,6 @@ const session = require('express-session')
 const pgSession = require('connect-pg-simple')(session)
 const expressValidator = require('express-validator')
 const lusca = require('lusca')
-const multer = require('multer')
-const upload = multer({ dest: path.join(__dirname, 'uploads') })
 
 
 /**
@@ -57,9 +55,8 @@ app.use(session({
   store: new pgSession({
     pg : pg,                                  // Use global pg-module
     conString : process.env.POSTGRESQL_URL, // Connect using something else than default DATABASE_URL env variable
-    tableName : 'user_sessions'               // Use another table-name than the default "session" one
   }),
-  secret: process.env.FOO_COOKIE_SECRET,
+  secret: process.env.POSTGRESQL_SECRET,
   resave: true,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
 }))
@@ -73,10 +70,6 @@ app.use(function(req, res, next) {
   res.locals.user = req.user
   app.locals._ = require('underscore')
   next()
-})
-app.post('/profile/upload', upload.single('avatar'), function(req, res, next) {
-  // req.file is the `avatar` file
-  // req.body will hold the text fields, if there were any
 })
 app.use('/', indexRouter)
 app.use('/api', apiRouter)
