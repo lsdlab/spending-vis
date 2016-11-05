@@ -57,6 +57,7 @@ app.use(session({
     conString : process.env.POSTGRESQL_URL, // Connect using something else than default DATABASE_URL env variable
   }),
   secret: process.env.POSTGRESQL_SECRET,
+  saveUninitialized: true,
   resave: true,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
 }))
