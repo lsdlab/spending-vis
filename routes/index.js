@@ -42,18 +42,13 @@ router.get('/new', function(req, res) {
 
 /* POST new page. */
 router.post('/new', function(req, res) {
-  req.assert('cpi_text', '必须选择分类').notEmpty()
+  req.assert('cpi', '必须选择分类').notEmpty()
   req.assert('time', '必须选择时间').notEmpty()
   req.assert('amount', '必须输入金额').notEmpty()
   req.assert('amount', '金额必须为数字').isInt()
   req.assert('note', '必须输入备注').notEmpty()
 
-  var errors = req.validationErrors()
-
-  if (errors) {
-    req.flash('errors', errors)
-    return res.redirect('/new')
-  }
+  var error = req.validationErrors()[0]
 
   var cpi_index_and_text = req.body.cpi.split(':')
   var cpi_index = cpi_index_and_text[0].trim()
@@ -61,8 +56,18 @@ router.post('/new', function(req, res) {
   var time = req.body.time
   var amount = req.body.amount
   var note = req.body.note
-  db.one('INSERT INTO entry(cpi_index, cpi_text, date, amount, note) values($1, $2, $3, $4, $5) returning id',
-    [cpi_index, cpi_text, time, amount, note ])
+
+  if (error) {
+    req.flash('errors', error)
+    res.render('new', {
+      cpi: cpi_index + ': ' + cpi_text,
+      time: time,
+      amount: amount,
+      note: note
+    })
+  }
+
+  db.one('INSERT INTO entry(cpi_index, cpi_text, date, amount, note) values($1, $2, $3, $4, $5) returning id', [cpi_index, cpi_text, time, amount, note])
     .then(function(data) {
       req.flash('success', { msg: '保存成功' })
       return res.redirect('/new')
