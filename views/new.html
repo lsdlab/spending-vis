@@ -25,9 +25,9 @@
     <form action="/new" method="POST" class="form-horizontal">
       <input type="hidden" name="_csrf" value=_csrf />
       <div class="form-group">
-        <label for="cpi_text" class="col-sm-3 control-label">分类</label>
+        <label for="cpi" class="col-sm-3 control-label">分类</label>
         <div class="col-sm-7">
-          <input type="text" name="cpi_text" id="cpi_text" class="form-control" value="" />
+          <input type="text" name="cpi" id="cpi" class="form-control" value="" />
         </div>
       </div>
       <div class="form-group">
@@ -67,11 +67,15 @@
       format: 'L'
     })
 
-    $.get('api/cpi_index_and_cpi_text', function(data){
-      $('#cpi_text').typeahead({ source: data.data })
+    $.get('api/alcpi', function(data){
+      $('#cpi').typeahead({ source: data.data })
     },'json')
 
-    $.get('api/notes', function(data){
+    $.get('api/allamount', function(data){
+      $('#amount').typeahead({ source: data.data })
+    },'json')
+
+    $.get('api/allnotes', function(data){
       $('#note').typeahead({ source: data.data })
     },'json')
 

@@ -5,7 +5,6 @@ const router = express.Router()
 
 const db = require('./db')
 const _ = require('underscore')
-const Q = require('q')
 
 
 /* 所有数据 for tables */
@@ -461,7 +460,7 @@ router.get('/thismonthtable', function(req, res) {
 })
 
 /* cpi_text and cpi_index for new */
-router.get('/cpi_index_and_cpi_text', function(req, res) {
+router.get('/alcpi', function(req, res) {
   res.json({
     message: 0,
     data: ['0: 食品', '1: 穿', '2: 居住', '3: 交通通信', '4: 教育', '5: 娱乐通信']
@@ -469,22 +468,46 @@ router.get('/cpi_index_and_cpi_text', function(req, res) {
 })
 
 
-
-/* cpi_text and cpi_index for new */
-router.get('/notes', function(req, res) {
+/* all amount for new */
+router.get('/allamount', function(req, res) {
   db.any('SELECT * FROM entry')
     .then(function(data) {
-      var notes = _.map(data, function(item){
+      var allamount = _.map(data, function(item){
+        return item['amount']
+      })
+
+      var obj = {}
+      allamount.forEach(function(id){obj[id] = true})
+      allamount = Object.keys(obj)
+
+      res.json({
+        message: 0,
+        data: allamount
+      })
+    })
+    .catch(function(error) {
+      res.json({
+        message: 1,
+      })
+    })
+})
+
+
+/* all notes for new */
+router.get('/allnotes', function(req, res) {
+  db.any('SELECT * FROM entry')
+    .then(function(data) {
+      var allnotes = _.map(data, function(item){
         return item['note']
       })
 
       var obj = {}
-      notes.forEach(function(id){obj[id] = true})
-      notes = Object.keys(obj)
+      allnotes.forEach(function(id){obj[id] = true})
+      allnotes = Object.keys(obj)
 
       res.json({
         message: 0,
-        data: notes
+        data: allnotes
       })
     })
     .catch(function(error) {

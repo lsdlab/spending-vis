@@ -55,8 +55,7 @@ router.post('/new', function(req, res) {
     return res.redirect('/new')
   }
 
-  // TODO
-  var cpi_index_and_text = req.body.cpi_text.split(':')
+  var cpi_index_and_text = req.body.cpi.split(':')
   var cpi_index = cpi_index_and_text[0].trim()
   var cpi_text = cpi_index_and_text[1].trim()
   var time = req.body.time
