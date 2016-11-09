@@ -460,5 +460,40 @@ router.get('/thismonthtable', function(req, res) {
     })
 })
 
+/* cpi_text and cpi_index for new */
+router.get('/cpi_index_and_cpi_text', function(req, res) {
+  res.json({
+    message: 0,
+    data: ['0: 食品', '1: 穿', '2: 居住', '3: 交通通信', '4: 教育', '5: 娱乐通信']
+  })
+})
+
+
+
+/* cpi_text and cpi_index for new */
+router.get('/notes', function(req, res) {
+  db.any('SELECT * FROM entry')
+    .then(function(data) {
+      var notes = _.map(data, function(item){
+        return item['note']
+      })
+
+      var obj = {}
+      notes.forEach(function(id){obj[id] = true})
+      notes = Object.keys(obj)
+
+      res.json({
+        message: 0,
+        data: notes
+      })
+    })
+    .catch(function(error) {
+      res.json({
+        message: 1,
+      })
+    })
+})
+
+
 
 module.exports = router

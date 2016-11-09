@@ -34,6 +34,7 @@
         "Chart": true,
         "notie": true,
         "screenfull": true,
-        "NProgress": true
+        "NProgress": true,
+        "moment": true
     }
 }
