@@ -468,31 +468,6 @@ router.get('/alcpi', function(req, res) {
 })
 
 
-/* all amount for new */
-router.get('/allamount', function(req, res) {
-  db.any('SELECT * FROM entry')
-    .then(function(data) {
-      var allamount = _.map(data, function(item){
-        return item['amount']
-      })
-
-      var obj = {}
-      allamount.forEach(function(id){obj[id] = true})
-      allamount = Object.keys(obj)
-
-      res.json({
-        message: 0,
-        data: allamount
-      })
-    })
-    .catch(function(error) {
-      res.json({
-        message: 1,
-      })
-    })
-})
-
-
 /* all notes for new */
 router.get('/allnotes', function(req, res) {
   db.any('SELECT * FROM entry')

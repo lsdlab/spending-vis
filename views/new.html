@@ -6,15 +6,14 @@
 
 {% block head %}
   <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
-  <script src="js/moment-with-locales.min.js"></script>
-  <script src="js/bootstrap-datetimepicker.min.js"></script>
-  <script src="js/bootstrap3-typeahead.min.js"></script>
+  <script src="js/new/moment.min.js"></script>
+  <script src="js/new/zh-cn.js"></script>
+  <script src="js/new/bootstrap-datetimepicker.min.js"></script>
+  <script src="js/new/bootstrap3-typeahead.min.js"></script>
 {% endblock %}
 
 {% block content %}
-
   {% include "partials/navbar.html" %}
-
   <div class="container mt10">
     {% include "partials/flash.html" %}
   </div>
@@ -22,7 +21,7 @@
     <div class="page-header">
       <h6>新记录<small>    </small></h6>
     </div>
-    <form action="/new" method="POST" class="form-horizontal">
+    <form action="/new" method="POST" class="form-horizontal mt20">
       <input type="hidden" name="_csrf" value=_csrf />
       <div class="form-group">
         <label for="cpi" class="col-sm-3 control-label">分类</label>
@@ -61,23 +60,21 @@
 
 {% block pagejs %}
   <script>
+    NProgress.start()
     $('#time').datetimepicker({
       defaultDate: moment().format('YYYY-MM-DD'),
       locale: 'zh-cn',
       format: 'L'
     })
 
+
     $.get('api/alcpi', function(data){
       $('#cpi').typeahead({ source: data.data })
-    },'json')
-
-    $.get('api/allamount', function(data){
-      $('#amount').typeahead({ source: data.data })
     },'json')
 
     $.get('api/allnotes', function(data){
       $('#note').typeahead({ source: data.data })
     },'json')
-
+    NProgress.done()
   </script>
 {% endblock %}

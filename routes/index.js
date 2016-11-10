@@ -70,7 +70,7 @@ router.post('/new', function(req, res) {
   db.one('INSERT INTO entry(cpi_index, cpi_text, date, amount, note) values($1, $2, $3, $4, $5) returning id', [cpi_index, cpi_text, time, amount, note])
     .then(function(data) {
       req.flash('success', { msg: '保存成功' })
-      return res.redirect('/new')
+      return res.redirect('/tables')
     })
     .catch(function(error) {
       console.log(error)

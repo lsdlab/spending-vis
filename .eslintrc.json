@@ -32,6 +32,7 @@
         "$": true,
         "_": true,
         "Chart": true,
+        "echarts": true,
         "notie": true,
         "screenfull": true,
         "NProgress": true,
