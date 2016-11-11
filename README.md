@@ -18,7 +18,7 @@ Visualize my daily spending data to tables some charts.(WIP)
 ### 2016/7/26
 用 datatables 的表格基本完成了。
 
-![表格](https://breakwire.me/images/tables.png)
+![表格](https://breakwire.me/images/spendingviz/tables.png)
 
 ### 2016/8/6
 以年、月为单位的统计条形图和折线图基本完成了，处理数据的地方写死了在里面，虽然也不慢，但代码太丑，需要重写。要不就凑合用着，等第一版完成后用 Python 重写的时候再考虑数据该怎么存的问题。
@@ -27,20 +27,33 @@ Visualize my daily spending data to tables some charts.(WIP)
 
 Webpack 还是没研究出来，抽空好好看看。
 
-![年](http://o81quvr4u.bkt.clouddn.com/charts-year.png)
-![月](http://o81quvr4u.bkt.clouddn.com/charts-month.png)
+![年](https://breakwire.me/images/spendingviz/charts-year.png)
+![月](https://breakwire.me/images/spendingviz/charts-month.png)
 
 ### 2016/8/14
 分类饼图做了一点，但是 Charts.JS 不能直接在饼图每个部分上显示文字，搜了一些办法都不行，准备饼图用 ECharts 单独做，雷达图和散点图还是用 Charts.JS 做。
 
-![年分类](https://breakwire.me/images/charts-category-year.png)
-![季度分类](https://breakwire.me/images/charts-category-quarter.png)
+![年分类](https://breakwire.me/images/spendingviz/charts-category-year.png)
+![季度分类](https://breakwire.me/images/spendingviz/charts-category-quarter.png)
 
 ### 2016/9/25
 
 概要页面完成
-![概要](https://breakwire.me/images/brief1.png)
-![概要](https://breakwire.me/images/brief3.png)
+![概要](https://breakwire.me/images/spendingviz/brief1.png)
+![概要](https://breakwire.me/images/spendingviz/brief2.png)
+
+### 2016/11/12
+
+新记录页面完成，暂时就现在网页上添加记录；关键词词云页面完成，把饼图全用 echarts 渲染，好看多了，也差不多了，现在可以自己用用，然后用 Python + Flask + Vue 重写，加上数据处理的功能，自然语言搜索统计出我要的结果，不用写死这些固定的统计项目，这个地方要多花点时间，然后再考虑做 iOS 应用。
+
+
+
+![新记录](https://breakwire.me/images/spendingviz/new.png)
+
+![新记录](https://breakwire.me/images/spendingviz/charts-category-year-echarts.png)
+
+![新记录](https://breakwire.me/images/spendingviz/keyword-wordcloud.png)
+
 
 
 ## LICENSE
