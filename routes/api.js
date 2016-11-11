@@ -141,13 +141,6 @@ router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
         return months
       }, {})
 
-      var totalAmount = _.reduce(reducedData, function(memo, value) {
-        return memo.add(value)
-      }, 0)
-      _.each(reducedData, function(value, key) {
-        reducedData[key] = value.div(totalAmount).mul(100).toFixed(2)
-      })
-
       var formatedData = {}
       formatedData['食品'] = reducedData['食品']
       formatedData['穿'] = reducedData['穿']
@@ -207,14 +200,6 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
         reducedList.push(reducedData)
       })
 
-      var totalAmountData = {}
-      _.each(reducedList, function(value, key) {
-        var yearlyAmount = _.reduce(value, function(memo, value) {
-          return memo.add(value)
-        }, 0)
-        totalAmountData[key + 1] = yearlyAmount
-      })
-
       var unformatQuarterData = []
       _.each(reducedList, function(value) {
         if (value != {}) {
@@ -227,18 +212,6 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
           formatedData['文化娱乐'] = value['文化娱乐']
           unformatQuarterData.push(formatedData)
         }
-      })
-
-      var unformatQuarterPercentData = []
-      _.each(unformatQuarterData, function(value, key) {
-        var formatQuarterDataItem = {}
-        _.each(value, function(value1, key1) {
-          if (value1) {
-            formatQuarterDataItem[key1] = value1.div(totalAmountData[key + 1]).mul(100).toFixed(2)
-          }
-
-        })
-        unformatQuarterPercentData.push(formatQuarterDataItem)
       })
 
       var quarterPercentData = []
@@ -266,11 +239,11 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
 })
 
 
-/* 最近复五个月每月总支出 for brief */
+/* 最近五个月每月总支出 for last-month-brief */
 router.get('/pre5month', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
-  var month = myDate.getMonth() // TODO 网页输入还没做，只统计到上个月 这里不加一
+  var month = myDate.getMonth()
   if (month <= 4) {
     month = month + 12 - 4
     year = year - 1
@@ -304,8 +277,8 @@ router.get('/pre5month', function(req, res) {
 })
 
 
-/* 当月 CPI for brief */
-router.get('/thismonthpercent', function(req, res) {
+/* 上月 CPI for last-month-brief */
+router.get('/lastmonthcpi', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -320,20 +293,13 @@ router.get('/thismonthpercent', function(req, res) {
         return months
       }, {})
 
-      var totalAmount = _.reduce(reducedData, function(memo, value) {
-        return memo.add(value)
-      }, 0)
-      _.each(reducedData, function(value, key) {
-        reducedData[key] = value.div(totalAmount).mul(100).toFixed(2)
-      })
-
       var formatedData = {}
-      formatedData['食品'] = reducedData['食品']
-      formatedData['穿'] = reducedData['穿']
-      formatedData['居住'] = reducedData['居住']
-      formatedData['交通通信'] = reducedData['交通通信']
-      formatedData['教育'] = reducedData['教育']
-      formatedData['文化娱乐'] = reducedData['文化娱乐']
+      formatedData['食品'] = reducedData['食品'] || '0'
+      formatedData['穿'] = reducedData['穿'] || '0'
+      formatedData['居住'] = reducedData['居住'] || '0'
+      formatedData['交通通信'] = reducedData['交通通信'] || '0'
+      formatedData['教育'] = reducedData['教育'] || '0'
+      formatedData['文化娱乐'] = reducedData['文化娱乐'] || '0'
 
       res.json({
         message: 0,
@@ -351,7 +317,7 @@ router.get('/thismonthpercent', function(req, res) {
 })
 
 
-/* 当月分类支出金额 for brief */
+/* 上月分类支出金额 for last-month-brief */
 router.get('/thismonthsummary', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
@@ -391,8 +357,8 @@ router.get('/thismonthsummary', function(req, res) {
 })
 
 
-/* 当月最大六笔支出 */
-router.get('/thismonthmaxsix', function(req, res) {
+/* 上月最大六笔支出 for last-month-brief */
+router.get('/lastmonthmaxsix', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -432,14 +398,14 @@ router.get('/thismonthmaxsix', function(req, res) {
     })
 })
 
-/* 当月所有数据 for brief */
-router.get('/thismonthtable', function(req, res) {
+/* 上月所有数据 for last-month-brief */
+router.get('/lastmonthdata', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
   db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2', [year, month])
     .then(function(data) {
-      var alldata = _.map(data, function(item) {
+      var lastmonthdata = _.map(data, function(item) {
         return {
           'cpi_text': item['cpi_text'],
           'date': item['date'].getFullYear() + '/' + (item['date'].getMonth() + 1) + '/' + item['date'].getDate(),
@@ -449,7 +415,10 @@ router.get('/thismonthtable', function(req, res) {
       })
       res.json({
         message: 0,
-        data: alldata
+        data: {
+          title: year.toString() + ' 年 ' + month.toString() + ' 支出详细表格',
+          data: lastmonthdata
+        }
       })
     })
     .catch(function(error) {

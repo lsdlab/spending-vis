@@ -1,11 +1,12 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-  概要
+  上月概要
 {% endblock %}
 
 {% block head %}
   <script src="js/Chart.bundle.min.js"></script>
+  <script src="js/echarts.pie.min.js"></script>
   <script src="js/datatables/jquery.dataTables.min.js"></script>
   <script src="js/datatables/dataTables.bootstrap.min.js"></script>
 {% endblock %}
@@ -17,22 +18,20 @@
   </div>
   <div class="container mt10 pln prn" id="charts-container">
     <div class="page-header">
-      <h6>可视化 - 概要<small></small></h6>
+      <h6>可视化 - 上月概要<small></small></h6>
     </div>
     <div class="col-md-6">
       <div class="panel panel-info">
-        <div class="panel-heading">最近五个月支出</div>
-        <div class="panel-body">
+        <div class="panel-heading" id="line-pre5month-title">最近五个月支出</div>
+        <div class="panel-body" id="left-panel-height">
           <canvas id="line-pre5month"></canvas>
         </div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="panel panel-info">
-        <div class="panel-heading">当月 CPI</div>
-        <div class="panel-body">
-          <canvas id="pie-this-month"></canvas>
-        </div>
+        <div class="panel-heading" id="pie-last-month-title">CPI</div>
+          <div id="pie-last-month"></div>
       </div>
     </div>
     <div class="col-md-6">
@@ -44,20 +43,23 @@
     </div>
     <div class="col-md-6">
       <div class="panel panel-info">
-        <div class="panel-heading" id="category-list-max-six-title">金额最大六笔支出</div>
-        <ul class="list-group" id="category-list-max-six">
+        <div class="panel-heading" id="last-month-max-six-title">金额最大六笔支出</div>
+        <ul class="list-group" id="last-month-max-six">
         </ul>
       </div>
     </div>
     <div class="col-md-12" id="table-container">
       <div class="panel panel-info">
-        <div class="panel-heading">当月支出详细表格</div>
-        <div class="panel-body">
+        <div class="panel-heading" id="last-month-table-title">支出详细表格</div>
+        <div class="panel-body" id="table-row">
           <div id="table-row">
             <div class="col-md-12 center-block">
-              <table id="myTables" class="table table-bordered" cellspacing="0" width="100%"></table>
+              <table id="last-month-table" class="table table-bordered" cellspacing="0" width="100%"></table>
             </div>
           </div>
+        </div>
+        <div class="container" id="table-notify">
+          <p class="mt5">请在桌面浏览器或 iPad 浏览器上查看表格以获得更佳体验。</p>
         </div>
       </div>
     </div>
@@ -80,9 +82,17 @@
     Chart.defaults.global.tooltips.enabled = true
     Chart.defaults.global.tooltips.mode = 'single'
 
+    var colorList = ['rgb(231,76,60)', 'rgb(26,188,156)', 'rgb(46,204,113)', 'rgb(243,156,18)', 'rgb(52,152,219)', 'rgb(155,89,182)']
+    var shadowcolorList = ['rgb(231,76,60, 0.5)', 'rgb(26,188,156, 0.5)', 'rgb(46,204,113, 0.5)', 'rgb(243,156,18, 0.5)', 'rgb(52,152,219, 0.5)', 'rgb(155,89,182, 0.5)']
     var line_ctx_pre5month = document.getElementById('line-pre5month')
-    var colorList = ['#E74C3C', '#1ABC9C', '#2ECC71', '#F39C12', '#3498DB', '#9B59B6']
-    var pie_ctx_this_month = document.getElementById('pie-this-month')
+    var colorMatch = {
+      '食品': '#E74C3C',
+      '穿': '#1ABC9C',
+      '居住': '#2ECC71',
+      '交通通信': '#F39C12',
+      '教育': '#3498DB',
+      '文化娱乐': '#9B59B6'
+    }
 
     NProgress.start()
     $.getJSON('api/pre5month', function(rsp) {
@@ -100,6 +110,8 @@
         yearsKey.push(key)
         yearsValue.push(value)
       })
+
+      $('#line-pre5month-title').text(titleText)
 
       var lineChartPre5Month = new Chart(line_ctx_pre5month, {
         type: 'line',
@@ -129,9 +141,6 @@
           }]
         },
         options: {
-          title: {
-            text: titleText
-          },
           scales: {
             yAxes: [{
               ticks: {
@@ -150,9 +159,13 @@
           }
         }
       })
+
+      var matchHeight = $('#left-panel-height').css('height')
+      $('#pie-last-month').css('height', matchHeight)
     })
 
-    $.getJSON('api/thismonthpercent', function(rsp) {
+    $.getJSON('api/lastmonthcpi', function(rsp) {
+      var pie_last_month = echarts.init(document.getElementById('pie-last-month'), 'macarons')
       if (rsp.message === 0) {
         var yearsData = rsp.data.data
         var titleText = rsp.data.title
@@ -168,31 +181,122 @@
         yearsValue.push(value)
       })
 
-      var data = {
-        labels: yearsKey,
-        datasets: [{
-          data: yearsValue,
-          backgroundColor: colorList,
-          hoverBackgroundColor: colorList,
-        }]
-      }
+      $('#pie-last-month-title').text(titleText)
 
-      var myPieChart = new Chart(pie_ctx_this_month, {
-        type: 'pie',
-        data: data,
-        options: {
-          title: {
-            text: titleText,
-          },
-          tooltips: {
-            callbacks: {
-              label: function(tooltipItems, data) {
-                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + '%'
+      var option_last_month = {
+        // backgroundColor: '#2c343c',
+        // title: {
+        //   text: titleText,
+        //   left: 'center',
+        //   // top: 10,
+        //   textStyle: {
+        //     // color: '#000'
+        //   }
+        // },
+
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
+        },
+        series: [{
+          name: '占比',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '50%'],
+          data: [{
+            value: yearsValue[0],
+            name: yearsKey[0],
+            itemStyle: {
+              normal: {
+                color: colorList[0]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[0]
               }
             }
+          }, {
+            value: yearsValue[1],
+            name: yearsKey[1],
+            itemStyle: {
+              normal: {
+                color: colorList[1]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[1]
+              }
+            }
+          }, {
+            value: yearsValue[2],
+            name: yearsKey[2],
+            itemStyle: {
+              normal: {
+                color: colorList[2]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[2]
+              }
+            }
+          }, {
+            value: yearsValue[3],
+            name: yearsKey[3],
+            itemStyle: {
+              normal: {
+                color: colorList[3]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[3]
+              }
+            }
+          }, {
+            value: yearsValue[4],
+            name: yearsKey[4],
+            itemStyle: {
+              normal: {
+                color: colorList[4]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[4]
+              }
+            }
+          }, {
+            value: yearsValue[5],
+            name: yearsKey[5],
+            itemStyle: {
+              normal: {
+                color: colorList[5]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[5]
+              }
+            }
+          }],
+          // roseType: 'angle',
+          label: {
+            normal: {
+              textStyle: {
+                // color: 'rgba(255, 255, 255, 0.3)'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              lineStyle: {
+                // color: 'rgba(255, 255, 255, 0.8)'
+              },
+              smooth: 0,
+              length: 20,
+              length2: 20
+            }
           }
-        }
-      })
+        }]
+      }
+      pie_last_month.setOption(option_last_month)
     })
 
     $.getJSON('api/thismonthsummary', function(rsp) {
@@ -207,27 +311,18 @@
 
       $('#category-list-title').text(titleText)
 
-      var colorList = {
-        '食品': '#E74C3C',
-        '穿': '#1ABC9C',
-        '居住': '#2ECC71',
-        '交通通信': '#F39C12',
-        '教育': '#3498DB',
-        '文化娱乐': '#9B59B6'
-      }
-
       _.each(yearsData, function(value, key) {
         var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>""><%= value %> 元</span><%= key %></li>')
         var tmp = $(compiled({
           key: key,
           value: value,
-          color: colorList[key]
+          color: colorMatch[key]
         }))
         $('#category-list').append(tmp)
       })
     })
 
-    $.getJSON('api/thismonthmaxsix', function(rsp) {
+    $.getJSON('api/lastmonthmaxsix', function(rsp) {
       if (rsp.message === 0) {
         var yearsData = rsp.data.data
         var titleText = rsp.data.title
@@ -237,35 +332,29 @@
         }
       }
 
-      $('#category-list-max-six-title').text(titleText)
-
-      var colorList = {
-        '食品': '#E74C3C',
-        '穿': '#1ABC9C',
-        '居住': '#2ECC71',
-        '交通通信': '#F39C12',
-        '教育': '#3498DB',
-        '文化娱乐': '#9B59B6'
-      }
+      $('#last-month-max-six-title').text(titleText)
 
       _.each(yearsData, function(value) {
         var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= key %></li>')
         var tmp = $(compiled({
           key: value['note'],
           value: value['amount'],
-          color: colorList[value['cpi_text']]
+          color: colorMatch[value['cpi_text']]
         }))
-        $('#category-list-max-six').append(tmp)
+        $('#last-month-max-six').append(tmp)
       })
     })
 
-    $.getJSON('api/thismonthtable', function(rsp) {
-      var yearamountData
+    $.getJSON('api/lastmonthdata', function(rsp) {
       if (rsp.message === 0) {
-        yearamountData = rsp.data
+        var titleText = rsp.data.title
+        var yearamountData = rsp.data.data
       }
+
+      $('#last-month-table-title').text(titleText)
+
       var dataSet = yearamountData.reverse()
-      $('#myTables').DataTable({
+      $('#last-month-table').DataTable({
         'data': dataSet,
         'columns': [{
           'data': 'cpi_text',

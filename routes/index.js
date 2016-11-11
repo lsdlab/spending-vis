@@ -82,9 +82,14 @@ router.post('/new', function(req, res) {
 
 
 
-/* GET brief page. */
-router.get('/brief', function(req, res) {
-  res.render('brief')
+/* GET last-month-brief page. */
+router.get('/last-month-brief', function(req, res) {
+  res.render('last-month-brief')
+})
+
+/* GET this-month-brief page. */
+router.get('/this-month-brief', function(req, res) {
+  res.render('this-month-brief')
 })
 
 /* GET table page. */

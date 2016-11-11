@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block head %}
-  <script src="js/Chart.bundle.min.js"></script>
+  <script src="js/echarts.pie.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -20,25 +20,19 @@
     <div class="col-md-6">
         <div class="panel panel-info">
           <div class="panel-heading" id="pie-2016-title"></div>
-          <div class="panel-body">
-            <canvas id="pie-2016"></canvas>
-          </div>
+          <div id="pie-2016" style="height: 380px"></div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="panel panel-info">
           <div class="panel-heading" id="pie-2015-title"></div>
-          <div class="panel-body">
-            <canvas id="pie-2015"></canvas>
-          </div>
+          <div id="pie-2015" style="height: 380px"></div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="panel panel-info">
           <div class="panel-heading" id="pie-2014-title"></div>
-          <div class="panel-body">
-            <canvas id="pie-2014"></canvas>
-          </div>
+          <div id="pie-2014" style="height: 380px"></div>
         </div>
     </div>
   </div>
@@ -46,23 +40,12 @@
 
 {% block pagejs %}
   <script>
-    Chart.defaults.global.legend.display = false
-    Chart.defaults.global.responsive = true
-    Chart.defaults.global.hover.mode = 'single'
-    Chart.defaults.global.hover.animationDuration = 300
-    Chart.defaults.global.title.display = true
-    Chart.defaults.global.title.position = 'top'
-    Chart.defaults.global.title.fullWidth = true
-    Chart.defaults.global.title.fontSize = 18
-    Chart.defaults.global.animation.animateRotate = true
-    Chart.defaults.global.animation.animateScale = true
-    Chart.defaults.global.tooltips.enabled = true
-    Chart.defaults.global.tooltips.mode = 'single'
 
-    var colorList = ['#E74C3C', '#1ABC9C', '#2ECC71', '#F39C12', '#3498DB', '#9B59B6']
-    var pie_ctx_2016 = document.getElementById('pie-2016')
-    var pie_ctx_2015 = document.getElementById('pie-2015')
-    var pie_ctx_2014 = document.getElementById('pie-2014')
+    var colorList = ['rgb(231,76,60)', 'rgb(26,188,156)', 'rgb(46,204,113)', 'rgb(243,156,18)', 'rgb(52,152,219)', 'rgb(155,89,182)']
+    var shadowcolorList = ['rgb(231,76,60, 0.5)', 'rgb(26,188,156, 0.5)', 'rgb(46,204,113, 0.5)', 'rgb(243,156,18, 0.5)', 'rgb(52,152,219, 0.5)', 'rgb(155,89,182, 0.5)']
+    var pie_2016 = echarts.init(document.getElementById('pie-2016'), 'macarons')
+    var pie_2015 = echarts.init(document.getElementById('pie-2015'), 'macarons')
+    var pie_2014 = echarts.init(document.getElementById('pie-2014'), 'macarons')
 
     NProgress.start()
     $.getJSON('api/categorydatabyyear/2016', function(rsp) {
@@ -84,32 +67,121 @@
         yearsValue.push(value)
       })
 
-      var data = {
-        labels: yearsKey,
-        datasets: [{
-          data: yearsValue,
-          backgroundColor: colorList,
-          hoverBackgroundColor: colorList,
-        }]
-      }
+      var option_2016 = {
+        // backgroundColor: '#2c343c',
+        // title: {
+        //   text: titleText,
+        //   left: 'center',
+        //   // top: 10,
+        //   textStyle: {
+        //     // color: '#000'
+        //   }
+        // },
 
-      var myPieChart = new Chart(pie_ctx_2016, {
-        type: 'pie',
-        data: data,
-        options: {
-          // title: {
-          //   text: titleText
-          // },
-          tooltips: {
-            callbacks: {
-              label: function(tooltipItems, data) {
-                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + ' %'
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
+        },
+
+        series: [{
+          name: '占比',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '50%'],
+          data: [{
+            value: yearsValue[0],
+            name: yearsKey[0],
+            itemStyle: {
+              normal: {
+                color: colorList[0]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[0]
               }
             }
+          }, {
+            value: yearsValue[1],
+            name: yearsKey[1],
+            itemStyle: {
+              normal: {
+                color: colorList[1]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[1]
+              }
+            }
+          }, {
+            value: yearsValue[2],
+            name: yearsKey[2],
+            itemStyle: {
+              normal: {
+                color: colorList[2]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[2]
+              }
+            }
+          }, {
+            value: yearsValue[3],
+            name: yearsKey[3],
+            itemStyle: {
+              normal: {
+                color: colorList[3]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[3]
+              }
+            }
+          }, {
+            value: yearsValue[4],
+            name: yearsKey[4],
+            itemStyle: {
+              normal: {
+                color: colorList[4]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[4]
+              }
+            }
+          }, {
+            value: yearsValue[5],
+            name: yearsKey[5],
+            itemStyle: {
+              normal: {
+                color: colorList[5]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[5]
+              }
+            }
+          }],
+          // roseType: 'angle',
+          label: {
+            normal: {
+              textStyle: {
+                // color: 'rgba(255, 255, 255, 0.3)'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              lineStyle: {
+                // color: 'rgba(255, 255, 255, 0.8)'
+              },
+              smooth: 0,
+              length: 20,
+              length2: 20
+            }
           }
-
-        }
-      })
+        }]
+      }
+      pie_2016.setOption(option_2016)
     })
 
     $.getJSON('api/categorydatabyyear/2015', function(rsp) {
@@ -131,31 +203,121 @@
         yearsValue.push(value)
       })
 
-      var data = {
-        labels: yearsKey,
-        datasets: [{
-          data: yearsValue,
-          backgroundColor: colorList,
-          hoverBackgroundColor: colorList,
-        }]
-      }
+      var option_2015 = {
+        // backgroundColor: '#2c343c',
+        // title: {
+        //   text: titleText,
+        //   left: 'center',
+        //   // top: 10,
+        //   textStyle: {
+        //     // color: '#000'
+        //   }
+        // },
 
-      var myPieChart = new Chart(pie_ctx_2015, {
-        type: 'pie',
-        data: data,
-        options: {
-          // title: {
-          //   text: titleText
-          // },
-          tooltips: {
-            callbacks: {
-              label: function(tooltipItems, data) {
-                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + ' %'
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
+        },
+
+        series: [{
+          name: '占比',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '50%'],
+          data: [{
+            value: yearsValue[0],
+            name: yearsKey[0],
+            itemStyle: {
+              normal: {
+                color: colorList[0]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[0]
               }
             }
+          }, {
+            value: yearsValue[1],
+            name: yearsKey[1],
+            itemStyle: {
+              normal: {
+                color: colorList[1]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[1]
+              }
+            }
+          }, {
+            value: yearsValue[2],
+            name: yearsKey[2],
+            itemStyle: {
+              normal: {
+                color: colorList[2]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[2]
+              }
+            }
+          }, {
+            value: yearsValue[3],
+            name: yearsKey[3],
+            itemStyle: {
+              normal: {
+                color: colorList[3]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[3]
+              }
+            }
+          }, {
+            value: yearsValue[4],
+            name: yearsKey[4],
+            itemStyle: {
+              normal: {
+                color: colorList[4]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[4]
+              }
+            }
+          }, {
+            value: yearsValue[5],
+            name: yearsKey[5],
+            itemStyle: {
+              normal: {
+                color: colorList[5]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[5]
+              }
+            }
+          }],
+          // roseType: 'angle',
+          label: {
+            normal: {
+              textStyle: {
+                // color: 'rgba(255, 255, 255, 0.3)'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              lineStyle: {
+                // color: 'rgba(255, 255, 255, 0.8)'
+              },
+              smooth: 0,
+              length: 20,
+              length2: 20
+            }
           }
-        }
-      })
+        }]
+      }
+      pie_2015.setOption(option_2015)
     })
 
     $.getJSON('api/categorydatabyyear/2014', function(rsp) {
@@ -177,31 +339,121 @@
         yearsValue.push(value)
       })
 
-      var data = {
-        labels: yearsKey,
-        datasets: [{
-          data: yearsValue,
-          backgroundColor: colorList,
-          hoverBackgroundColor: colorList,
-        }]
-      }
+      var option_2014 = {
+        // backgroundColor: '#2c343c',
+        // title: {
+        //   text: titleText,
+        //   left: 'center',
+        //   // top: 10,
+        //   textStyle: {
+        //     // color: '#000'
+        //   }
+        // },
 
-      var myPieChart = new Chart(pie_ctx_2014, {
-        type: 'pie',
-        data: data,
-        options: {
-          // title: {
-          //   text: titleText,
-          // },
-          tooltips: {
-            callbacks: {
-              label: function(tooltipItems, data) {
-                return data.labels[tooltipItems.index] + '占比：' + data.datasets[0].data[tooltipItems.index] + ' %'
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
+        },
+
+        series: [{
+          name: '占比',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '50%'],
+          data: [{
+            value: yearsValue[0],
+            name: yearsKey[0],
+            itemStyle: {
+              normal: {
+                color: colorList[0]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[0]
               }
             }
+          }, {
+            value: yearsValue[1],
+            name: yearsKey[1],
+            itemStyle: {
+              normal: {
+                color: colorList[1]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[1]
+              }
+            }
+          }, {
+            value: yearsValue[2],
+            name: yearsKey[2],
+            itemStyle: {
+              normal: {
+                color: colorList[2]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[2]
+              }
+            }
+          }, {
+            value: yearsValue[3],
+            name: yearsKey[3],
+            itemStyle: {
+              normal: {
+                color: colorList[3]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[3]
+              }
+            }
+          }, {
+            value: yearsValue[4],
+            name: yearsKey[4],
+            itemStyle: {
+              normal: {
+                color: colorList[4]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[4]
+              }
+            }
+          }, {
+            value: yearsValue[5],
+            name: yearsKey[5],
+            itemStyle: {
+              normal: {
+                color: colorList[5]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[5]
+              }
+            }
+          }],
+          // roseType: 'angle',
+          label: {
+            normal: {
+              textStyle: {
+                // color: 'rgba(0, 0, 0, 0.3)'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              lineStyle: {
+                // color: 'rgba(255, 255, 255, 0.8)'
+              },
+              smooth: 0,
+              length: 20,
+              length2: 20
+            }
           }
-        }
-      })
+        }]
+      }
+      pie_2014.setOption(option_2014)
     })
     NProgress.done()
   </script>
