@@ -429,7 +429,7 @@ router.get('/lastmonthdata', function(req, res) {
 })
 
 /* cpi_text and cpi_index for new */
-router.get('/alcpi', function(req, res) {
+router.get('/allcpi', function(req, res) {
   res.json({
     message: 0,
     data: ['0: 食品', '1: 穿', '2: 居住', '3: 交通通信', '4: 教育', '5: 娱乐通信']
