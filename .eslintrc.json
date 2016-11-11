@@ -33,6 +33,7 @@
         "_": true,
         "Chart": true,
         "echarts": true,
+        "WordCloud": true,
         "notie": true,
         "screenfull": true,
         "NProgress": true,

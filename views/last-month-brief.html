@@ -43,8 +43,8 @@
     </div>
     <div class="col-md-6">
       <div class="panel panel-info">
-        <div class="panel-heading" id="last-month-max-six-title">金额最大六笔支出</div>
-        <ul class="list-group" id="last-month-max-six">
+        <div class="panel-heading" id="category-list-max-six-title">金额最大六笔支出</div>
+        <ul class="list-group" id="category-list-max-six">
         </ul>
       </div>
     </div>
@@ -90,7 +90,7 @@
     }
 
     NProgress.start()
-    $.getJSON('api/pre5month', function(rsp) {
+    $.getJSON('api/last5month', function(rsp) {
       if (rsp.message === 0) {
         var yearsData = rsp.data.data
         var titleText = rsp.data.title
@@ -275,6 +275,7 @@
           label: {
             normal: {
               textStyle: {
+                fontSize: 14,
                 // color: 'rgba(255, 255, 255, 0.3)'
               }
             }
@@ -294,7 +295,7 @@
       pie_last_month.setOption(option_last_month)
     })
 
-    $.getJSON('api/thismonthsummary', function(rsp) {
+    $.getJSON('api/lastmonthsummary', function(rsp) {
       if (rsp.message === 0) {
         var yearsData = rsp.data.data
         var titleText = rsp.data.title
@@ -327,7 +328,7 @@
         }
       }
 
-      $('#last-month-max-six-title').text(titleText)
+      $('#category-list-max-six-title').text(titleText)
 
       _.each(yearsData, function(value) {
         var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= key %></li>')
@@ -336,11 +337,11 @@
           value: value['amount'],
           color: colorMatch[value['cpi_text']]
         }))
-        $('#last-month-max-six').append(tmp)
+        $('#category-list-max-six').append(tmp)
       })
     })
 
-    $.getJSON('api/lastmonthdata', function(rsp) {
+    $.getJSON('api/lastmonthalldata', function(rsp) {
       if (rsp.message === 0) {
         var titleText = rsp.data.title
         var yearamountData = rsp.data.data

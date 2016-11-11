@@ -240,7 +240,7 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
 
 
 /* 最近五个月每月总支出 for last-month-brief */
-router.get('/pre5month', function(req, res) {
+router.get('/last5month', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -318,7 +318,7 @@ router.get('/lastmonthcpi', function(req, res) {
 
 
 /* 上月分类支出金额 for last-month-brief */
-router.get('/thismonthsummary', function(req, res) {
+router.get('/lastmonthsummary', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -398,8 +398,9 @@ router.get('/lastmonthmaxsix', function(req, res) {
     })
 })
 
+
 /* 上月所有数据 for last-month-brief */
-router.get('/lastmonthdata', function(req, res) {
+router.get('/lastmonthalldata', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -429,29 +430,35 @@ router.get('/lastmonthdata', function(req, res) {
 })
 
 /* cpi_text and cpi_index for new */
-router.get('/allcpi', function(req, res) {
+router.get('/newcpi', function(req, res) {
   res.json({
     message: 0,
-    data: ['0: 食品', '1: 穿', '2: 居住', '3: 交通通信', '4: 教育', '5: 娱乐通信']
+    data: {
+      title: 'CPI 分类 typeahead',
+      data: ['0: 食品', '1: 穿', '2: 居住', '3: 交通通信', '4: 教育', '5: 娱乐通信']
+    }
   })
 })
 
 
 /* all notes for new */
-router.get('/allnotes', function(req, res) {
+router.get('/allnote', function(req, res) {
   db.any('SELECT * FROM entry')
     .then(function(data) {
-      var allnotes = _.map(data, function(item){
+      var allnote = _.map(data, function(item){
         return item['note']
       })
 
       var obj = {}
-      allnotes.forEach(function(id){obj[id] = true})
-      allnotes = Object.keys(obj)
+      allnote.forEach(function(id){obj[id] = true})
+      allnote = Object.keys(obj)
 
       res.json({
         message: 0,
-        data: allnotes
+        data: {
+          title: '所有关键词 typeahead',
+          data: allnote
+        }
       })
     })
     .catch(function(error) {
@@ -461,6 +468,57 @@ router.get('/allnotes', function(req, res) {
     })
 })
 
+
+/* all notes for word cloud */
+router.get('/allnotes', function(req, res) {
+  db.any('SELECT * FROM entry')
+    .then(function(data) {
+      var allnotes = _.map(data, function(item){
+        return item['note']
+      })
+
+      var count = function(ary, classifier) {
+        return ary.reduce(function(counter, item) {
+          var p = (classifier || String)(item)
+          counter[p] = counter.hasOwnProperty(p) ? counter[p] + 1 : 1
+          return counter
+        }, {})
+      }
+
+      var allnotesCount = count(allnotes)
+
+      var unsortedNotes = []
+      _.each(allnotesCount, function(value, key){
+        var noteObject = {}
+        noteObject['text'] = key
+        noteObject['counts'] = value
+        unsortedNotes.push(noteObject)
+      })
+
+      var sortedNotes_100 = _.sortBy(unsortedNotes, 'counts').reverse().slice(0, 40)
+
+      var sortedNotes = []
+      _.each(sortedNotes_100, function(item){
+        var count_item = []
+        count_item.push(item.text)
+        count_item.push(item.counts)
+        sortedNotes.push(count_item)
+      })
+
+      res.json({
+        message: 0,
+        data: {
+          title: '消费关键词词云',
+          data: sortedNotes
+        }
+      })
+    })
+    .catch(function(error) {
+      res.json({
+        message: 1,
+      })
+    })
+})
 
 
 module.exports = router

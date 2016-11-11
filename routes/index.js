@@ -81,7 +81,6 @@ router.post('/new', function(req, res) {
 })
 
 
-
 /* GET last-month-brief page. */
 router.get('/last-month-brief', function(req, res) {
   res.render('last-month-brief')
@@ -117,9 +116,9 @@ router.get('/charts-category-quarter', function(req, res) {
   res.render('charts-category-quarter')
 })
 
-/* GET charts category page using ECharts. */
-router.get('/charts-category-echarts', function(req, res) {
-  res.render('charts-category-echarts')
+/* GET charts keyword cloud page */
+router.get('/keyword-wordcloud', function(req, res) {
+  res.render('keyword-wordcloud')
 })
 
 

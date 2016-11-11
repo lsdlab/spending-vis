@@ -94,13 +94,13 @@
 
     NProgress.start()
     $.getJSON('api/monthdatabyyear/2016', function(rsp) {
+      var monthData = {
+        0: 0
+      }
+      var titleText = ''
       if (rsp.message === 0) {
-        var yearamountData = rsp.data.data
-        var titleText = rsp.data.title
-      } else {
-        yearamountData = {
-          0: 0
-        }
+        monthData = rsp.data.data
+        titleText = rsp.data.title
       }
 
       $('#bar-chart-2016-title').text(titleText)
@@ -108,7 +108,7 @@
 
       var yearKey = []
       var yearValue = []
-      _.each(yearamountData, function(value, key) {
+      _.each(monthData, function(value, key) {
         yearKey.push(key)
         yearValue.push(value)
       })
@@ -202,13 +202,13 @@
     })
 
     $.getJSON('api/monthdatabyyear/2015', function(rsp) {
+      var monthData = {
+        0: 0
+      }
+      var titleText = ''
       if (rsp.message === 0) {
-        var yearamountData = rsp.data.data
-        var titleText = rsp.data.title
-      } else {
-        yearamountData = {
-          0: 0
-        }
+        monthData = rsp.data.data
+        titleText = rsp.data.title
       }
 
       $('#bar-chart-2015-title').text(titleText)
@@ -216,7 +216,7 @@
 
       var yearKey = []
       var yearValue = []
-      _.each(yearamountData, function(value, key) {
+      _.each(monthData, function(value, key) {
         yearKey.push(key)
         yearValue.push(value)
       })
@@ -310,13 +310,13 @@
     })
 
     $.getJSON('api/monthdatabyyear/2014', function(rsp) {
+      var monthData = {
+        0: 0
+      }
+      var titleText = ''
       if (rsp.message === 0) {
-        var yearamountData = rsp.data.data
-        var titleText = rsp.data.title
-      } else {
-        yearamountData = {
-          0: 0
-        }
+        monthData = rsp.data.data
+        titleText = rsp.data.title
       }
 
       $('#bar-chart-2014-title').text(titleText)
@@ -324,7 +324,7 @@
 
       var yearKey = []
       var yearValue = []
-      _.each(yearamountData, function(value, key) {
+      _.each(monthData, function(value, key) {
         yearKey.push(key)
         yearValue.push(value)
       })

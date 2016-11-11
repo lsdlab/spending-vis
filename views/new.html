@@ -68,12 +68,12 @@
     })
 
 
-    $.get('api/alcpi', function(data){
-      $('#cpi').typeahead({ source: data.data })
+    $.get('api/newcpi', function(data){
+      $('#cpi').typeahead({ source: data.data.data })
     },'json')
 
-    $.get('api/allnotes', function(data){
-      $('#note').typeahead({ source: data.data })
+    $.get('api/allnote', function(data){
+      $('#note').typeahead({ source: data.data.data })
     },'json')
     NProgress.done()
   </script>

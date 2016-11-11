@@ -49,13 +49,13 @@
 
     NProgress.start()
     $.getJSON('api/categorydatabyyear/2016', function(rsp) {
+      var yearsData = {
+        0: 0
+      }
+      var titleText = ''
       if (rsp.message === 0) {
-        var yearsData = rsp.data.data
-        var titleText = rsp.data.title
-      } else {
-        yearsData = {
-          0: 0
-        }
+        yearsData = rsp.data.data
+        titleText = rsp.data.title
       }
 
       $('#pie-2016-title').text(titleText)
@@ -165,6 +165,7 @@
           label: {
             normal: {
               textStyle: {
+                fontSize: 14,
                 // color: 'rgba(255, 255, 255, 0.3)'
               }
             }
@@ -185,13 +186,13 @@
     })
 
     $.getJSON('api/categorydatabyyear/2015', function(rsp) {
+      var yearsData = {
+        0: 0
+      }
+      var titleText = ''
       if (rsp.message === 0) {
-        var yearsData = rsp.data.data
-        var titleText = rsp.data.title
-      } else {
-        yearsData = {
-          0: 0
-        }
+        yearsData = rsp.data.data
+        titleText = rsp.data.title
       }
 
       $('#pie-2015-title').text(titleText)
@@ -301,6 +302,7 @@
           label: {
             normal: {
               textStyle: {
+                fontSize: 14,
                 // color: 'rgba(255, 255, 255, 0.3)'
               }
             }
@@ -321,13 +323,13 @@
     })
 
     $.getJSON('api/categorydatabyyear/2014', function(rsp) {
+      var yearsData = {
+        0: 0
+      }
+      var titleText = ''
       if (rsp.message === 0) {
-        var yearsData = rsp.data.data
-        var titleText = rsp.data.title
-      } else {
-        yearsData = {
-          0: 0
-        }
+        yearsData = rsp.data.data
+        titleText = rsp.data.title
       }
 
       $('#pie-2014-title').text(titleText)
@@ -437,6 +439,7 @@
           label: {
             normal: {
               textStyle: {
+                fontSize: 14,
                 // color: 'rgba(0, 0, 0, 0.3)'
               }
             }

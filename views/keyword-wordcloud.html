@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  分类支出
+{% endblock %}
+
+{% block head %}
+  <script src="js/wordcloud2.js"></script>
+{% endblock %}
+
+{% block content %}
+  {% include "partials/navbar.html" %}
+  <div class="container mt10">
+    {% include "partials/flash.html" %}
+  </div>
+  <div class="container mt10 pln prn" id="charts-container">
+    <div class="page-header">
+      <h6>可视化 - 关键词词云<small>    </small></h6>
+    </div>
+    <div class="col-md-12">
+      <div class="panel panel-info">
+        <div id="keyword-wordcloud" style="height: 480px"></div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block pagejs %}
+  <script>
+    NProgress.start()
+
+    $.getJSON('api/allnotes', function(rsp) {
+      if (rsp.message === 0) {
+        var titleText = rsp.data.title
+        var keyword_list = rsp.data.data
+      }
+
+      $('#keyword-wordcloud-title').text(titleText)
+      var options = {
+        list: keyword_list,
+        fontFamily: 'PingFang SC, sans-serif',
+        color: 'random-light',
+        minSize: 9,
+        rotateRatio: 0.5,
+        shape: 'square',
+      }
+      WordCloud(document.getElementById('keyword-wordcloud'), options)
+    })
+    NProgress.done()
+  </script>
+{% endblock %}
