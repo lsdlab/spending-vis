@@ -37,7 +37,7 @@
     "multer": "^1.2.0",
     "node-fetch": "^1.6.3",
     "nodejs-dashboard": "^0.1.2",
-    "nunjucks": "^2.5.2",
+    "nunjucks": "^3.0.0",
     "oauth2orize": "^1.5.1",
     "passport": "^0.3.2",
     "passport-github": "^1.1.0",
