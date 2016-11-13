@@ -31,21 +31,21 @@ require('nodejs-dashboard')
 
 
 // log4js logger setup
-const log4js = require('log4js')
-log4js.configure({
-  appenders: [{
-    type: 'DateFile',
-    maxLogSize: 1024,
-    backups: 1,
-    filename: 'logs/access.log',
-    pattern: '-yyyy-MM-dd.log',
-    alwaysIncludePattern: true,
-    category: 'normal'
-  }]
-})
-var logger = log4js.getLogger('normal')
-logger.setLevel('INFO')
-app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO, format:':method :url'}))
+// const log4js = require('log4js')
+// log4js.configure({
+//   appenders: [{
+//     type: 'DateFile',
+//     maxLogSize: 1024,
+//     backups: 1,
+//     filename: 'logs/access.log',
+//     pattern: '-yyyy-MM-dd.log',
+//     alwaysIncludePattern: true,
+//     category: 'normal'
+//   }]
+// })
+// var logger = log4js.getLogger('normal')
+// logger.setLevel('INFO')
+// app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO, format:':method :url'}))
 
 // nunjucks template settings
 nunjucks.configure(path.join(__dirname, 'views'), {

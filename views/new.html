@@ -68,11 +68,11 @@
     })
 
 
-    $.get('api/cpi-for-new', function(data){
+    $.get('api/cpifornew', function(data){
       $('#cpi').typeahead({ source: data.data.data })
     },'json')
 
-    $.get('api/allnotes-for-new', function(data){
+    $.get('api/allnotesfornew', function(data){
       $('#note').typeahead({ source: data.data.data })
     },'json')
     NProgress.done()

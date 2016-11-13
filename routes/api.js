@@ -5,6 +5,7 @@ const router = express.Router()
 
 const db = require('./db')
 const _ = require('underscore')
+const Q = require('q')
 
 
 /* 所有数据 for tables */
@@ -204,18 +205,18 @@ router.get('/categorydatabyquarter/:year(\\d{4})', function(req, res) {
       _.each(reducedList, function(value) {
         if (value != {}) {
           var formatedData = {}
-          formatedData['食品'] = value['食品']
-          formatedData['穿'] = value['穿']
-          formatedData['居住'] = value['居住']
-          formatedData['交通通信'] = value['交通通信']
-          formatedData['教育'] = value['教育']
-          formatedData['文化娱乐'] = value['文化娱乐']
+          formatedData['食品'] = value['食品'] || '0'
+          formatedData['穿'] = value['穿'] || '0'
+          formatedData['居住'] = value['居住'] || '0'
+          formatedData['交通通信'] = value['交通通信'] || '0'
+          formatedData['教育'] = value['教育'] || '0'
+          formatedData['文化娱乐'] = value['文化娱乐'] || '0'
           unformatQuarterData.push(formatedData)
         }
       })
 
       var quarterPercentData = []
-      _.each(unformatQuarterPercentData, function(value, key) {
+      _.each(unformatQuarterData, function(value, key) {
         var newkey = key + 1
         var categoryPercentData = {}
         categoryPercentData['title'] = req.params.year + ' 年 第 ' + newkey + ' 季度支出 (百分比)'
@@ -430,7 +431,7 @@ router.get('/lastmonthalldata', function(req, res) {
 })
 
 /* cpi_text and cpi_index for new */
-router.get('/cpi-for-new', function(req, res) {
+router.get('/cpifornew', function(req, res) {
   res.json({
     message: 0,
     data: {
@@ -442,15 +443,15 @@ router.get('/cpi-for-new', function(req, res) {
 
 
 /* all notes for new */
-router.get('/allnotes-for-new', function(req, res) {
+router.get('/allnotesfornew', function(req, res) {
   db.any('SELECT * FROM entry')
     .then(function(data) {
-      var allnotes = _.map(data, function(item){
+      var allnotes = _.map(data, function(item) {
         return item['note']
       })
 
       var obj = {}
-      allnotes.forEach(function(id){obj[id] = true})
+      allnotes.forEach(function(id) { obj[id] = true })
       allnotes = Object.keys(obj)
 
       res.json({
@@ -470,10 +471,10 @@ router.get('/allnotes-for-new', function(req, res) {
 
 
 /* all notes for word cloud */
-router.get('/allnotes-for-wordcloud', function(req, res) {
+router.get('/allnotesforwordcloud', function(req, res) {
   db.any('SELECT * FROM entry')
     .then(function(data) {
-      var allnotes = _.map(data, function(item){
+      var allnotes = _.map(data, function(item) {
         return item['note']
       })
 
@@ -488,7 +489,7 @@ router.get('/allnotes-for-wordcloud', function(req, res) {
       var allnotesCount = count(allnotes)
 
       var unsortedNotes = []
-      _.each(allnotesCount, function(value, key){
+      _.each(allnotesCount, function(value, key) {
         var noteObject = {}
         noteObject['text'] = key
         noteObject['counts'] = value
@@ -498,7 +499,7 @@ router.get('/allnotes-for-wordcloud', function(req, res) {
       var sortedNotes_40 = _.sortBy(unsortedNotes, 'counts').reverse().slice(0, 40)
 
       var sortedNotes = []
-      _.each(sortedNotes_40, function(item){
+      _.each(sortedNotes_40, function(item) {
         var count_item = []
         count_item.push(item.text)
         count_item.push(item.counts)

@@ -28,7 +28,7 @@
 {% block pagejs %}
   <script>
     NProgress.start()
-    $.getJSON('api/allnotes-for-wordcloud', function(rsp) {
+    $.getJSON('api/allnotesforwordcloud', function(rsp) {
       if (rsp.message === 0) {
         var titleText = rsp.data.title
         var keyword_list = rsp.data.data
