@@ -430,7 +430,7 @@ router.get('/lastmonthalldata', function(req, res) {
 })
 
 /* cpi_text and cpi_index for new */
-router.get('/newcpi', function(req, res) {
+router.get('/cpi-for-new', function(req, res) {
   res.json({
     message: 0,
     data: {
@@ -442,22 +442,22 @@ router.get('/newcpi', function(req, res) {
 
 
 /* all notes for new */
-router.get('/allnote', function(req, res) {
+router.get('/allnotes-for-new', function(req, res) {
   db.any('SELECT * FROM entry')
     .then(function(data) {
-      var allnote = _.map(data, function(item){
+      var allnotes = _.map(data, function(item){
         return item['note']
       })
 
       var obj = {}
-      allnote.forEach(function(id){obj[id] = true})
-      allnote = Object.keys(obj)
+      allnotes.forEach(function(id){obj[id] = true})
+      allnotes = Object.keys(obj)
 
       res.json({
         message: 0,
         data: {
           title: '所有关键词 typeahead',
-          data: allnote
+          data: allnotes
         }
       })
     })
@@ -470,13 +470,14 @@ router.get('/allnote', function(req, res) {
 
 
 /* all notes for word cloud */
-router.get('/allnotes', function(req, res) {
+router.get('/allnotes-for-wordcloud', function(req, res) {
   db.any('SELECT * FROM entry')
     .then(function(data) {
       var allnotes = _.map(data, function(item){
         return item['note']
       })
 
+      // make count for all notes
       var count = function(ary, classifier) {
         return ary.reduce(function(counter, item) {
           var p = (classifier || String)(item)
@@ -484,7 +485,6 @@ router.get('/allnotes', function(req, res) {
           return counter
         }, {})
       }
-
       var allnotesCount = count(allnotes)
 
       var unsortedNotes = []
@@ -495,10 +495,10 @@ router.get('/allnotes', function(req, res) {
         unsortedNotes.push(noteObject)
       })
 
-      var sortedNotes_100 = _.sortBy(unsortedNotes, 'counts').reverse().slice(0, 40)
+      var sortedNotes_40 = _.sortBy(unsortedNotes, 'counts').reverse().slice(0, 40)
 
       var sortedNotes = []
-      _.each(sortedNotes_100, function(item){
+      _.each(sortedNotes_40, function(item){
         var count_item = []
         count_item.push(item.text)
         count_item.push(item.counts)

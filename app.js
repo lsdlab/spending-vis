@@ -1,7 +1,6 @@
 const express = require('express')
 const path = require('path')
 const favicon = require('serve-favicon')
-const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const nunjucks = require('nunjucks')
@@ -27,6 +26,27 @@ const lusca = require('lusca')
 var app = express()
 app.set('port', process.env.PORT || 3000)
 
+// nodejs-dashboard
+require('nodejs-dashboard')
+
+
+// log4js logger setup
+const log4js = require('log4js')
+log4js.configure({
+  appenders: [{
+    type: 'DateFile',
+    maxLogSize: 1024,
+    backups: 1,
+    filename: 'logs/access.log',
+    pattern: '-yyyy-MM-dd.log',
+    alwaysIncludePattern: true,
+    category: 'normal'
+  }]
+})
+var logger = log4js.getLogger('normal')
+logger.setLevel('INFO')
+app.use(log4js.connectLogger(logger, { level: log4js.levels.INFO, format:':method :url'}))
+
 // nunjucks template settings
 nunjucks.configure(path.join(__dirname, 'views'), {
   autoescape: true,
@@ -37,12 +57,8 @@ nunjucks.configure(path.join(__dirname, 'views'), {
 app.set('view engine', 'html')
 
 
-// nodejs-dashboard
-require('nodejs-dashboard')
-
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public/img/', 'favicon.png')))
-app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: false
@@ -50,11 +66,12 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// third party plugin setup
 app.use(flash())
 app.use(session({
   store: new pgSession({
-    pg : pg,                                  // Use global pg-module
-    conString : process.env.POSTGRESQL_URL, // Connect using something else than default DATABASE_URL env variable
+    pg: pg, // Use global pg-module
+    conString: process.env.POSTGRESQL_URL, // Connect using something else than default DATABASE_URL env variable
   }),
   secret: process.env.POSTGRESQL_SECRET,
   saveUninitialized: true,

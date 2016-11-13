@@ -48,17 +48,17 @@
         </ul>
       </div>
     </div>
-    <div class="col-md-12" id="table-container">
+    <div class="col-md-12">
       <div class="panel panel-info">
-        <div class="panel-heading" id="last-month-table-title">支出详细表格</div>
-        <div class="panel-body" id="table-row">
-          <div id="table-row">
+        <div class="panel-heading" id="last-month-datatable-title">支出详细表格</div>
+        <div class="panel-body datatable">
+          <div>
             <div class="col-md-12 center-block">
-              <table id="last-month-table" class="table table-bordered" cellspacing="0" width="100%"></table>
+              <table id="last-month-datatable" class="table table-bordered mb10" cellspacing="0" width="100%"></table>
             </div>
           </div>
         </div>
-        <div class="container" id="table-notify">
+        <div class="container datatable-notify">
           <p class="mt5">请在桌面浏览器或 iPad 浏览器上查看表格以获得更佳体验。</p>
         </div>
       </div>
@@ -286,8 +286,8 @@
                 // color: 'rgba(255, 255, 255, 0.8)'
               },
               smooth: 0,
-              length: 20,
-              length2: 20
+              length: 10,
+              length2: 10
             }
           }
         }]
@@ -347,10 +347,10 @@
         var yearamountData = rsp.data.data
       }
 
-      $('#last-month-table-title').text(titleText)
+      $('#last-month-datatable-title').text(titleText)
 
       var dataSet = yearamountData.reverse()
-      $('#last-month-table').DataTable({
+      $('#last-month-datatable').DataTable({
         'data': dataSet,
         'columns': [{
           'data': 'cpi_text',

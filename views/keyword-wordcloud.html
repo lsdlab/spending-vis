@@ -15,7 +15,7 @@
   </div>
   <div class="container mt10 pln prn" id="charts-container">
     <div class="page-header">
-      <h6>可视化 - 关键词词云<small>    </small></h6>
+      <h6>可视化 - 消费关键词词云<small>    </small></h6>
     </div>
     <div class="col-md-12">
       <div class="panel panel-info">
@@ -28,8 +28,7 @@
 {% block pagejs %}
   <script>
     NProgress.start()
-
-    $.getJSON('api/allnotes', function(rsp) {
+    $.getJSON('api/allnotes-for-wordcloud', function(rsp) {
       if (rsp.message === 0) {
         var titleText = rsp.data.title
         var keyword_list = rsp.data.data
