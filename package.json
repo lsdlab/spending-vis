@@ -28,7 +28,7 @@
     "express-limiter": "^1.6.0",
     "express-session": "^1.14.2",
     "express-validator": "^2.21.0",
-    "lodash": "^4.17.0",
+    "lodash": "^4.17.2",
     "log4js": "^1.0.1",
     "lusca": "^1.4.1",
     "mailgen": "^2.0.2",
