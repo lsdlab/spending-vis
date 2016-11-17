@@ -19,16 +19,11 @@ const pgSession = require('connect-pg-simple')(session)
 const expressValidator = require('express-validator')
 const lusca = require('lusca')
 
-
 /**
  * Express configuration.
  */
 var app = express()
 app.set('port', process.env.PORT || 3000)
-
-// nodejs-dashboard
-require('nodejs-dashboard')
-
 
 // log4js logger setup
 // const log4js = require('log4js')
@@ -56,7 +51,6 @@ nunjucks.configure(path.join(__dirname, 'views'), {
 })
 app.set('view engine', 'html')
 
-
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public/img/', 'favicon.png')))
 app.use(bodyParser.json())
@@ -72,6 +66,7 @@ app.use(session({
   store: new pgSession({
     pg: pg, // Use global pg-module
     conString: process.env.POSTGRESQL_URL, // Connect using something else than default DATABASE_URL env variable
+    tableName : 'sessions' // Use another table-name than the default "session" one
   }),
   secret: process.env.POSTGRESQL_SECRET,
   saveUninitialized: true,
