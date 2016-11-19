@@ -2,6 +2,7 @@
 ![Language](https://img.shields.io/badge/language-Node.js-brightgreen.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Visualize my daily spending data to tables some charts.
+
 可视化我的日常支出数据，尝试产品化，搭建具有数据分析功能的后端平台，以及 iOS App。
 
 ## Packages:
@@ -43,14 +44,11 @@ Webpack 还是没研究出来，抽空好好看看。
 
 
 ![new](https://breakwire.me/images/spendingviz/new.png)
-![tables](https://breakwire.me/images/spendingviz/tables.png)
 ![this-month-brief](https://breakwire.me/images/spendingviz/this-month-brief.png)
 ![last-month-brief-0](https://breakwire.me/images/spendingviz/last-month-brief-0.png)
 ![last-month-brief-1](https://breakwire.me/images/spendingviz/last-month-brief-1.png)
 ![charts-year-0](https://breakwire.me/images/spendingviz/charts-year-0.png)
 ![charts-year-1](https://breakwire.me/images/spendingviz/charts-year-1.png)
-![charts-month](https://breakwire.me/images/spendingviz/charts-month.png)
-![charts-category-year](https://breakwire.me/images/spendingviz/charts-category-year.png)
 ![keyword-wordcloud](https://breakwire.me/images/spendingviz/keyword-wordcloud.png)
 
 
