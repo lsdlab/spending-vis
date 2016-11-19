@@ -21,21 +21,23 @@
           <span class="dropdown-arrow"></span>
           <ul class="dropdown-menu">
             <li><a href="/new">新记录</a></li>
+            <li class="divider"></li>
             <li><a href="/this-month-brief">当月概要</a></li>
             <li><a href="/last-month-brief">上月概要</a></li>
             <li><a href="/tables">表格</a></li>
+            <li class="divider"></li>
             <li><a href="/charts-year">年</a></li>
             <li><a href="/charts-month">月</a></li>
             <li><a href="/charts-category-year">分类(年)</a></li>
             <li><a href="/charts-category-quarter">分类(季度)</a></li>
-            <li class="divider"></li>
+            <!-- <li class="divider"></li>
             <li><a href="/consumption-index-radar-chart">消费指数雷达图</a></li>
-            <li><a href="/consumption-frequency-bubble-chart">消费次数气泡图</a></li>
+            <li><a href="/consumption-frequency-bubble-chart">消费次数气泡图</a></li> -->
             <li class="divider"></li>
             <li><a href="/keyword-wordcloud">消费关键词词云</a></li>
           </ul>
         </li>
-        <li>
+        <!-- <li>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">数据分析<b class="caret"></b></a>
           <span class="dropdown-arrow"></span>
           <ul class="dropdown-menu">
@@ -57,10 +59,10 @@
             <li class="divider"></li>
             <li><a href="/function-app">iOS App</a></li>
           </ul>
-        </li>
+        </li> -->
         <li><a href="/about">关于</a></li>
       </ul>
-      {% if user %}
+<!--       {% if user %}
         <ul class="nav navbar-nav navbar-right">
           <li>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% if user.profile.name %} {{ user.profile.name }} {% else %} {{ user.email }} {% endif %}<b class="caret"></b></a>
@@ -77,7 +79,7 @@
           <a href="/login" class="btn btn-primary navbar-btn btn-sm mr10"><span class="fa fa-sign-in mr5"></span>登录</a>
           <a href="/signup" class="btn btn-primary navbar-btn btn-sm"><span class="fa fa-user-plus mr5"></span>注册</a>
         </ul>
-      {% endif %}
+      {% endif %} -->
     </div>
     <!-- /.navbar-collapse -->
   </div>

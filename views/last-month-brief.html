@@ -16,9 +16,9 @@
   <div class="container mt10">
     {% include "partials/flash.html" %}
   </div>
-  <div class="container mt10 pln prn" id="charts-container">
-    <div class="page-header">
-      <h6>可视化 - 上月概要<small></small></h6>
+  <div class="container pln prn" id="charts-container">
+    <div class="page-header mb10">
+      <h6 class="mb10">可视化 - 上月概要<small></small></h6>
     </div>
     <div class="col-md-6">
       <div class="panel panel-info">
@@ -148,6 +148,7 @@
             mode: 'single',
             callbacks: {
               label: function(tooltipItems) {
+                console.log(tooltipItems)
                 return tooltipItems.yLabel + ' 元'
               }
             }
@@ -159,36 +160,30 @@
       $('#pie-last-month').css('height', matchHeight)
     })
 
-    $.getJSON('api/lastmonthcpi', function(rsp) {
+    $.getJSON('api/lastmonthsummary', function(rsp) {
       var pie_last_month = echarts.init(document.getElementById('pie-last-month'), 'macarons')
       if (rsp.message === 0) {
-        var yearsData = rsp.data.data
-        var titleText = rsp.data.title
+        var lastMonthData = rsp.data.last_month_data
+        var lastTwoMonthData = rsp.data.last_two_month_data
+        var categoryRadioData = rsp.data.category_ratio_data
+        var categoryRadioDataColor = rsp.data.category_ratio_data_color
+        var summaryTitle = rsp.data.summary_title
+        var cpiTitle = rsp.data.cpi_title
       } else {
-        yearsData = {
+        lastMonthData = {
           0: 0
         }
       }
       var yearsKey = []
       var yearsValue = []
-      _.each(yearsData, function(value, key) {
+      _.each(lastMonthData, function(value, key) {
         yearsKey.push(key)
         yearsValue.push(value)
       })
 
-      $('#pie-last-month-title').text(titleText)
-
+      // last-month-cpi
+      $('#pie-last-month-title').text(cpiTitle)
       var option_last_month = {
-        // backgroundColor: '#2c343c',
-        // title: {
-        //   text: titleText,
-        //   left: 'center',
-        //   // top: 10,
-        //   textStyle: {
-        //     // color: '#000'
-        //   }
-        // },
-
         tooltip: {
           trigger: 'item',
           formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
@@ -293,25 +288,17 @@
         }]
       }
       pie_last_month.setOption(option_last_month)
-    })
 
-    $.getJSON('api/lastmonthsummary', function(rsp) {
-      if (rsp.message === 0) {
-        var yearsData = rsp.data.data
-        var titleText = rsp.data.title
-      } else {
-        yearsData = {
-          0: 0
-        }
-      }
-
-      $('#category-list-title').text(titleText)
-
-      _.each(yearsData, function(value, key) {
-        var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>""><%= value %> 元</span><%= key %></li>')
+      // last-month-summary
+      $('#category-list-title').text(summaryTitle)
+      _.each(lastMonthData, function(value, key) {
+        var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>""><%= value %> 元</span><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color_key%>""><%= radio_key %> %</span><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>""><%= last_two_value %> 元</span><%= key %></li>')
         var tmp = $(compiled({
           key: key,
           value: value,
+          last_two_value: lastTwoMonthData[key],
+          radio_key: categoryRadioData[key],
+          color_key: categoryRadioDataColor[key],
           color: colorMatch[key]
         }))
         $('#category-list').append(tmp)

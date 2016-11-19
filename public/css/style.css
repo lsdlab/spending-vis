@@ -179,6 +179,10 @@ body {
   float: right!important
 }
 
+.datatable .row {
+  margin-bottom: 0px!important
+}
+
 .table>tbody>tr>td,
 .table>tbody>tr>th,
 .table>tfoot>tr>td,

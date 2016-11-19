@@ -1,5 +1,5 @@
 require('dotenv').config()
-require('../utils/utils')
+require('./utils')
 const express = require('express')
 const router = express.Router()
 
@@ -278,47 +278,7 @@ router.get('/last5month', function(req, res) {
 })
 
 
-/* 上月 CPI for last-month-brief */
-router.get('/lastmonthcpi', function(req, res) {
-  var myDate = new Date()
-  var year = myDate.getFullYear()
-  var month = myDate.getMonth()
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2', [year, month])
-    .then(function(data) {
-      var reducedData = _.reduce(data, function(months, item) {
-        if (months[item.cpi_text]) {
-          months[item.cpi_text] = months[item.cpi_text].add(item.amount)
-        } else {
-          months[item.cpi_text] = item.amount
-        }
-        return months
-      }, {})
-
-      var formatedData = {}
-      formatedData['食品'] = reducedData['食品'] || '0'
-      formatedData['穿'] = reducedData['穿'] || '0'
-      formatedData['居住'] = reducedData['居住'] || '0'
-      formatedData['交通通信'] = reducedData['交通通信'] || '0'
-      formatedData['教育'] = reducedData['教育'] || '0'
-      formatedData['文化娱乐'] = reducedData['文化娱乐'] || '0'
-
-      res.json({
-        message: 0,
-        data: {
-          title: year.toString() + ' 年 ' + month.toString() + ' 月分类支出占比',
-          data: formatedData
-        }
-      })
-    })
-    .catch(function(error) {
-      res.json({
-        message: 1,
-      })
-    })
-})
-
-
-/* 上月分类支出金额 for last-month-brief */
+/* 上月分类支出金额 and CPI for last-month-brief */
 router.get('/lastmonthsummary', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
@@ -342,13 +302,116 @@ router.get('/lastmonthsummary', function(req, res) {
       formatedData['教育'] = reducedData['教育'] || 0
       formatedData['文化娱乐'] = reducedData['文化娱乐'] || 0
 
-      res.json({
-        message: 0,
-        data: {
-          title: year.toString() + ' 年 ' + month.toString() + ' 月分类支出概要',
-          data: formatedData
-        }
-      })
+      var lastmonth_sum = _.reduce(formatedData, function(memo, num){ return memo + num }, 0)
+
+      var lasttwomonth = month - 1
+      db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2', [year, lasttwomonth])
+        .then(function(data) {
+
+          var reducedData = _.reduce(data, function(months, item) {
+            if (months[item.cpi_text]) {
+              months[item.cpi_text] = months[item.cpi_text].add(item.amount)
+            } else {
+              months[item.cpi_text] = item.amount
+            }
+            return months
+          }, {})
+
+          var formatedLast = {}
+          formatedLast['食品'] = reducedData['食品'] || 0
+          formatedLast['穿'] = reducedData['穿'] || 0
+          formatedLast['居住'] = reducedData['居住'] || 0
+          formatedLast['交通通信'] = reducedData['交通通信'] || 0
+          formatedLast['教育'] = reducedData['教育'] || 0
+          formatedLast['文化娱乐'] = reducedData['文化娱乐'] || 0
+
+          var lasttwomonth_sum = _.reduce(formatedLast, function(memo, num){ return memo + num }, 0)
+
+          var category_ratio_data = {}
+          category_ratio_data['食品'] = parseFloat(formatedLast['食品'].sub(formatedData['食品'])).div(formatedData['食品']).mul(100).toFixed(2)
+
+          if (formatedData['穿'] == 0) {
+            category_ratio_data['穿'] = parseFloat(formatedLast['穿'].sub(formatedData['穿'])).toFixed(2)
+          } else {
+            category_ratio_data['穿'] = parseFloat(formatedLast['穿'].sub(formatedData['穿'])).div(formatedData['穿']).mul(100).toFixed(2)
+          }
+
+          if (formatedData['居住'] == 0) {
+            category_ratio_data['居住'] = parseFloat(formatedLast['居住'].sub(formatedData['居住'])).toFixed(2)
+          } else {
+            category_ratio_data['居住'] = parseFloat(formatedLast['居住'].sub(formatedData['居住'])).div(formatedData['居住']).mul(100).toFixed(2)
+          }
+
+          if (formatedData['交通通信'] == 0) {
+            category_ratio_data['交通通信'] = parseFloat(formatedLast['交通通信'].sub(formatedData['交通通信'])).toFixed(2)
+          } else {
+            category_ratio_data['交通通信'] = parseFloat(formatedLast['交通通信'].sub(formatedData['交通通信'])).div(formatedData['交通通信']).mul(100).toFixed(2)
+          }
+
+          if (formatedData['教育'] == 0) {
+            category_ratio_data['教育'] = parseFloat(formatedLast['教育'].sub(formatedData['教育'])).toFixed(2)
+          } else {
+            category_ratio_data['教育'] = parseFloat(formatedLast['教育'].sub(formatedData['教育'])).div(formatedData['教育']).mul(100).toFixed(2)
+          }
+
+          category_ratio_data['文化娱乐'] = parseFloat(formatedLast['文化娱乐'].sub(formatedData['文化娱乐'])).div(formatedData['文化娱乐']).mul(100).toFixed(2)
+
+          var month_ratio_data = parseFloat(lasttwomonth_sum.sub(lastmonth_sum)).div(lastmonth_sum).mul(100).toFixed(2)
+
+          var category_ratio_data_color = {}
+
+          if (category_ratio_data['食品'][0] == '-') {
+            category_ratio_data_color['食品'] = 'green'
+          } else {
+            category_ratio_data_color['食品'] = 'red'
+          }
+
+          if (category_ratio_data['穿'][0] == '-') {
+            category_ratio_data_color['穿'] = 'green'
+          } else {
+            category_ratio_data_color['穿'] = 'red'
+          }
+
+          if (category_ratio_data['居住'][0] == '-') {
+            category_ratio_data_color['居住'] = 'green'
+          } else {
+            category_ratio_data_color['居住'] = 'red'
+          }
+
+          if (category_ratio_data['交通通信'][0] == '-') {
+            category_ratio_data_color['交通通信'] = 'green'
+          } else {
+            category_ratio_data_color['交通通信'] = 'red'
+          }
+
+          if (category_ratio_data['教育'][0] == '-') {
+            category_ratio_data_color['教育'] = 'green'
+          } else {
+            category_ratio_data_color['教育'] = 'red'
+          }
+
+          if (category_ratio_data['文化娱乐'][0] == '-') {
+            category_ratio_data_color['文化娱乐'] = 'green'
+          } else {
+            category_ratio_data_color['文化娱乐'] = 'red'
+          }
+
+          res.json({
+            message: 0,
+            data: {
+              cpi_title: year.toString() + ' 年 ' + month.toString() + ' 月 CPI',
+              summary_title: year.toString() + ' 年 ' + month.toString() + ' 月分类支出概要及环比',
+              last_month_data: formatedData,
+              last_two_month_data: formatedLast,
+              category_ratio_data: category_ratio_data,
+              category_ratio_data_color: category_ratio_data_color,
+              month_ratio_data: month_ratio_data
+            }
+          })
+
+        })
+
+
     })
     .catch(function(error) {
       res.json({
