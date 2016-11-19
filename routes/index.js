@@ -45,7 +45,7 @@ router.post('/new', function(req, res) {
   req.assert('cpi', '必须选择分类').notEmpty()
   req.assert('time', '必须选择时间').notEmpty()
   req.assert('amount', '必须输入金额').notEmpty()
-  req.assert('amount', '金额必须为数字').isInt()
+  req.assert('amount', '金额必须为数字').isFloat()
   req.assert('note', '必须输入备注').notEmpty()
 
   var error = req.validationErrors()[0]
@@ -70,7 +70,7 @@ router.post('/new', function(req, res) {
   db.one('INSERT INTO entry(cpi_index, cpi_text, date, amount, note) values($1, $2, $3, $4, $5) returning id', [cpi_index, cpi_text, time, amount, note])
     .then(function(data) {
       req.flash('success', { msg: '保存成功' })
-      return res.redirect('/tables')
+      return res.redirect('/new')
     })
     .catch(function(error) {
       console.log(error)

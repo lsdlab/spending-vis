@@ -249,7 +249,7 @@ router.get('/last5month', function(req, res) {
     month = month + 12 - 4
     year = year - 1
   }
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)>=$2', [year, month - 4])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)>=$2 and Extract(month from date)<=$3', [year, month - 4, month])
     .then(function(data) {
       var pre5monthData = _.reduce(data, function(allmonths, item) {
         var dataKey
@@ -499,7 +499,7 @@ router.get('/cpifornew', function(req, res) {
     message: 0,
     data: {
       title: 'CPI 分类 typeahead',
-      data: ['0: 食品', '1: 穿', '2: 居住', '3: 交通通信', '4: 教育', '5: 娱乐通信']
+      data: ['0: 食品', '1: 穿', '2: 居住', '3: 交通通信', '4: 教育', '5: 文化娱乐']
     }
   })
 })
@@ -574,6 +574,38 @@ router.get('/allnotesforwordcloud', function(req, res) {
         data: {
           title: '消费关键词词云',
           data: sortedNotes
+        }
+      })
+    })
+    .catch(function(error) {
+      res.json({
+        message: 1,
+      })
+    })
+})
+
+
+/* 上月所有数据 for last-month-brief */
+router.get('/thismonthalldata', function(req, res) {
+  var myDate = new Date()
+  var year = myDate.getFullYear()
+  var month = myDate.getMonth() + 1
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2', [year, month])
+    .then(function(data) {
+      var lastmonthdata = _.map(data, function(item) {
+        return {
+          'cpi_text': item['cpi_text'],
+          'date': item['date'].getFullYear() + '/' + (item['date'].getMonth() + 1) + '/' + item['date'].getDate(),
+          'amount': item['amount'],
+          'note': item['note']
+        }
+      })
+      lastmonthdata = lastmonthdata.reverse()
+      res.json({
+        message: 0,
+        data: {
+          title: year.toString() + ' 年 ' + month.toString() + ' 支出详细',
+          data: lastmonthdata
         }
       })
     })

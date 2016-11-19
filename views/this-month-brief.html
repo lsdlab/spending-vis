@@ -14,9 +14,16 @@
   <div class="container mt10">
     {% include "partials/flash.html" %}
   </div>
-  <div class="container mt10 pln prn" id="charts-container">
-    <div class="page-header">
-      <h6>可视化 - 当月概要<small></small></h6>
+  <div class="container pln prn" id="charts-container">
+    <div class="page-header mb10">
+      <h6 class="mb10">可视化 - 当月概要<small></small></h6>
+    </div>
+    <div class="col-md-12">
+      <div class="panel panel-info">
+        <div class="panel-heading" id="this-month-list-title">当月支出</div>
+        <ul class="list-group" id="this-month-list">
+        </ul>
+      </div>
     </div>
 
   </div>
@@ -24,8 +31,35 @@
 
 {% block pagejs %}
   <script>
+    var colorMatch = {
+      '食品': '#E74C3C',
+      '穿': '#1ABC9C',
+      '居住': '#2ECC71',
+      '交通通信': '#F39C12',
+      '教育': '#3498DB',
+      '文化娱乐': '#9B59B6'
+    }
     NProgress.start()
+    $.getJSON('api/thismonthalldata', function(rsp) {
+      if (rsp.message === 0) {
+        var titleText = rsp.data.title
+        var yearamountData = rsp.data.data
+      }
 
+      $('#this-month-list-title').text(titleText)
+
+      _.each(yearamountData, function(value) {
+        var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= date %>&nbsp&nbsp&nbsp&nbsp<%= key %></li>')
+        var tmp = $(compiled({
+          key: value['note'],
+          value: value['amount'],
+          date: value['date'],
+          color: colorMatch[value['cpi_text']]
+        }))
+        $('#this-month-list').append(tmp)
+      })
+
+    })
 
     NProgress.done()
   </script>
