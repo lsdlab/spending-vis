@@ -39,9 +39,8 @@
     NProgress.start()
     $.getJSON('api/alldata', function(rsp) {
       if (rsp.message === 0) {
-        var yearamountData = rsp.data
+        var dataSet = rsp.data
       }
-      var dataSet = yearamountData.reverse()
       $('#alldata-table').DataTable({
         'data': dataSet,
         'columns': [{

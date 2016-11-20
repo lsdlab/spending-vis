@@ -10,7 +10,7 @@ const Q = require('q')
 
 /* 所有数据 for tables */
 router.get('/alldata', function(req, res) {
-  db.any('SELECT * FROM entry')
+  db.any('SELECT * FROM entry  ORDER BY date desc')
     .then(function(data) {
       var alldata = _.map(data, function(item) {
         return {
@@ -359,42 +359,12 @@ router.get('/lastmonthsummary', function(req, res) {
           var month_ratio_data = parseFloat(lasttwomonth_sum.sub(lastmonth_sum)).div(lastmonth_sum).mul(100).toFixed(2)
 
           var category_ratio_data_color = {}
-
-          if (category_ratio_data['食品'][0] == '-') {
-            category_ratio_data_color['食品'] = 'green'
-          } else {
-            category_ratio_data_color['食品'] = 'red'
-          }
-
-          if (category_ratio_data['穿'][0] == '-') {
-            category_ratio_data_color['穿'] = 'green'
-          } else {
-            category_ratio_data_color['穿'] = 'red'
-          }
-
-          if (category_ratio_data['居住'][0] == '-') {
-            category_ratio_data_color['居住'] = 'green'
-          } else {
-            category_ratio_data_color['居住'] = 'red'
-          }
-
-          if (category_ratio_data['交通通信'][0] == '-') {
-            category_ratio_data_color['交通通信'] = 'green'
-          } else {
-            category_ratio_data_color['交通通信'] = 'red'
-          }
-
-          if (category_ratio_data['教育'][0] == '-') {
-            category_ratio_data_color['教育'] = 'green'
-          } else {
-            category_ratio_data_color['教育'] = 'red'
-          }
-
-          if (category_ratio_data['文化娱乐'][0] == '-') {
-            category_ratio_data_color['文化娱乐'] = 'green'
-          } else {
-            category_ratio_data_color['文化娱乐'] = 'red'
-          }
+          category_ratio_data_color['食品'] = category_ratio_data['食品'][0] == '-' ? 'green' : 'red'
+          category_ratio_data_color['穿'] = category_ratio_data['穿'][0] == '-' ? 'green' : 'red'
+          category_ratio_data_color['居住'] = category_ratio_data['居住'][0] == '-' ? 'green' : 'red'
+          category_ratio_data_color['交通通信'] = category_ratio_data['交通通信'][0] == '-' ? 'green' : 'red'
+          category_ratio_data_color['教育'] = category_ratio_data['教育'][0] == '-' ? 'green' : 'red'
+          category_ratio_data_color['文化娱乐'] = category_ratio_data['文化娱乐'][0] == '-' ? 'green' : 'red'
 
           res.json({
             message: 0,
@@ -468,7 +438,7 @@ router.get('/lastmonthalldata', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2', [year, month])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2 ORDER BY date desc', [year, month])
     .then(function(data) {
       var lastmonthdata = _.map(data, function(item) {
         return {
@@ -585,12 +555,12 @@ router.get('/allnotesforwordcloud', function(req, res) {
 })
 
 
-/* 上月所有数据 for last-month-brief */
+/* 当月所有数据 for this-month-brief */
 router.get('/thismonthalldata', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth() + 1
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2', [year, month])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2 ORDER BY date asc', [year, month])
     .then(function(data) {
       var lastmonthdata = _.map(data, function(item) {
         return {

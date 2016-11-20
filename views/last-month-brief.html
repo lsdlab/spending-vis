@@ -331,12 +331,11 @@
     $.getJSON('api/lastmonthalldata', function(rsp) {
       if (rsp.message === 0) {
         var titleText = rsp.data.title
-        var yearamountData = rsp.data.data
+        var dataSet = rsp.data.data
       }
 
       $('#last-month-datatable-title').text(titleText)
 
-      var dataSet = yearamountData.reverse()
       $('#last-month-datatable').DataTable({
         'data': dataSet,
         'columns': [{
