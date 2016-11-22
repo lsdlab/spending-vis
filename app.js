@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const nunjucks = require('nunjucks')
 
 const indexRouter = require('./routes/index')
+const userRouter = require('./routes/user')
 const apiRouter = require('./routes/api')
 
 // dependencies
@@ -18,6 +19,7 @@ const session = require('express-session')
 const pgSession = require('connect-pg-simple')(session)
 const expressValidator = require('express-validator')
 const lusca = require('lusca')
+const passport = require('passport')
 
 /**
  * Express configuration.
@@ -79,12 +81,26 @@ app.use(lusca({
   xssProtection: true,
   nosniff: true
 }))
+// passport initialize
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(function(req, res, next) {
   res.locals.user = req.user
-  app.locals._ = require('underscore')
+  next()
+})
+app.use(function(req, res, next) {
+  // After successful login, redirect back to the intended page
+  if (!req.user &&
+    req.path !== '/login' &&
+    req.path !== '/signup' &&
+    !req.path.match(/^\/auth/) &&
+    !req.path.match(/\./)) {
+    req.session.returnTo = req.path
+  }
   next()
 })
 app.use('/', indexRouter)
+app.use('/', userRouter)
 app.use('/api', apiRouter)
 
 // catch 404 and forward to error handler

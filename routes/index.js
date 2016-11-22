@@ -4,6 +4,7 @@ const fs = require('fs')
 const marked = require('marked')
 
 const db = require('./db')
+const passportConfig = require('../passport/passport')
 
 
 /* GET home page. */
@@ -35,13 +36,13 @@ router.get('/working-on', function(req, res) {
 
 
 /* GET new page. */
-router.get('/new', function(req, res) {
+router.get('/new', passportConfig.isAuthenticated, function(req, res) {
   res.render('new')
 })
 
 
 /* POST new page. */
-router.post('/new', function(req, res) {
+router.post('/new', passportConfig.isAuthenticated, function(req, res) {
   req.assert('cpi', '必须选择分类').notEmpty()
   req.assert('time', '必须选择时间').notEmpty()
   req.assert('amount', '必须输入金额').notEmpty()
@@ -82,42 +83,42 @@ router.post('/new', function(req, res) {
 
 
 /* GET last-month-brief page. */
-router.get('/last-month-brief', function(req, res) {
+router.get('/last-month-brief', passportConfig.isAuthenticated, function(req, res) {
   res.render('last-month-brief')
 })
 
 /* GET this-month-brief page. */
-router.get('/this-month-brief', function(req, res) {
+router.get('/this-month-brief', passportConfig.isAuthenticated, function(req, res) {
   res.render('this-month-brief')
 })
 
 /* GET table page. */
-router.get('/tables', function(req, res) {
+router.get('/tables', passportConfig.isAuthenticated, function(req, res) {
   res.render('tables')
 })
 
 /* GET charts year page. */
-router.get('/charts-year', function(req, res) {
+router.get('/charts-year', passportConfig.isAuthenticated, function(req, res) {
   res.render('charts-year')
 })
 
 /* GET charts month page. */
-router.get('/charts-month', function(req, res) {
+router.get('/charts-month', passportConfig.isAuthenticated, function(req, res) {
   res.render('charts-month')
 })
 
 /* GET charts category page. */
-router.get('/charts-category-year', function(req, res) {
+router.get('/charts-category-year', passportConfig.isAuthenticated, function(req, res) {
   res.render('charts-category-year')
 })
 
 /* GET charts category page. */
-router.get('/charts-category-quarter', function(req, res) {
+router.get('/charts-category-quarter', passportConfig.isAuthenticated, function(req, res) {
   res.render('charts-category-quarter')
 })
 
 /* GET charts keyword cloud page */
-router.get('/keyword-wordcloud', function(req, res) {
+router.get('/keyword-wordcloud', passportConfig.isAuthenticated, function(req, res) {
   res.render('keyword-wordcloud')
 })
 
