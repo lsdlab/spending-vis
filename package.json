@@ -20,12 +20,9 @@
     "compression": "^1.6.2",
     "connect-pg-simple": "^3.1.2",
     "cookie-parser": "^1.4.3",
-    "debug": "^2.3.3",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "express-flash": "0.0.2",
-    "express-jwt": "^5.1.0",
-    "express-limiter": "^1.6.0",
     "express-session": "^1.14.2",
     "express-validator": "^2.21.0",
     "lodash": "^4.17.2",
@@ -33,14 +30,9 @@
     "lusca": "^1.4.1",
     "mailgen": "^2.0.2",
     "marked": "^0.3.6",
-    "multer": "^1.2.0",
     "node-fetch": "^1.6.3",
-    "nodejs-dashboard": "^0.1.2",
     "nunjucks": "^3.0.0",
-    "oauth2orize": "^1.5.1",
     "passport": "^0.3.2",
-    "passport-github": "^1.1.0",
-    "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
     "pg": "^6.1.0",
     "pg-promise": "^5.4.3",
@@ -50,12 +42,11 @@
     "sendgrid": "^4.7.1",
     "serve-favicon": "^2.3.2",
     "shortid": "^2.2.6",
-    "underscore": "^1.8.3",
-    "validator": "^6.1.0"
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.1.0",
+    "mocha": "^3.1.2",
     "nodejs-dashboard": "^0.1.2",
     "supertest": "^2.0.1"
   }
