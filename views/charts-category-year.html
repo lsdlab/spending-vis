@@ -18,10 +18,10 @@
       <h6 class="mb10">可视化 - 分类 (年)<small>    2014 ~ 2016</small></h6>
     </div>
     <div class="col-md-6">
-        <div class="panel panel-info">
-          <div class="panel-heading" id="pie-2016-title"></div>
-          <div id="pie-2016" style="height: 380px"></div>
-        </div>
+      <div class="panel panel-info">
+        <div class="panel-heading" id="pie-2016-title"></div>
+        <div id="pie-2016" style="height: 380px"></div>
+      </div>
     </div>
     <div class="col-md-6">
         <div class="panel panel-info">
@@ -40,7 +40,6 @@
 
 {% block pagejs %}
   <script>
-
     var colorList = ['rgb(231,76,60)', 'rgb(26,188,156)', 'rgb(46,204,113)', 'rgb(243,156,18)', 'rgb(52,152,219)', 'rgb(155,89,182)']
     var shadowcolorList = ['rgb(231,76,60, 0.5)', 'rgb(26,188,156, 0.5)', 'rgb(46,204,113, 0.5)', 'rgb(243,156,18, 0.5)', 'rgb(52,152,219, 0.5)', 'rgb(155,89,182, 0.5)']
     var pie_2016 = echarts.init(document.getElementById('pie-2016'), 'macarons')
@@ -68,16 +67,6 @@
       })
 
       var option_2016 = {
-        // backgroundColor: '#2c343c',
-        // title: {
-        //   text: titleText,
-        //   left: 'center',
-        //   // top: 10,
-        //   textStyle: {
-        //     // color: '#000'
-        //   }
-        // },
-
         tooltip: {
           trigger: 'item',
           formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
@@ -205,16 +194,6 @@
       })
 
       var option_2015 = {
-        // backgroundColor: '#2c343c',
-        // title: {
-        //   text: titleText,
-        //   left: 'center',
-        //   // top: 10,
-        //   textStyle: {
-        //     // color: '#000'
-        //   }
-        // },
-
         tooltip: {
           trigger: 'item',
           formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
@@ -342,16 +321,6 @@
       })
 
       var option_2014 = {
-        // backgroundColor: '#2c343c',
-        // title: {
-        //   text: titleText,
-        //   left: 'center',
-        //   // top: 10,
-        //   textStyle: {
-        //     // color: '#000'
-        //   }
-        // },
-
         tooltip: {
           trigger: 'item',
           formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
