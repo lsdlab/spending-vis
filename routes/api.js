@@ -3,9 +3,9 @@ require('./utils')
 const express = require('express')
 const router = express.Router()
 
-const db = require('./db')
 const _ = require('underscore')
-const Q = require('q')
+const db = require('./db')
+
 
 
 /* 所有数据 for tables */

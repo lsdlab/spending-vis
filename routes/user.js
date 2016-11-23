@@ -8,7 +8,6 @@ const User = require('../models/user')
 const passportConfig = require('../passport/passport')
 const db = require('./db')
 
-
 /**
  * GET /signup
  * Signup page.

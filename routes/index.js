@@ -3,9 +3,8 @@ const router = express.Router()
 const fs = require('fs')
 const marked = require('marked')
 
-const db = require('./db')
 const passportConfig = require('../passport/passport')
-
+const db = require('./db')
 
 /* GET home page. */
 router.get('/', function(req, res) {
