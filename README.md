@@ -52,6 +52,10 @@ Webpack 还是没研究出来，抽空好好看看。
 ![keyword-wordcloud](https://breakwire.me/images/spendingviz/keyword-wordcloud.png)
 
 
+### 2016/11/23
+先就这么凑合自己用用，接下来就准备用 Python 重写了，还需要看看统计的书，用上 NLP 让备注能够自动分类，要能用上些简单的机器学习就更好了，预测支出生成报告，这个估计就要花点时间了，要能把这两年点做出来就开始做 iOS 应用，大不了多花点时间，反正到现在为止我是没有找到最适合我用的记账应用，还是我自己给自己做一个吧。
+
+
 ## LICENSE
 The MIT License (MIT)
 Copyright (c) 2016 Chen Jian
