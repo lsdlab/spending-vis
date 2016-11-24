@@ -483,6 +483,7 @@ router.get('/lastmonthalldata', function(req, res) {
     })
 })
 
+
 /* cpi_text and cpi_index for new */
 router.get('/cpifornew', function(req, res) {
   res.json({
@@ -591,10 +592,14 @@ router.get('/thismonthalldata', function(req, res) {
         }
       })
       lastmonthdata = lastmonthdata.reverse()
+
+      var thisMonthTotal = _.reduce(lastmonthdata, function(memo, item){ return memo.add(item.amount) }, 0)
+
       res.json({
         message: 0,
         data: {
           title: year.toString() + ' 年 ' + month.toString() + ' 支出详细',
+          this_month_total: thisMonthTotal,
           data: lastmonthdata
         }
       })

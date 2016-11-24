@@ -44,9 +44,16 @@
       if (rsp.message === 0) {
         var titleText = rsp.data.title
         var yearamountData = rsp.data.data
+        var thisMonthTotal = rsp.data.this_month_total
       }
 
       $('#this-month-list-title').text(titleText)
+
+      var compiledTotal = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:red"><%= value %> 元</span>当月共支出 &nbsp&nbsp&nbsp&nbsp </li>')
+      var tmpTotal = $(compiledTotal({
+        value: thisMonthTotal
+      }))
+      $('#this-month-list').append(tmpTotal)
 
       _.each(yearamountData, function(value) {
         var compiled = _.template('<li class="list-group-item"><span class="badge" style="margin-top: 6px; font-size: 13px; background-color:<%= color %>"><%= value %> 元</span><%= date %>&nbsp&nbsp&nbsp&nbsp<%= key %></li>')
