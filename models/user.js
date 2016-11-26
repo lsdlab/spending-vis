@@ -5,7 +5,6 @@ const db = require('../routes/db')
 /**
  * find existing user
  */
-
 function findUserByID(id) {
   var userPromise = db.one('select * from users where id=$1', [id])
   return userPromise
