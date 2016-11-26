@@ -1,5 +1,6 @@
 # spendingviz
-![Language](https://img.shields.io/badge/language-Node.js-brightgreen.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+[![dependencies Status](https://david-dm.org/lsdlab/spendingviz/status.svg?style=flat-square)](https://david-dm.org/lsdlab/spendingviz) [![devDependencies Status](https://david-dm.org/lsdlab/spendingviz/dev-status.svg?style=flat-square)](https://david-dm.org/lsdlab/spendingviz?type=dev)
+![Language](https://img.shields.io/badge/language-Node.js-brightgreen.svg?style=flat-square) ![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
 
 Visualize my daily spending data to tables some charts.
 
