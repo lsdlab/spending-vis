@@ -349,33 +349,37 @@ router.get('/lastmonthsummary', passportConfig.isAuthenticated, function(req, re
           var lasttwomonth_sum = _.reduce(formatedLast, function(memo, num){ return memo + num }, 0)
 
           var category_ratio_data = {}
-          category_ratio_data['食品'] = parseFloat(formatedLast['食品'].sub(formatedData['食品'])).div(formatedData['食品']).mul(100).toFixed(2)
+          category_ratio_data['食品'] = parseFloat(formatedLast['食品'].sub(formatedData['食品'])).div(formatedLast['食品']).mul(100).toFixed(2)
 
           if (formatedData['穿'] == 0) {
-            category_ratio_data['穿'] = parseFloat(formatedLast['穿'].sub(formatedData['穿'])).toFixed(2)
+            category_ratio_data['穿'] = '-100.00'
           } else {
-            category_ratio_data['穿'] = parseFloat(formatedLast['穿'].sub(formatedData['穿'])).div(formatedData['穿']).mul(100).toFixed(2)
+            category_ratio_data['穿'] = parseFloat(formatedLast['穿'].sub(formatedData['穿'])).div(formatedLast['穿']).mul(100).toFixed(2)
           }
 
           if (formatedData['居住'] == 0) {
-            category_ratio_data['居住'] = parseFloat(formatedLast['居住'].sub(formatedData['居住'])).toFixed(2)
+            category_ratio_data['居住'] = '-100.00'
           } else {
-            category_ratio_data['居住'] = parseFloat(formatedLast['居住'].sub(formatedData['居住'])).div(formatedData['居住']).mul(100).toFixed(2)
+            if (formatedLast['居住'] == 0) {
+              category_ratio_data['居住'] = '100.00'
+            } else {
+              category_ratio_data['居住'] = parseFloat(formatedLast['居住'].sub(formatedData['居住'])).div(formatedLast['居住']).mul(100).toFixed(2)
+            }
           }
 
           if (formatedData['交通通信'] == 0) {
-            category_ratio_data['交通通信'] = parseFloat(formatedLast['交通通信'].sub(formatedData['交通通信'])).toFixed(2)
+            category_ratio_data['交通通信'] = '-100.00'
           } else {
-            category_ratio_data['交通通信'] = parseFloat(formatedLast['交通通信'].sub(formatedData['交通通信'])).div(formatedData['交通通信']).mul(100).toFixed(2)
+            category_ratio_data['交通通信'] = parseFloat(formatedLast['交通通信'].sub(formatedData['交通通信'])).div(formatedLast['交通通信']).mul(100).toFixed(2)
           }
 
           if (formatedData['教育'] == 0) {
-            category_ratio_data['教育'] = parseFloat(formatedLast['教育'].sub(formatedData['教育'])).toFixed(2)
+            category_ratio_data['教育'] = '-100.00'
           } else {
-            category_ratio_data['教育'] = parseFloat(formatedLast['教育'].sub(formatedData['教育'])).div(formatedData['教育']).mul(100).toFixed(2)
+            category_ratio_data['教育'] = parseFloat(formatedLast['教育'].sub(formatedData['教育'])).div(formatedLast['教育']).mul(100).toFixed(2)
           }
 
-          category_ratio_data['文化娱乐'] = parseFloat(formatedLast['文化娱乐'].sub(formatedData['文化娱乐'])).div(formatedData['文化娱乐']).mul(100).toFixed(2)
+          category_ratio_data['文化娱乐'] = parseFloat(formatedLast['文化娱乐'].sub(formatedData['文化娱乐'])).div(formatedLast['文化娱乐']).mul(100).toFixed(2)
 
           var month_ratio_data = parseFloat(lasttwomonth_sum.sub(lastmonth_sum)).div(lastmonth_sum).mul(100).toFixed(2)
 
