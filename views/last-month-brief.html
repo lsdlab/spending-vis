@@ -167,7 +167,8 @@
         var lastTwoMonthData = rsp.data.last_two_month_data
         var categoryRadioData = rsp.data.category_ratio_data
         var categoryRadioDataColor = rsp.data.category_ratio_data_color
-        var summaryTitle = rsp.data.summary_title
+        var monthRadioData = rsp.data.month_ratio_data
+        var summaryTitle = rsp.data.summary_title + ' 月环比: ' + monthRadioData + '%'
         var cpiTitle = rsp.data.cpi_title
       } else {
         lastMonthData = {
