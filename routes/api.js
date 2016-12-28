@@ -11,7 +11,7 @@ const db = require('./db')
 
 /* 所有数据 for tables */
 router.get('/alldata', passportConfig.isAuthenticated, function(req, res) {
-  db.any('SELECT * FROM entry  ORDER BY date desc')
+  db.any('SELECT * FROM entry ORDER BY date desc')
     .then(function(data) {
       var alldata = _.map(data, function(item) {
         return {
@@ -36,7 +36,7 @@ router.get('/alldata', passportConfig.isAuthenticated, function(req, res) {
 
 /* 按年 每年的总支出金额 for charts-year */
 router.get('/years', passportConfig.isAuthenticated, function(req, res) {
-  db.any('SELECT * FROM entry')
+  db.any('SELECT * FROM entry ORDER BY date asc')
     .then(function(data) {
       var reducedData = _.reduce(data, function(years, item) {
         if (years[item['date'].getFullYear()]) {
@@ -69,7 +69,7 @@ router.get('/years', passportConfig.isAuthenticated, function(req, res) {
 
 /* 所有月份 每月的支出金额 for charts-year */
 router.get('/allmonth', passportConfig.isAuthenticated, function(req, res) {
-  db.any('SELECT * FROM entry')
+  db.any('SELECT * FROM entry ORDER BY date asc')
     .then(function(data) {
       var allmonthData = _.reduce(data, function(allmonths, item) {
         var dataKey
@@ -99,7 +99,7 @@ router.get('/allmonth', passportConfig.isAuthenticated, function(req, res) {
 
 /* 按年 每个月的支出金额 for charts-month */
 router.get('/monthdatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, function(req, res) {
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1', [req.params.year])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 ORDER BY date asc', [req.params.year])
     .then(function(data) {
       var reducedData = _.reduce(data, function(months, item) {
         if (months[item['date'].getMonth() + 1]) {
@@ -132,7 +132,7 @@ router.get('/monthdatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, fun
 
 /* 按年 每年的 CPI for charts-category-year */
 router.get('/categorydatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, function(req, res) {
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1', [req.params.year])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 ORDER BY date asc', [req.params.year])
     .then(function(data) {
       var reducedData = _.reduce(data, function(months, item) {
         if (months[item.cpi_text]) {
@@ -169,7 +169,7 @@ router.get('/categorydatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, 
 
 /* 按年 每个季度的 CPI for charts-category-quarter */
 router.get('/categorydatabyquarter/:year(\\d{4})', passportConfig.isAuthenticated, function(req, res) {
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1', [req.params.year])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 ORDER BY date asc', [req.params.year])
     .then(function(data) {
       var quarterData = {}
       quarterData['1'] = []
