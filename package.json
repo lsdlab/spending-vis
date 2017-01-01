@@ -25,7 +25,7 @@
     "express-flash": "0.0.2",
     "express-session": "^1.14.2",
     "express-validator": "^3.1.2",
-    "lodash": "^4.17.3",
+    "lodash": "^4.17.4",
     "lusca": "^1.4.1",
     "mailgen": "^2.0.2",
     "marked": "^0.3.6",
@@ -40,6 +40,6 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "nodejs-dashboard": "^0.1.2"
+    "nodejs-dashboard": "^0.3.0"
   }
 }
