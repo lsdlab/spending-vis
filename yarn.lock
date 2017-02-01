@@ -453,9 +453,9 @@ core-util-is@^1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-crc@3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/crc/-/crc-3.4.1.tgz#65d5830b1a2569557cfb324c0e679998521473ee"
+crc@3.4.4:
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/crc/-/crc-3.4.4.tgz#9da1e980e3bd44fc5c93bf5ab3da3378d85e466b"
 
 cross-spawn@^4.0.2:
   version "4.0.2"
@@ -629,14 +629,14 @@ express-flash@0.0.2:
   dependencies:
     connect-flash "0.1.x"
 
-express-session@^1.14.2:
-  version "1.14.2"
-  resolved "https://registry.yarnpkg.com/express-session/-/express-session-1.14.2.tgz#6bcf586ed6d1dc37b02570087756c9de7b80b275"
+express-session@^1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/express-session/-/express-session-1.15.0.tgz#67131dd5b78a42bc57b50af0a14880265c03f919"
   dependencies:
     cookie "0.3.1"
     cookie-signature "1.0.6"
-    crc "3.4.1"
-    debug "~2.2.0"
+    crc "3.4.4"
+    debug "2.6.0"
     depd "~1.1.0"
     on-headers "~1.0.1"
     parseurl "~1.3.1"
@@ -1429,9 +1429,9 @@ pg-pool@1.*:
     generic-pool "2.4.2"
     object-assign "4.1.0"
 
-pg-promise@^5.5.2:
-  version "5.5.2"
-  resolved "https://registry.yarnpkg.com/pg-promise/-/pg-promise-5.5.2.tgz#793c345bf72e03044938f31f59c5df1edd00a7ab"
+pg-promise@^5.5.3:
+  version "5.5.6"
+  resolved "https://registry.yarnpkg.com/pg-promise/-/pg-promise-5.5.6.tgz#d41003aad6ba31fc3f384760e0edd8a7f942181f"
   dependencies:
     manakin "0.4"
     pg "5.1"
