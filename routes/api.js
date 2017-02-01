@@ -179,7 +179,7 @@ router.get('/last5month', passportConfig.isAuthenticated, function(req, res) {
     year = year - 1
     month = 12
   }
-  else if ( 1 <= month <= 4) {
+  else if ( 1 < month <= 4) {
     month = month + 12 - 4
     year = year - 1
   }
