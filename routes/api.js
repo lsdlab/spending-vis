@@ -149,27 +149,27 @@ router.get('/categorydatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, 
       else
         formatedData['食品'] = reducedData['食品']
 
-      if (reducedData['穿'] == 0)
+      if (reducedData['穿'] == undefined)
         formatedData['穿'] = 0
       else
         formatedData['穿'] = reducedData['穿']
 
-      if (reducedData['居住'] == 0)
+      if (reducedData['居住'] == undefined)
         formatedData['居住'] = 0
       else
         formatedData['居住'] = reducedData['居住']
 
-      if (reducedData['交通通信'] == 0)
+      if (reducedData['交通通信'] == undefined)
         formatedData['交通通信'] = 0
       else
         formatedData['交通通信'] = reducedData['交通通信']
 
-      if (reducedData['教育'] == 0)
+      if (reducedData['教育'] == undefined)
         formatedData['教育'] = 0
       else
         formatedData['教育'] = reducedData['教育']
 
-      if (reducedData['文化娱乐'] == 0)
+      if (reducedData['文化娱乐'] == undefined)
         formatedData['文化娱乐'] = 0
       else
         formatedData['文化娱乐'] = reducedData['文化娱乐']
