@@ -19,6 +19,12 @@
     </div>
     <div class="col-md-6">
       <div class="panel panel-info">
+        <div class="panel-heading" id="pie-2017-title"></div>
+        <div id="pie-2017" style="height: 380px"></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-info">
         <div class="panel-heading" id="pie-2016-title"></div>
         <div id="pie-2016" style="height: 380px"></div>
       </div>
@@ -42,11 +48,138 @@
   <script>
     var colorList = ['rgb(231,76,60)', 'rgb(26,188,156)', 'rgb(46,204,113)', 'rgb(243,156,18)', 'rgb(52,152,219)', 'rgb(155,89,182)']
     var shadowcolorList = ['rgb(231,76,60, 0.5)', 'rgb(26,188,156, 0.5)', 'rgb(46,204,113, 0.5)', 'rgb(243,156,18, 0.5)', 'rgb(52,152,219, 0.5)', 'rgb(155,89,182, 0.5)']
+    var pie_2017 = echarts.init(document.getElementById('pie-2017'), 'macarons')
     var pie_2016 = echarts.init(document.getElementById('pie-2016'), 'macarons')
     var pie_2015 = echarts.init(document.getElementById('pie-2015'), 'macarons')
     var pie_2014 = echarts.init(document.getElementById('pie-2014'), 'macarons')
 
     NProgress.start()
+    $.getJSON('api/categorydatabyyear/2017', function(rsp) {
+      var yearsData = {
+        0: 0
+      }
+      var titleText = ''
+      if (rsp.message === 0) {
+        yearsData = rsp.data.data
+        titleText = rsp.data.title
+      }
+
+      $('#pie-2017-title').text(titleText)
+
+      var yearsKey = []
+      var yearsValue = []
+      _.each(yearsData, function(value, key) {
+        yearsKey.push(key)
+        yearsValue.push(value)
+      })
+
+      var option_2017 = {
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b} : {c} 元 ({d}%)"
+        },
+
+        series: [{
+          name: '占比',
+          type: 'pie',
+          radius: '55%',
+          center: ['50%', '50%'],
+          data: [{
+            value: yearsValue[0],
+            name: yearsKey[0],
+            itemStyle: {
+              normal: {
+                color: colorList[0]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[0]
+              }
+            }
+          }, {
+            value: yearsValue[1],
+            name: yearsKey[1],
+            itemStyle: {
+              normal: {
+                color: colorList[1]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[1]
+              }
+            }
+          }, {
+            value: yearsValue[2],
+            name: yearsKey[2],
+            itemStyle: {
+              normal: {
+                color: colorList[2]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[2]
+              }
+            }
+          }, {
+            value: yearsValue[3],
+            name: yearsKey[3],
+            itemStyle: {
+              normal: {
+                color: colorList[3]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[3]
+              }
+            }
+          }, {
+            value: yearsValue[4],
+            name: yearsKey[4],
+            itemStyle: {
+              normal: {
+                color: colorList[4]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[4]
+              }
+            }
+          }, {
+            value: yearsValue[5],
+            name: yearsKey[5],
+            itemStyle: {
+              normal: {
+                color: colorList[5]
+              },
+              emphasis: {
+                shadowBlur: 200,
+                shadowColor: shadowcolorList[5]
+              }
+            }
+          }],
+          label: {
+            normal: {
+              textStyle: {
+                fontSize: 14,
+                // color: 'rgba(255, 255, 255, 0.3)'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              lineStyle: {
+                // color: 'rgba(255, 255, 255, 0.8)'
+              },
+              smooth: 0,
+              length: 10,
+              length2: 10
+            }
+          }
+        }]
+      }
+      pie_2017.setOption(option_2017)
+    })
+
     $.getJSON('api/categorydatabyyear/2016', function(rsp) {
       var yearsData = {
         0: 0
