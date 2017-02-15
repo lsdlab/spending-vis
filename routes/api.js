@@ -144,7 +144,7 @@ router.get('/categorydatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, 
       }, {})
 
       var formatedData = {}
-      if (reducedData['食品'] == 0)
+      if (reducedData['食品'] == undefined)
         formatedData['食品'] = 0
       else
         formatedData['食品'] = reducedData['食品']
