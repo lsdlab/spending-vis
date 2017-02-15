@@ -1,5 +1,9 @@
 # spendingviz
-![Language](https://img.shields.io/badge/language-Node.js-brightgreen.svg?style=flat-square) ![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
+
+[![dependencies Status](https://david-dm.org/lsdlab/spendingviz/status.svg?style=flat-square)](https://david-dm.org/lsdlab/spendingviz)
+[![devDependencies Status](https://david-dm.org/lsdlab/spendingviz/dev-status.svg?style=flat-square)](https://david-dm.org/lsdlab/spendingviz?type=dev)
+![Language](https://img.shields.io/badge/language-Node.js-brightgreen.svg?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
 
 Visualize my daily spending data to tables some charts.
 
@@ -55,6 +59,8 @@ Webpack 还是没研究出来，抽空好好看看。
 ### 2016/11/23
 先就这么凑合自己用用，接下来就准备用 Python 重写了，还需要看看统计的书，用上 NLP 让备注能够自动分类，要能用上些简单的机器学习就更好了，预测支出生成报告，这个估计就要花点时间了，要能把这两年点做出来就开始做 iOS 应用，大不了多花点时间，反正到现在为止我是没有找到最适合我用的记账应用，还是我自己给自己做一个吧。
 
+### 2017/02/15
+改了些 Bug，还是有个问题，不改了，后面的计划是用 Django 重写。
 
 ## LICENSE
 The MIT License (MIT)
