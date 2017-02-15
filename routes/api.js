@@ -144,12 +144,30 @@ router.get('/categorydatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, 
       }, {})
 
       var formatedData = {}
-      formatedData['食品'] = reducedData['食品']
-      formatedData['穿'] = reducedData['穿']
-      formatedData['居住'] = reducedData['居住']
-      formatedData['交通通信'] = reducedData['交通通信']
-      formatedData['教育'] = reducedData['教育']
-      formatedData['文化娱乐'] = reducedData['文化娱乐']
+      if (reducedData['食品'] == 0)
+        formatedData['食品'] = 0
+      else
+        formatedData['食品'] = reducedData['食品']
+      if (reducedData['穿'] == 0)
+        formatedData['穿'] = 0
+      else
+        formatedData['穿'] = reducedData['穿']
+      if (reducedData['居住'] == 0)
+        formatedData['居住'] = 0
+      else
+        formatedData['居住'] = reducedData['居住']
+      if (reducedData['交通通信'] == 0)
+        formatedData['交通通信'] = 0
+      else
+        formatedData['交通通信'] = reducedData['交通通信']
+      if (reducedData['教育'] == 0)
+        formatedData['教育'] = 0
+      else
+        formatedData['教育'] = reducedData['教育']
+      if (reducedData['文化娱乐'] == 0)
+        formatedData['文化娱乐'] = 0
+      else
+        formatedData['文化娱乐'] = reducedData['文化娱乐']
 
       res.json({
         message: 0,
