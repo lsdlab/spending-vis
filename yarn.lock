@@ -605,6 +605,10 @@ etag@~1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.7.0.tgz#03d30b5f67dd6e632d2945d30d6652731a34d5d8"
 
+etag@~1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.0.tgz#6f631aef336d6c46362b51764044ce216be3c051"
+
 event-stream@~0.9.8:
   version "0.9.8"
   resolved "https://registry.yarnpkg.com/event-stream/-/event-stream-0.9.8.tgz#5da9cf3c7900975989db5a68c28e5b3c98ebe03a"
@@ -751,6 +755,10 @@ forwarded@~0.1.0:
 fresh@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.3.0.tgz#651f838e22424e7566de161d8358caa199f83d4f"
+
+fresh@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.4.0.tgz#475626a934a8d3480b2101a1d6ecef7dafd7c553"
 
 fs.realpath@^1.0.0:
   version "1.0.0"
@@ -1429,14 +1437,14 @@ pg-pool@1.*:
     generic-pool "2.4.2"
     object-assign "4.1.0"
 
-pg-promise@^5.5.6:
-  version "5.5.6"
-  resolved "https://registry.yarnpkg.com/pg-promise/-/pg-promise-5.5.6.tgz#d41003aad6ba31fc3f384760e0edd8a7f942181f"
+pg-promise@^5.5.8:
+  version "5.5.8"
+  resolved "https://registry.yarnpkg.com/pg-promise/-/pg-promise-5.5.8.tgz#fad16ffcbdba955e64d4d5f1331f70137e61faa8"
   dependencies:
     manakin "0.4"
     pg "5.1"
     pg-minify "0.4"
-    spex "1.1"
+    spex "1.2"
 
 pg-types@1.*:
   version "1.11.0"
@@ -1755,12 +1763,12 @@ send@0.14.2:
     range-parser "~1.2.0"
     statuses "~1.3.1"
 
-serve-favicon@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/serve-favicon/-/serve-favicon-2.3.2.tgz#dd419e268de012ab72b319d337f2105013f9381f"
+serve-favicon@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/serve-favicon/-/serve-favicon-2.4.0.tgz#064dcdfdb0f250ae3b148eb18c8bbf3d185e3dd0"
   dependencies:
-    etag "~1.7.0"
-    fresh "0.3.0"
+    etag "~1.8.0"
+    fresh "0.4.0"
     ms "0.7.2"
     parseurl "~1.3.1"
 
@@ -1853,9 +1861,9 @@ sparkline@^0.1.1:
     here "0.0.2"
     nopt "~2.1.2"
 
-spex@1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/spex/-/spex-1.1.1.tgz#ceede36b128e7dcb26100b89e2b049a5f4477d50"
+spex@1.2:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/spex/-/spex-1.2.0.tgz#6264b3b8acbc444477f06dbb66d425c0ee1074c0"
 
 split@^1.0.0:
   version "1.0.0"
