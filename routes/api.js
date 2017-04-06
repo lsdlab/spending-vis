@@ -195,16 +195,26 @@ router.get('/last5month', passportConfig.isAuthenticated, function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
-  if (month <= 1) {
-    year = year - 1
-    month = 12
-  }
-  else if ( 1 < month <= 4) {
-    year = year - 1
-    month = month + 12 - 4
+
+  var start_year
+  var start_month
+  var end_month
+
+  if (month == 0) {
+    start_year = year - 1
+    start_month = 10
+    end_month = 12
+  } else if (month >= 3 && month <= 11) {
+    start_year = year
+    start_month = month - 2
+    end_month = month
+  } else if (month <= 2) {
+    start_year = year
+    start_month = month - 1
+    end_month = month
   }
 
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)>=$2 and Extract(month from date)<=$3', [year, month - 4, month])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)>=$2 and Extract(month from date)<=$3 ORDER BY date asc', [start_year, start_month, end_month])
     .then(function(data) {
       var pre5monthData = _.reduce(data, function(allmonths, item) {
         var dataKey
@@ -238,16 +248,19 @@ router.get('/lastmonthsummary', passportConfig.isAuthenticated, function(req, re
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
-  if (month <= 1) {
-    year = year - 1
-    month = 12
-  }
-  else if ( 1 < month <= 4) {
-    year = year - 1
-    month = month + 12 - 4
+
+  var start_year
+  var start_month
+
+  if (month == 0) {
+    start_year = year - 1
+    start_month = 12
+  } else {
+    start_year = year
+    start_month = month
   }
 
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2', [year, month])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2', [start_year, start_month])
     .then(function(data) {
       var reducedData = _.reduce(data, function(months, item) {
         if (months[item.cpi_text]) {
@@ -365,12 +378,18 @@ router.get('/lastmonthmaxsix', passportConfig.isAuthenticated, function(req, res
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
 
+  var start_year
+  var start_month
+
   if (month == 0) {
-    year = year - 1
-    month = 12
+    start_year = year - 1
+    start_month = 12
+  } else {
+    start_year = year
+    start_month = month
   }
 
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2 ORDER BY amount DESC LIMIT 6', [year, month])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2 ORDER BY amount DESC LIMIT 6', [start_year, start_month])
     .then(function(data) {
       var formatedData = []
       _.each(data, function(item) {
@@ -412,16 +431,19 @@ router.get('/lastmonthalldata', passportConfig.isAuthenticated, function(req, re
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
-  if (month <= 1) {
-    year = year - 1
-    month = 12
-  }
-  else if ( 1 < month <= 4) {
-    year = year - 1
-    month = month + 12 - 4
+
+  var start_year
+  var start_month
+
+  if (month == 0) {
+    start_year = year - 1
+    start_month = 12
+  } else {
+    start_year = year
+    start_month = month
   }
 
-  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2 ORDER BY date desc', [year, month])
+  db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 and Extract(month from date)=$2 ORDER BY date desc', [start_year, start_month])
     .then(function(data) {
       var lastmonthdata = _.map(data, function(item) {
         return {
