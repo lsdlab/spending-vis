@@ -5,6 +5,8 @@
 ![Language](https://img.shields.io/badge/language-Node.js-brightgreen.svg?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
 
+## Deprecated
+
 Visualize my daily spending data to tables some charts.
 
 可视化我的日常支出数据，尝试产品化，搭建具有数据分析功能的后端平台，以及 iOS App。
@@ -16,10 +18,6 @@ Visualize my daily spending data to tables some charts.
 - Typeahead [Bootstrap-3-Typeahead](https://github.com/bassjobsen/Bootstrap-3-Typeahead)
 
 ## Changelog
-
-### 2016/7/16
-前后端先都用 Node.js 做，webpack   还要研究下到底怎么搞。
-
 
 ### 2016/7/26
 用 datatables 的表格基本完成了。
