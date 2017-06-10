@@ -4,13 +4,12 @@ const express = require('express')
 const router = express.Router()
 
 const _ = require('underscore')
-const passportConfig = require('../passport/passport')
 const db = require('./db')
 
 
 
 /* 所有数据 for tables */
-router.get('/alldata', passportConfig.isAuthenticated, function(req, res) {
+router.get('/alldata', function(req, res) {
   db.any('SELECT * FROM entry ORDER BY date desc')
     .then(function(data) {
       var alldata = _.map(data, function(item) {
@@ -35,7 +34,7 @@ router.get('/alldata', passportConfig.isAuthenticated, function(req, res) {
 
 
 /* 按年 每年的总支出金额 for charts-year */
-router.get('/years', passportConfig.isAuthenticated, function(req, res) {
+router.get('/years', function(req, res) {
   db.any('SELECT * FROM entry ORDER BY date asc')
     .then(function(data) {
       var reducedData = _.reduce(data, function(years, item) {
@@ -68,7 +67,7 @@ router.get('/years', passportConfig.isAuthenticated, function(req, res) {
 
 
 /* 所有月份 每月的支出金额 for charts-year */
-router.get('/allmonth', passportConfig.isAuthenticated, function(req, res) {
+router.get('/allmonth', function(req, res) {
   db.any('SELECT * FROM entry ORDER BY date asc')
     .then(function(data) {
       var allmonthData = _.reduce(data, function(allmonths, item) {
@@ -98,7 +97,7 @@ router.get('/allmonth', passportConfig.isAuthenticated, function(req, res) {
 
 
 /* 按年 每个月的支出金额 for charts-month */
-router.get('/monthdatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, function(req, res) {
+router.get('/monthdatabyyear/:year(\\d{4})', function(req, res) {
   db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 ORDER BY date asc', [req.params.year])
     .then(function(data) {
       var reducedData = _.reduce(data, function(months, item) {
@@ -131,7 +130,7 @@ router.get('/monthdatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, fun
 
 
 /* 按年 每年的 CPI for charts-category-year */
-router.get('/categorydatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, function(req, res) {
+router.get('/categorydatabyyear/:year(\\d{4})', function(req, res) {
   db.any('SELECT * FROM entry WHERE Extract(year from date)=$1 ORDER BY date asc', [req.params.year])
     .then(function(data) {
       var reducedData = _.reduce(data, function(months, item) {
@@ -191,7 +190,7 @@ router.get('/categorydatabyyear/:year(\\d{4})', passportConfig.isAuthenticated, 
 
 
 /* 最近五个月每月总支出 for last-month-brief */
-router.get('/last5month', passportConfig.isAuthenticated, function(req, res) {
+router.get('/last5month', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -244,7 +243,7 @@ router.get('/last5month', passportConfig.isAuthenticated, function(req, res) {
 
 
 /* 上月分类支出金额 and CPI for last-month-brief */
-router.get('/lastmonthsummary', passportConfig.isAuthenticated, function(req, res) {
+router.get('/lastmonthsummary', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -373,7 +372,7 @@ router.get('/lastmonthsummary', passportConfig.isAuthenticated, function(req, re
 
 
 /* 上月最大六笔支出 for last-month-brief */
-router.get('/lastmonthmaxsix', passportConfig.isAuthenticated, function(req, res) {
+router.get('/lastmonthmaxsix', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -427,7 +426,7 @@ router.get('/lastmonthmaxsix', passportConfig.isAuthenticated, function(req, res
 
 
 /* 上月所有数据 for last-month-brief */
-router.get('/lastmonthalldata', passportConfig.isAuthenticated, function(req, res) {
+router.get('/lastmonthalldata', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth()
@@ -470,7 +469,7 @@ router.get('/lastmonthalldata', passportConfig.isAuthenticated, function(req, re
 
 
 /* cpi_text and cpi_index for new */
-router.get('/cpifornew', passportConfig.isAuthenticated, function(req, res) {
+router.get('/cpifornew', function(req, res) {
   res.json({
     message: 0,
     data: {
@@ -482,7 +481,7 @@ router.get('/cpifornew', passportConfig.isAuthenticated, function(req, res) {
 
 
 /* all notes for new */
-router.get('/allnotesfornew', passportConfig.isAuthenticated, function(req, res) {
+router.get('/allnotesfornew', function(req, res) {
   db.any('SELECT * FROM entry')
     .then(function(data) {
       var allnotes = _.map(data, function(item) {
@@ -510,7 +509,7 @@ router.get('/allnotesfornew', passportConfig.isAuthenticated, function(req, res)
 
 
 /* all notes for word cloud */
-router.get('/allnotesforwordcloud', passportConfig.isAuthenticated, function(req, res) {
+router.get('/allnotesforwordcloud', function(req, res) {
   db.any('SELECT * FROM entry')
     .then(function(data) {
       var allnotes = _.map(data, function(item) {
@@ -562,7 +561,7 @@ router.get('/allnotesforwordcloud', passportConfig.isAuthenticated, function(req
 
 
 /* 当月所有数据 for this-month-brief */
-router.get('/thismonthalldata', passportConfig.isAuthenticated, function(req, res) {
+router.get('/thismonthalldata', function(req, res) {
   var myDate = new Date()
   var year = myDate.getFullYear()
   var month = myDate.getMonth() + 1

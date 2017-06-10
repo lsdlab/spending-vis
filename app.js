@@ -6,20 +6,12 @@ const bodyParser = require('body-parser')
 const nunjucks = require('nunjucks')
 
 const indexRouter = require('./routes/index')
-const userRouter = require('./routes/user')
 const apiRouter = require('./routes/api')
 
 // dependencies
 require('dotenv').config()
-require('nodejs-dashboard')
 const chalk = require('chalk')
-const flash = require('express-flash')
 const pg = require('pg')
-const session = require('express-session')
-const pgSession = require('connect-pg-simple')(session)
-const expressValidator = require('express-validator')
-const lusca = require('lusca')
-const passport = require('passport')
 
 /**
  * Express configuration.
@@ -45,45 +37,8 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// third party plugin setup
-app.use(flash())
-app.use(session({
-  store: new pgSession({
-    pg: pg, // Use global pg-module
-    conString: process.env.POSTGRESQL_URL, // Connect using something else than default DATABASE_URL env variable
-    tableName : 'sessions' // Use another table-name than the default "session" one
-  }),
-  secret: process.env.POSTGRESQL_SECRET,
-  saveUninitialized: true,
-  resave: true,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-}))
-app.use(expressValidator())
-app.use(lusca({
-  xframe: 'SAMEORIGIN',
-  xssProtection: true,
-  nosniff: true
-}))
-// passport initialize
-app.use(passport.initialize())
-app.use(passport.session())
-app.use(function(req, res, next) {
-  res.locals.user = req.user
-  next()
-})
-app.use(function(req, res, next) {
-  // After successful login, redirect back to the intended page
-  if (!req.user &&
-    req.path !== '/login' &&
-    req.path !== '/signup' &&
-    !req.path.match(/^\/auth/) &&
-    !req.path.match(/\./)) {
-    req.session.returnTo = req.path
-  }
-  next()
-})
+
 app.use('/', indexRouter)
-app.use('/', userRouter)
 app.use('/api', apiRouter)
 
 // catch 404 and forward to error handler

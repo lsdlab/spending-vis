@@ -3,24 +3,11 @@ const router = express.Router()
 const fs = require('fs')
 const marked = require('marked')
 
-const passportConfig = require('../passport/passport')
 const db = require('./db')
 
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index')
-})
-
-/* GET about page. */
-router.get('/about', function(req, res) {
-  var path = __dirname.slice(0, -7) + '/views/markdown/about.md'
-  fs.readFile(path, 'utf8', function(err, data) {
-    if (err) {
-      console.log(err)
-    }
-    var markdownContent = marked(data)
-    res.render('about', { markdownContent: markdownContent })
-  })
 })
 
 /* GET 404 page. */
@@ -35,13 +22,13 @@ router.get('/working-on', function(req, res) {
 
 
 /* GET new page. */
-router.get('/new', passportConfig.isAuthenticated, function(req, res) {
+router.get('/new', function(req, res) {
   res.render('new')
 })
 
 
 /* POST new page. */
-router.post('/new', passportConfig.isAuthenticated, function(req, res) {
+router.post('/new', function(req, res) {
   req.assert('cpi', '必须选择分类').notEmpty()
   req.assert('time', '必须选择时间').notEmpty()
   req.assert('amount', '必须输入金额').notEmpty()
@@ -82,42 +69,42 @@ router.post('/new', passportConfig.isAuthenticated, function(req, res) {
 
 
 /* GET last-month-brief page. */
-router.get('/last-month-brief', passportConfig.isAuthenticated, function(req, res) {
+router.get('/last-month-brief', function(req, res) {
   res.render('last-month-brief')
 })
 
 /* GET this-month-brief page. */
-router.get('/this-month-brief', passportConfig.isAuthenticated, function(req, res) {
+router.get('/this-month-brief', function(req, res) {
   res.render('this-month-brief')
 })
 
 /* GET table page. */
-router.get('/tables', passportConfig.isAuthenticated, function(req, res) {
+router.get('/tables', function(req, res) {
   res.render('tables')
 })
 
 /* GET charts year page. */
-router.get('/charts-year', passportConfig.isAuthenticated, function(req, res) {
+router.get('/charts-year', function(req, res) {
   res.render('charts-year')
 })
 
 /* GET charts month page. */
-router.get('/charts-month', passportConfig.isAuthenticated, function(req, res) {
+router.get('/charts-month', function(req, res) {
   res.render('charts-month')
 })
 
 /* GET charts category page. */
-router.get('/charts-category-year', passportConfig.isAuthenticated, function(req, res) {
+router.get('/charts-category-year', function(req, res) {
   res.render('charts-category-year')
 })
 
 /* GET charts category page. */
-router.get('/charts-category-quarter', passportConfig.isAuthenticated, function(req, res) {
+router.get('/charts-category-quarter', function(req, res) {
   res.render('charts-category-quarter')
 })
 
 /* GET charts keyword cloud page */
-router.get('/keyword-wordcloud', passportConfig.isAuthenticated, function(req, res) {
+router.get('/keyword-wordcloud', function(req, res) {
   res.render('keyword-wordcloud')
 })
 
