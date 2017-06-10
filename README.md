@@ -29,7 +29,7 @@ Visualize my daily spending data to tables some charts.
 
 ### 2016/8/14
 
-分类饼图做了一点，但是 Charts.JS 不能直接在饼图每个部分上显示文字，搜了一些办法都不行，准备饼图用 ECharts 单独做。
+分类饼图做了一点，但是 Charts.js 不能直接在饼图每个部分上显示文字，搜了一些办法都不行，准备饼图用 ECharts 单独做。
 
 
 ### 2016/9/25
